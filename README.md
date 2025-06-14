@@ -3,10 +3,13 @@
 ### Custom firmware for Tuya sensor models
 
 - _TZ3000_xr3htd96
+- _TZ3000_fllyghyj
 
 <img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/ts0201.jpg"/>
 
 <img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/ts0201_pcb.jpg"/>
+
+<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/ts0201_pcb2.jpg"/>
 
 **Автор не несет никакой отвественности, если вы, воспользовавшись этим проектом, превратите свой умный датчик в полоумный.**
 
@@ -116,7 +119,7 @@ ota:
 
 ### Если захотите отблагодарить автора, то это можно сделать через [ЮMoney](https://yoomoney.ru/to/4100118300223495)
 
-P.S. Датчик покупался по ссылке вот из этого [проекта](https://pvvx.github.io/TS0201_TZ3000/) в октябре 2024, но сейчас продавец в Россию не отправляет. И спасибо [Виктору](https://pvvx.github.io/) за предоставленную информацию по этому датчику. 
+P.S. Датчик покупался по ссылке вот из этого [проекта](https://pvvx.github.io/TS0201_TZ3000/) в октябре 2024, но сейчас продавец в Россию не отправляет. И спасибо [Виктору](https://pvvx.github.io/) за предоставленную информацию по этому датчику. Второй датчик покупался [вот тут](https://aliexpress.ru/item/1005007755890938.html?sku_id=12000042104302703)
 
 ## История версий
 - 1.0.01

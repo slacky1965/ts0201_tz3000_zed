@@ -1,7 +1,8 @@
 const {identify, reporting, ota} = require('zigbee-herdsman-converters/lib/modernExtend');
 
 const definition = {
-    fingerprint: [{manufacturerName: '_TZ3000_xr3htd96'}
+    fingerprint: [{manufacturerName: '_TZ3000_xr3htd96'},
+                  {manufacturerName: '_TZ3000_fllyghyj'}
                  ],
     zigbeeModel: ['TS0201'],
     model: 'Original Tuya Temperature/Humidity sensor ready for update',
