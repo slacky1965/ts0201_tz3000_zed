@@ -103,11 +103,11 @@ ota:
 
 При настройке по умолчанию `Read interval` 10 секунд двух батареек ААА должно хватить минимум на 2 года.
 
-<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/binding.jpg"/>
+<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/read_period_10sec.jpg"/>
 
 При настройке `Read interval` 60 секунд двух батареек ААА должно хватить лет на 8.
 
-<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/binding.jpg"/>
+<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/read_period_60sec.jpg"/>
 
 Связаться со мной можно в **[Telegram](https://t.me/slacky1965)**.
 
