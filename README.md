@@ -6,7 +6,7 @@
 
 <img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/ts0201.jpg"/>
 
-<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zrd/refs/heads/main/doc/images/ts0201_pcb.jpg"/>
+<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/ts0201_pcb.jpg"/>
 
 **Автор не несет никакой отвественности, если вы, воспользовавшись этим проектом, превратите свой умный датчик в полоумный.**
 
@@ -40,7 +40,7 @@
 
 Далее нужно добавить локальное хранилище обновлений. 
 
-Создаем директорию `images` в директории z2m и кладем туда файл [1141-d3a3-1111114b-ts0201_tz3000_zrd.zigbee](https://github.com/slacky1965/ts0201_tz3000/raw/refs/heads/main/bin/1141-d3a3-1111114b-ts0201_tz3000_zrd.zigbee).
+Создаем директорию `images` в директории z2m и кладем туда файл [1141-d3a3-1111114b-ts0201_tz3000_zrd.zigbee](https://github.com/slacky1965/ts0201_tz3000_zed/raw/refs/heads/main/bin/1141-d3a3-1111114b-ts0201_tz3000_zrd.zigbee).
 
 Копируем в директорию z2m файл [local_ota_index.json](https://github.com/slacky1965/ts0201_tz3000_zed/blob/main/zigbee2mqtt/local_ota_index.json)
 
@@ -53,19 +53,19 @@ ota:
 
 Далее перегружаем z2m. И видим у нас новое устройство.
 
-<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000/refs/heads/main/doc/images/tuya_ready.jpg"/>
+<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/tuya_ready.jpg"/>
 
 Далее идем в раздел OTA. И видим там свое устройство. Жмем проверить обновления.
 
-<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000/refs/heads/main/doc/images/update.jpg"/>
+<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/update.jpg"/>
 	
-<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000/refs/heads/main/doc/images/check_update.jpg"/>
+<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/check_update.jpg"/>
 
 Жмем на красную кнопку. И обновляемся.
 
-<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000/refs/heads/main/doc/images/update_1.jpg"/>
+<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/update_1.jpg"/>
 
-<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000/refs/heads/main/doc/images/update_2.jpg"/>
+<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/update_2.jpg"/>
 
 Если все не так, как описано, значит вы что-то сделали не по инструкции (не положили файл куда нужно, не перегрузили z2m) или сигнатуры вашего датчика нет в списке поддерживаемых устройств.
 
@@ -76,7 +76,7 @@ ota:
 
 После обновления нужно удалить устройство из z2m. Перегрузить z2m. Разрешить сопряжение. Зажать кнопку на 5 секунд, пока светодиод не начнет моргать и отпустить. Начнется сопряжение.
 
-<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000/refs/heads/main/doc/images/joined.jpg"/>
+<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/joined.jpg"/>
 
 Все, датчик готов к работе.
 
@@ -101,7 +101,7 @@ ota:
 
 Для управление внешним устройством напрямую нужно сперва настроить биндинг. Это делается во вкладке "Bind" z2m. Выбираем Эндпоинт 1, затем выбираем устройство, которым хотим управлять, отмечаем кластер `OnOff`. Затем нажимаем кнопку на самом датчике, чтобы его разбудить и после жмем "Bind" в интерфейсе z2m. Система оповестит об успешном соединении или об ошибке.
 
-<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000/refs/heads/main/doc/images/binding.jpg"/>
+<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/binding.jpg"/>
 
 Датчик можно настроить на управление только от температуры, только от влажности или от обоих значений одновременно.
 
@@ -109,11 +109,11 @@ ota:
 
 При настройке по умолчанию `Read interval` 10 секунд двух батареек ААА должно хватить минимум на 2 года.
 
-<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000/refs/heads/main/doc/images/binding.jpg"/>
+<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/binding.jpg"/>
 
 При настройке `Read interval` 60 секунд двух батареек ААА должно хватить лет на 8.
 
-<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000/refs/heads/main/doc/images/binding.jpg"/>
+<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/binding.jpg"/>
 
 Связаться со мной можно в **[Telegram](https://t.me/slacky1965)**.
 
