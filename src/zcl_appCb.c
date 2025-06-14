@@ -172,14 +172,14 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
     zclWriteRec_t *attr = pWriteReqCmd->attrList;
     bool save = false;
 
-    printf("app_zclWriteReqCmd\r\n");
+//    printf("app_zclWriteReqCmd\r\n");
 
     if (clusterId == ZCL_CLUSTER_MS_TEMPERATURE_MEASUREMENT) {
         for(uint8_t i = 0; i < numAttr; i++) {
             if(attr[i].attrID == ZCL_TEMPERATURE_MEASUREMENT_ATTRID_SENSORS_READ_PERIOD) {
                 uint16_t ms_period = attr[i].attrData[0] & 0xff;
                 ms_period |= (attr[i].attrData[1] << 8) & 0xffff;
-                printf("Read sensor period: %d\r\n", ms_period);
+//                printf("Read sensor period: %d\r\n", ms_period);
                 if (ms_period >= READ_SENSORS_PERIOD_MIN && ms_period <= READ_SENSORS_PERIOD_MAX) {
                     if (ms_period != config.read_sensors_period) {
                         config.read_sensors_period = ms_period;
@@ -189,7 +189,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
             } else if (attr[i].attrID == ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_OFFSET) {
                 int16_t temp = attr[i].attrData[0] & 0xff;
                 temp |= (attr[i].attrData[1] << 8) & 0xffff;
-                printf("Temperature offset: %d\r\n", temp);
+//                printf("Temperature offset: %d\r\n", temp);
                 if (temp >= TEMPERATURE_OFFSET_MIN && temp <= TEMPERATURE_OFFSET_MAX) {
                     if (temp != config.temperature_offset) {
                         config.temperature_offset = temp;
@@ -200,7 +200,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                 if (config.temperature_onoff != attr[i].attrData[0]) {
                     config.temperature_onoff = attr[i].attrData[0];
                     save = true;
-                    printf("Temperature onoff: %d\r\n", config.temperature_onoff);
+//                    printf("Temperature onoff: %d\r\n", config.temperature_onoff);
                 }
                 proc_temp_hum_onoff();
             } else if (attr[i].attrID == ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_ONOFF_LOW) {
@@ -211,7 +211,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                         if (config.temperature_onoff_low != temperature_low) {
                             config.temperature_onoff_low = temperature_low;
                             save = true;
-                            printf("Temperature low: %d\r\n", config.temperature_onoff_low);
+//                            printf("Temperature low: %d\r\n", config.temperature_onoff_low);
                         }
                     } else {
                         zcl_setAttrVal(APP_ENDPOINT1,
@@ -229,7 +229,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                         if (config.temperature_onoff_high != temperature_high) {
                             config.temperature_onoff_high = temperature_high;
                             save = true;
-                            printf("Temperature high: %d\r\n", config.temperature_onoff_high);
+//                            printf("Temperature high: %d\r\n", config.temperature_onoff_high);
                         }
                     } else {
                         zcl_setAttrVal(APP_ENDPOINT1,
@@ -248,7 +248,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
             if (attr[i].attrID == ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_HUMIDITY_OFFSET) {
                 int16_t hum = attr[i].attrData[0] & 0xff;
                 hum |= (attr[i].attrData[1] << 8) & 0xffff;
-                printf("Humidity offset: %d\r\n", hum);
+//                printf("Humidity offset: %d\r\n", hum);
                 if (hum >= HUMIDITY_OFFSET_MIN && hum <= HUMIDITY_OFFSET_MAX) {
                     if (hum != config.humidity_offset) {
                         config.humidity_offset = hum;
@@ -259,7 +259,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                 if (config.humidity_onoff != attr[i].attrData[0]) {
                     config.humidity_onoff = attr[i].attrData[0];
                     save = true;
-                    printf("Humidity onoff: %d\r\n", config.humidity_onoff);
+//                    printf("Humidity onoff: %d\r\n", config.humidity_onoff);
                 }
                 proc_temp_hum_onoff();
             } else if (attr[i].attrID == ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_HUMIDITY_ONOFF_LOW) {
@@ -270,7 +270,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                         if (config.humidity_onoff_low != humidity_low) {
                             config.humidity_onoff_low = humidity_low;
                             save = true;
-                            printf("Humidity low: %d\r\n", config.humidity_onoff_low);
+//                            printf("Humidity low: %d\r\n", config.humidity_onoff_low);
                         }
                     } else {
                         zcl_setAttrVal(APP_ENDPOINT1,
@@ -288,7 +288,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                         if (config.humidity_onoff_high != humidity_high) {
                             config.humidity_onoff_high = humidity_high;
                             save = true;
-                            printf("Humidity high: %d\r\n", config.humidity_onoff_high);
+//                            printf("Humidity high: %d\r\n", config.humidity_onoff_high);
                         }
                     } else {
                         zcl_setAttrVal(APP_ENDPOINT1,

@@ -23,11 +23,11 @@ static void buttonKeepPressed(u8 btNum) {
 
         if (zb_getLocalShortAddr() >= 0xFFF8) {
 //            zb_deviceFactoryNewSet(true);
-            printf("1 Factory new: %s\r\n", zb_isDeviceFactoryNew()?"yes":"no");
+//            printf("1 Factory new: %s\r\n", zb_isDeviceFactoryNew()?"yes":"no");
             if (!factory_reset) {
                 factory_reset = true;
                 zb_resetDevice2FN();
-                printf("1.2 Factory new: %s\r\n", zb_isDeviceFactoryNew()?"yes":"no");
+//                printf("1.2 Factory new: %s\r\n", zb_isDeviceFactoryNew()?"yes":"no");
             }
         } else {
             zb_resetDevice2FN();
@@ -37,7 +37,7 @@ static void buttonKeepPressed(u8 btNum) {
                 TL_ZB_TIMER_CANCEL(&g_appCtx.timerFactoryReset);
             }
             g_appCtx.timerFactoryReset = TL_ZB_TIMER_SCHEDULE(delayedFactoryResetCb, NULL, TIMEOUT_5SEC);
-            printf("2 Factory new: %s\r\n", zb_isDeviceFactoryNew()?"yes":"no");
+//            printf("2 Factory new: %s\r\n", zb_isDeviceFactoryNew()?"yes":"no");
         }
 
         g_appCtx.net_steer_start = true;

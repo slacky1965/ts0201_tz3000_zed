@@ -40,7 +40,7 @@ extern "C" {
 #endif
 
 /* for reporting */
-#define REPORTING_MIN           300             /* 5 min                    */
+#define REPORTING_MIN           10              /* 10 sec                   */
 #define REPORTING_MAX           3600            /* 60 min                   */
 #define REPORTING_BATTERY_MIN   3600            /* 1 hour                   */
 #define REPORTING_BATTERY_MAX   0               /* reporting on the change  */

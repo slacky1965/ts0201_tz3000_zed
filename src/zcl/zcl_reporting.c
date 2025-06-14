@@ -160,7 +160,6 @@ _CODE_ZCL_ reportCfgInfo_t *zcl_reportCfgInfoEntryFreeGet(void)
  */
 _CODE_ZCL_ void zcl_reportCfgInfoEntryRst(reportCfgInfo_t *pEntry)
 {
-    printf("1\r\n");
 	if(pEntry->used){
 		pEntry->minInterval = pEntry->minIntDft;
 		pEntry->maxInterval = pEntry->maxIntDft;
@@ -188,7 +187,6 @@ _CODE_ZCL_ void zcl_reportCfgInfoEntryRst(reportCfgInfo_t *pEntry)
  */
 _CODE_ZCL_ void zcl_reportCfgInfoEntryUpdate(reportCfgInfo_t *pEntry, u8 endPoint, u16 profileId, u16 clusterId, zclCfgReportRec_t *pCfgReportRec)
 {
-    printf("2\r\n");
 	if(!pEntry->used){
 		//add new
 		pEntry->profileID = profileId;

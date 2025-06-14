@@ -126,7 +126,7 @@ uint8_t app_cht8305_init() {
     cht8305_error_codes_print_result("cht8305_init", ret);
 #endif
 
-    printf("cht8305 ID: 0x%08x\r\n", cht8305_dev.id);
+//    printf("cht8305 ID: 0x%08x\r\n", cht8305_dev.id);
 
     return ret;
 }

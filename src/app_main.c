@@ -281,15 +281,15 @@ void user_init(bool isRetention)
         /* Set default reporting configuration */
         uint8_t reportableChange = 0x00;
         bdb_defaultReportingCfg(APP_ENDPOINT1, HA_PROFILE_ID, ZCL_CLUSTER_GEN_POWER_CFG,
-                ZCL_ATTRID_BATTERY_VOLTAGE, REPORTING_MAX, 0, (uint8_t *)&reportableChange);
+                ZCL_ATTRID_BATTERY_VOLTAGE, REPORTING_BATTERY_MIN, REPORTING_BATTERY_MAX, (uint8_t *)&reportableChange);
         bdb_defaultReportingCfg(APP_ENDPOINT1, HA_PROFILE_ID, ZCL_CLUSTER_GEN_POWER_CFG,
-                ZCL_ATTRID_BATTERY_PERCENTAGE_REMAINING, REPORTING_MAX, 0, (uint8_t *)&reportableChange);
+                ZCL_ATTRID_BATTERY_PERCENTAGE_REMAINING, REPORTING_BATTERY_MIN, REPORTING_BATTERY_MAX, (uint8_t *)&reportableChange);
 
         uint16_t reportableChange_u16 = 10;
         bdb_defaultReportingCfg(APP_ENDPOINT1, HA_PROFILE_ID, ZCL_CLUSTER_MS_TEMPERATURE_MEASUREMENT,
-                ZCL_TEMPERATURE_MEASUREMENT_ATTRID_MEASUREDVALUE, 10, REPORTING_MAX, (uint8_t *)&reportableChange_u16);
+                ZCL_TEMPERATURE_MEASUREMENT_ATTRID_MEASUREDVALUE, REPORTING_MIN, REPORTING_MAX, (uint8_t *)&reportableChange_u16);
         bdb_defaultReportingCfg(APP_ENDPOINT1, HA_PROFILE_ID, ZCL_CLUSTER_MS_RELATIVE_HUMIDITY,
-                ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_MEASUREDVALUE, 10, REPORTING_MAX, (uint8_t *)&reportableChange_u16);
+                ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_MEASUREDVALUE, REPORTING_MIN, REPORTING_MAX, (uint8_t *)&reportableChange_u16);
 
         /* Initialize BDB */
         uint8_t repower = drv_pm_deepSleep_flag_get() ? 0 : 1;

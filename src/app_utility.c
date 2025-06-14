@@ -37,7 +37,7 @@ int32_t delayedFactoryResetCb(void *arg) {
     factory_reset = true;
     g_appCtx.timerFactoryReset = NULL;
 
-    printf("Cb Factory new: %s\r\n", zb_isDeviceFactoryNew()?"yes":"no");
+//    printf("Cb Factory new: %s\r\n", zb_isDeviceFactoryNew()?"yes":"no");
 
 
     return -1;
@@ -51,7 +51,7 @@ int32_t delayedFullResetCb(void *arg) {
 
 int32_t set_pollRateCb(void *args) {
 
-    printf("set_pollRateCb\r\n");
+//    printf("set_pollRateCb\r\n");
 
     zb_setPollRate(POLL_RATE * config.read_sensors_period);
 
