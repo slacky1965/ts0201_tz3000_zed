@@ -1,0 +1,12 @@
+[
+    {
+        "url": "images/1141-d3a3-1111114b-ts0201_tz3000_zrd.zigbee",
+        "modelId": "TS0201",
+        "force": true
+    },
+    {
+        "url": "images/6565-0395-10013001-ts0201_tz3000_zed.zigbee",
+        "modelId": "TS0201-z-SlD",
+        "force": true
+    }
+]
