@@ -59,13 +59,7 @@ ota:
 
 <img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/update.jpg"/>
 	
-<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/check_update.jpg"/>
-
-Жмем на красную кнопку. И обновляемся.
-
-<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/update_1.jpg"/>
-
-<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/update_2.jpg"/>
+Жмем на появившуюся красную кнопку. И обновляемся.
 
 Если все не так, как описано, значит вы что-то сделали не по инструкции (не положили файл куда нужно, не перегрузили z2m) или сигнатуры вашего датчика нет в списке поддерживаемых устройств.
 
