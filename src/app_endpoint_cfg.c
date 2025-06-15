@@ -222,8 +222,8 @@ const zclAttrInfo_t temperature_attrTbl[] = {
         { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_SENSORS_READ_PERIOD,   ZCL_UINT16,     RWR, (uint8_t*)&g_zcl_temperatureAttrs.read_sensors_period  },
         { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_OFFSET,    ZCL_INT16,      RWR, (uint8_t*)&g_zcl_temperatureAttrs.temperature_offset   },
         { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_ONOFF,     ZCL_BOOLEAN,    RWR, (uint8_t*)&g_zcl_temperatureAttrs.temperature_onoff           },
-        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_ONOFF_LOW,       ZCL_INT16,      RWR, (uint8_t*)&g_zcl_temperatureAttrs.temperature_onoff_low       },
-        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_ONOFF_HIGH,      ZCL_INT16,      RWR, (uint8_t*)&g_zcl_temperatureAttrs.temperature_onoff_high      },
+        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_ONOFF_LOW, ZCL_INT16,      RWR, (uint8_t*)&g_zcl_temperatureAttrs.temperature_onoff_low       },
+        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_ONOFF_HIGH,ZCL_INT16,      RWR, (uint8_t*)&g_zcl_temperatureAttrs.temperature_onoff_high      },
 
         { ZCL_ATTRID_GLOBAL_CLUSTER_REVISION,           ZCL_UINT16, R,  (uint8_t*)&zcl_attr_global_clusterRevision  },
 };
@@ -247,8 +247,8 @@ const zclAttrInfo_t humidity_attrTbl[] = {
         { ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_MAXMEASUREDVALUE,    ZCL_UINT16,     R,   (uint8_t*)&g_zcl_humidityAttrs.maxValue            },
         { ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_HUMIDITY_OFFSET,     ZCL_INT16,      RWR, (uint8_t*)&g_zcl_humidityAttrs.humidity_offset     },
         { ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_HUMIDITY_ONOFF,      ZCL_BOOLEAN,    RWR, (uint8_t*)&g_zcl_humidityAttrs.humidity_onoff      },
-        { ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_HUMIDITY_ONOFF_LOW,        ZCL_INT16,     RWR, (uint8_t*)&g_zcl_humidityAttrs.humidity_onoff_low  },
-        { ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_HUMIDITY_ONOFF_HIGH,       ZCL_INT16,     RWR, (uint8_t*)&g_zcl_humidityAttrs.humidity_onoff_high },
+        { ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_HUMIDITY_ONOFF_LOW,  ZCL_INT16,      RWR, (uint8_t*)&g_zcl_humidityAttrs.humidity_onoff_low  },
+        { ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_HUMIDITY_ONOFF_HIGH, ZCL_INT16,      RWR, (uint8_t*)&g_zcl_humidityAttrs.humidity_onoff_high },
 
         { ZCL_ATTRID_GLOBAL_CLUSTER_REVISION,           ZCL_UINT16, R,  (uint8_t*)&zcl_attr_global_clusterRevision  },
 };
