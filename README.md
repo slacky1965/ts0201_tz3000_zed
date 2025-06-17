@@ -47,6 +47,8 @@
 
 Копируем в директорию z2m файл [local_ota_index.json](https://github.com/slacky1965/ts0201_tz3000_zed/blob/main/zigbee2mqtt/local_ota_index.json)
 
+В конфиг z2m `configuration.yaml` добавляем локальное хранилище
+
 ```
 ota:
   zigbee_ota_override_index_location: local_ota_index.json
