@@ -65,7 +65,7 @@ struct _cht8305_dev {
     cht8305_delay_t delay;
     uint32_t        id;
     int16_t         raw_temp;
-    int16_t         raw_hum;
+    uint16_t        raw_hum;
 };
 
 cht8305_error_t cht8305_init(cht8305_dev_t *dev);
