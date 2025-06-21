@@ -141,6 +141,8 @@ void app_cht8305_measurement() {
 
 #if UART_PRINTF_MODE && DEBUG_CHT8305
     cht8305_error_codes_print_result("app_cht8305_measurement", ret);
+//    printf("temperature_raw: 0x%04x\r\n", cht8305_dev.raw_temp);
+//    printf("humidity_raw:    0x%04x\r\n", cht8305_dev.raw_hum);
 #endif
 
     if (ret == CHT8305_OK) {

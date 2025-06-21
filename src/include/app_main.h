@@ -19,7 +19,6 @@
 #include "app_utility.h"
 #include "app_bootloader.h"
 #include "app_i2c.h"
-#include "app_sensor.h"
 #include "app_cht8305.h"
 
 typedef struct {
