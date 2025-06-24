@@ -55,7 +55,7 @@ export default {
         attribute: {ID: attrSensorReadPeriod, type: 0x21},
         unit: "Sec",
         valueMin: 5,
-        valueMax: 60,
+        valueMax: 600,
         valueStep: 1,
         description: "Sensors reading period",
       }),

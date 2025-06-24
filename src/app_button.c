@@ -54,12 +54,8 @@ static void buttonSinglePressed(u8 btNum) {
 #if UART_PRINTF_MODE && DEBUG_BUTTON
             printf("Button push 1 time\r\n");
 #endif
-            if(zb_isDeviceJoinedNwk()){
-                zb_setPollRate(POLL_RATE * 3);
-                if (g_appCtx.timerSetPollRateEvt) {
-                    TL_ZB_TIMER_CANCEL(&g_appCtx.timerSetPollRateEvt);
-                }
-                g_appCtx.timerSetPollRateEvt = TL_ZB_TIMER_SCHEDULE(set_pollRateCb, NULL, TIMEOUT_30SEC);
+            if(zb_isDeviceJoinedNwk()) {
+                app_setPollRate(TIMEOUT_20SEC);
                 TL_ZB_TIMER_SCHEDULE(forcedReportCb, NULL, TIMEOUT_100MS);
             } else {
                 zb_rejoinReq(zb_apsChannelMaskGet(), g_bdbAttrs.scanDuration);

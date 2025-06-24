@@ -184,6 +184,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                     if (ms_period != config.read_sensors_period) {
                         config.read_sensors_period = ms_period;
                         save = true;
+                        app_setPollRate(TIMEOUT_20SEC);
                     }
                 }
             } else if (attr[i].attrID == ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_OFFSET) {

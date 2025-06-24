@@ -23,6 +23,7 @@
 #define TIMEOUT_5SEC        5    * 1000     /* timeout 5 sec    */
 #define TIMEOUT_10SEC       10   * 1000     /* timeout 10 sec   */
 #define TIMEOUT_15SEC       15   * 1000     /* timeout 15 sec   */
+#define TIMEOUT_20SEC       20   * 1000     /* timeout 20 sec   */
 #define TIMEOUT_30SEC       30   * 1000     /* timeout 30 sec   */
 #define TIMEOUT_1MIN30SEC   90   * 1000     /* timeout 1.5 min  */
 #define TIMEOUT_1MIN        60   * 1000     /* timeout 1 min    */
@@ -42,6 +43,7 @@ int32_t delayedMcuResetCb(void *arg);
 int32_t delayedFactoryResetCb(void *arg);
 int32_t delayedFullResetCb(void *arg);
 int32_t set_pollRateCb(void *args);
+void app_setPollRate(uint32_t sec);
 
 
 #endif /* SRC_INCLUDE_APP_UTILITY_H_ */

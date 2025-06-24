@@ -2,7 +2,7 @@
 #define SRC_INCLUDE_APP_CONFIG_H_
 
 #define READ_SENSORS_PERIOD_MIN         5
-#define READ_SENSORS_PERIOD_MAX         60
+#define READ_SENSORS_PERIOD_MAX         600
 #define TEMPERATURE_OFFSET_MIN         -500
 #define TEMPERATURE_OFFSET_MAX          500
 #define TEMPERATURE_ONOFF_MIN          -4000

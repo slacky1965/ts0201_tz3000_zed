@@ -59,6 +59,17 @@ int32_t set_pollRateCb(void *args) {
     return -1;
 }
 
+void app_setPollRate(uint32_t sec) {
+
+    zb_setPollRate(POLL_RATE * 3);
+    if (g_appCtx.timerSetPollRateEvt) {
+        TL_ZB_TIMER_CANCEL(&g_appCtx.timerSetPollRateEvt);
+    }
+    g_appCtx.timerSetPollRateEvt = TL_ZB_TIMER_SCHEDULE(set_pollRateCb, NULL, sec /*TIMEOUT_20SEC*/);
+
+}
+
+
 //int32_t no_joinedCb(void *arg) {
 //
 //    if (!zb_isDeviceJoinedNwk()) {

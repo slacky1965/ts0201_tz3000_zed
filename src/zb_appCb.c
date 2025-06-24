@@ -125,11 +125,7 @@ void zb_bdbInitCb(uint8_t status, uint8_t joinedNetwork) {
         if (joinedNetwork) {
             factory_reset = false;
             g_appCtx.net_steer_start = false;
-            zb_setPollRate(POLL_RATE * 3);
-            if (g_appCtx.timerSetPollRateEvt) {
-                TL_ZB_TIMER_CANCEL(&g_appCtx.timerSetPollRateEvt);
-            }
-            g_appCtx.timerSetPollRateEvt = TL_ZB_TIMER_SCHEDULE(set_pollRateCb, NULL, TIMEOUT_1MIN);
+            app_setPollRate(TIMEOUT_1MIN);
 #ifdef ZCL_OTA
             ota_queryStart(OTA_PERIODIC_QUERY_INTERVAL);
 #endif
@@ -212,11 +208,7 @@ void zb_bdbCommissioningCb(uint8_t status, void *arg) {
             factory_reset = false;
             g_appCtx.net_steer_start = false;
 
-            zb_setPollRate(POLL_RATE * 3);
-            if (g_appCtx.timerSetPollRateEvt) {
-                TL_ZB_TIMER_CANCEL(&g_appCtx.timerSetPollRateEvt);
-            }
-            g_appCtx.timerSetPollRateEvt = TL_ZB_TIMER_SCHEDULE(set_pollRateCb, NULL, TIMEOUT_1MIN);
+            app_setPollRate(TIMEOUT_1MIN);
 
             if(steerTimerEvt){
                 TL_ZB_TIMER_CANCEL(&steerTimerEvt);
@@ -359,7 +351,7 @@ void app_otaProcessMsgHandler(uint8_t evt, uint8_t status) {
 
         }
     }else if(evt == OTA_EVT_COMPLETE){
-        zb_setPollRate(POLL_RATE * config.read_sensors_period);
+        app_setPollRate(TIMEOUT_20SEC);
 
         if(status == ZCL_STA_SUCCESS){
 #if UART_PRINTF_MODE && DEBUG_OTA
@@ -373,7 +365,7 @@ void app_otaProcessMsgHandler(uint8_t evt, uint8_t status) {
             ota_queryStart(OTA_PERIODIC_QUERY_INTERVAL);
         }
     }else if(evt == OTA_EVT_IMAGE_DONE){
-        zb_setPollRate(POLL_RATE * config.read_sensors_period);
+        app_setPollRate(TIMEOUT_20SEC);
     }
 
 }
