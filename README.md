@@ -11,19 +11,19 @@
 
 <img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/ts0201_pcb2.jpg"/>
 
-**Автор не несет никакой отвественности, если вы, воспользовавшись этим проектом, превратите свой умный датчик в полоумный.**
+**The author assumes no responsibility if you turn your smart sensor into a half-witted sensor by using this project.**
 
-Если у вас другая сигнатура, лучше не заливать, не проверив на совпадение сенсора и GPIO.
+If you have a different signature, it is better not to flash in without checking for a coincidence of the sensor and GPIO.
 
-Проверялся только в zigbee2mqtt.
+Only tested in `zigbee2mqtt`.
 
-## Зачем. 
+## Why. 
 
-Понадобился датчик температуры и влажности, который умел бы отдавать свои значения не только координатору, а еще и напрямую другому устройству, например монитору с экраном. Ну а так, как прошивку все равно делать с нуля, то заодно сделать управление другим устройством через OnOff напрямую, например, при достижении определенной температуры, включить кондиционер, или, при достижении определенной влажности, включить вытяжку. Ну и выключить потом соответственно :))
+We needed a temperature and humidity sensor that could transmit its values ​ ​ not only to the coordinator, but also directly to another device, such as a monitor with a screen. Well, so, as the firmware is still done from scratch, then at the same time make control of another device via OnOff directly, for example, when a certain temperature is reached, turn on the air conditioner, or, when a certain humidity is reached, turn on the hood. Well, turn it off later, respectively :))
 
-Ну и еще. Оригинальная прошивка не умеет показывать температуру, ниже -20 градусов. А сам сенсор CHT8305 умеет до -40.
+And more. The original firmware cannot show the temperature below -20 degrees. And the sensor itself can CHT8305 up to -40.
 
-## Что получилось. 
+## Result. 
 
 **About**
 
@@ -37,100 +37,99 @@
 
 <img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/reporting.jpg"/>
 
-## Как обновить.
+## How to update.
 
-Сначала подключаем к z2m один внешний [конвертор](https://github.com/slacky1965/ts0201_tz3000_zed/tree/main/zigbee2mqtt) `ts0201_tz3000_orig.js`. Он активирует OTA в z2m для датчика с прошивкой от Tuya.
+First, add external [converter](https://github.com/slacky1965/ts0201_tz3000_zed/tree/main/zigbee2mqtt) `ts0201 _ tz3000 _ orig.js` to z2m. It activates OTA in z2m for a sensor with firmware from Tuya.
 
-Далее нужно добавить локальное хранилище обновлений. 
+Next, you need to add a local update store.
 
-Создаем директорию `images` в директории z2m и кладем туда файл [1141-d3a3-1111114b-ts0201_tz3000_zrd.zigbee](https://github.com/slacky1965/ts0201_tz3000_zed/raw/refs/heads/main/bin/1141-d3a3-1111114b-ts0201_tz3000_zrd.zigbee).
+Create a directory` images` in the z2m directory and put the file [1141-d3a3-1111114b-ts0201_tz3000_zrd.zigbee](https://github.com/slacky1965/ts0201_tz3000_zed/raw/refs/heads/main/bin/1141-d3a3-1111114b-ts0201_tz3000_zrd.zigbee).
 
-Копируем в директорию z2m файл [local_ota_index.json](https://github.com/slacky1965/ts0201_tz3000_zed/blob/main/zigbee2mqtt/local_ota_index.json)
+Copy the file [local_ota_index.json](https://github.com/slacky1965/ts0201_tz3000_zed/blob/main/zigbee2mqtt/local_ota_index.json) to the z2m directory.
 
-В конфиг z2m `configuration.yaml` добавляем локальное хранилище
+And add local storage to the z2m config (configuration.yaml)
 
 ```
 ota:
   zigbee_ota_override_index_location: local_ota_index.json
 ```
 
-А конвертор `ts0201_tz3000_orig.js` кладем в директорию `external_converters`, которую нужно создать в корне z2m.
+And we put the converter `ts0201 _ tz3000 _ orig.js` in the `external _ converters` directory, which needs to be created in the z2m root.
 
-Далее перегружаем z2m. И видим у нас новое устройство.
+Then reboot z2m and see a new device
 
 <img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/tuya_ready.jpg"/>
 
-Далее идем в раздел OTA. И видим там свое устройство. Жмем проверить обновления.
+Then go to the OTA section. And see your device there. Click check for updates.
 
 <img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/update.jpg"/>
 	
-Жмем на появившуюся красную кнопку. И обновляемся.
+Hit the red button. And update.
 
-Если все не так, как описано, значит вы что-то сделали не по инструкции (не положили файл куда нужно, не перегрузили z2m) или сигнатуры вашего датчика нет в списке поддерживаемых устройств.
+If the result is not as described, it means you did something wrong (did not put the file where it should be, did not reboot z2m) or your thermostat signature is not in the list of supported devices.
 
 > [!WARNING]
-> Внимание!!! Если в процессе вы обнаружите на каких-то устройствах Туя, которые возможно у вас есть еще в системе, новое обновление, то обновлять ничего не нужно!!! Иначе вы зальете в это устройство прошивку от датчика и получите кирпич!!! Если же процесс обновления по ошибке уже начался, то просто обесточьте это устройство!!!
+> Attention!!! If in the process you find a new updateon other Tuya devices that you may still have in your system, you do not need to update anything!!!! Otherwise you will flash into this device firmware from the sensor and get a brick!!!! If the update process has already started by mistake, just turn off the device!!!!
 
-Далее ждем окончания.
+Then wait for it to finish.
 
-После обновления нужно удалить устройство из z2m. Перегрузить z2m. Разрешить сопряжение. Зажать кнопку на 5 секунд, пока светодиод не начнет моргать и отпустить. Начнется сопряжение.
+After the update, you need to remove the device from z2m. Reboot z2m. Allow pairing. Hold the button for 5 seconds until the LED starts to blink and release. The pairing begins.
 
 <img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/joined.jpg"/>
 
-Все, датчик готов к работе.
+That's it, the sensor is ready to go.
 
 > [!WARNING]
-> Внимание!!! Залитая первый раз прошивка является промежуточной. В ней есть код для проверки `bootloadr'а`, который несет потенциальную угрозу порчи этого `bootloader'a` в будущем. Поэтому нужно обновиться еще раз уже на окончательную версию, где этот код не используется. Сразу сделать без этой проверки нельзя (привет Tuya). Для понимания - промежуточная версия имеет номер 1.0.00.
+> Attention!!! The firmware flashed for the first time is intermediate. It contains code for checking `bootloader`, which carries a potential threat of damage to this `bootloader` in the future. Therefore, you need to update again to the final version, where this code is not used. You can't do it right away without this check (hello Tuya). For understanding - the intermediate version has the number 1.0.00.
 
-## Параметры устройства.
+## Device settings.
 
-- **Battery** - емкость батарейки в %.
-- **Voltage** - напряжение батарейки в mV.
-- **Temperature** - диапозон от -40 до +125 °C.
-- **Humidity** - диапазон от 0 до 100 %.
-- **Temperature offset** - калибровка температуры от -5 до +5 °C с шагом 0,1.
-- **Humidity offset** - калибровка влажности от -10 до + 10 % с шагом 1.
-- **Read interval** - интервал чтения сенсора. От 5 до 60 секунд с шагом 1. Этому параметру стоит уделить отдельное внимание. Этот параметр также влияет на то время, которое модуль "спит", т.е. находится в режиме экономии батареи. По большому счету модуль "спит" весь этот период. По умолчанию этот период задан в 10 секунд. Модуль просыпается каждые 10 секунд, считывает данные из сенсора (температуру и влажность) и засыпает опять на 10 секунд. Выберете 20 секунд, будет "спать" по 20 секунд. Это нужно понимать и помнить, что перед каким-либо изменением параматров через сеть, нужно коротко нажать кнопку на датчике, чтобы он "проснулся".
-- **Enabling temperature control** - активирование управление удаленным устройством по температуре.
-- **High temperature** - высокая граница температуры - при переходе этой границы в большую сторону будет послана команда на включение удаленного устройства.
-- **Low temperature** - низкая граница температуры - при переходе этой границы в меньшую сторону будет послана команда на выключение удаленного устройства.
-- **Enabling humidity control** - активирование управление удаленным устройством по влажности.
-- **High humidity** - высокая граница влажности - при переходе этой границы в большу сторону будет послана команда на включение удаленного устройства.
-- **Low humidity** - низкая граница влажности - при переходе этой границы в меньшую сторону будет послана команда на выключение удаленного устройства.
-- **Switch actions** - настраивает, какую именно команду мы шлем при управлении удаленным устройством. Если этот параметр установлен в `On` (так сделано по умолчанию), то при включении удаленного устройства посылается команда `On`, а при выключении `Off`. Если этот параметр установлен в `Off`, то при включении удаленного устройства посылается команда `Off`, а при выключении `On`.
+- **Battery** - battery capacity in %.
+- **Voltage** - battery voltage in mV.
+- **Temperature** - range from -40 to + 125 ° C.
+- **Humidity** - range 0 to 100%.
+- **Temperature offset** - temperature calibration from -5 to + 5 ° C in increments of 0.1.
+- **Humidity offset** - humidity calibration from -10 to + 10% with step 1.
+- **Read interval** - sensor read interval. 5 to 600 seconds in increments of 1. This parameter should be given special attention. This parameter also affects the time that the module "sleeps," i.e. is in battery saving mode. By and large, the module "sleeps" this entire period. By default, this period is set to 10 seconds. The module wakes up every 10 seconds, reads data from the sensor (temperature and humidity) and falls asleep again for 10 seconds. Choose 20 seconds, will "sleep" for 20 seconds. This must be understood and remembered that before any change in parameters through the network, you need to briefly press a button on the sensor so that it "wakes up." Also, for longer battery life, you need to consider the `MinIntrerval` setting for temperature and humidity in the `Reporting` section. By default, the same time is set there as the sensor reading interval. Sensor sleep also depends on this parameter. Therefore, if the sensor reading interval is changed upward, then `MinInterval` should also be brought to this value.
+- **Enabling temperature control** - Activate remote device control by temperature.
+- **High temperature** - high temperature limit - when this limit goes up, a command will be sent to turn on the remote device.
+- **Low temperature** - low temperature limit - when this limit is moved down, a command will be sent to turn off the remote device.
+- **Enabling humidity control** - Activate remote device control by humidity.
+- **High humidity** - high humidity boundary - when this boundary is crossed in a larger direction, a command will be sent to turn on the remote device.
+- **Low humidity** - low humidity limit - when this limit is moved down, a command will be sent to turn off the remote device.
+- **Switch actions** - configures what command we send when controlling a remote device. If this parameter is set to `On` (this is the default), then the `On` command is sent to turn on the remote device, and `Off` to turn it off. If this parameter is set to `Off`, then the `Off` command is sent to turn on the remote device, and `On` to turn it off.
 
-## Немного про настройку прямого биндинга для управления каким-либо устройством.
+## A little about setting up direct communication to control a remote device.
 
-Для управление внешним устройством напрямую нужно сперва настроить биндинг. Это делается во вкладке "Bind" z2m. Выбираем Эндпоинт 1, затем выбираем устройство, которым хотим управлять, отмечаем кластер `OnOff`. Затем нажимаем кнопку на самом датчике, чтобы его разбудить и после жмем "Bind" в интерфейсе z2m. Система оповестит об успешном соединении или об ошибке.
+To control an external device directly, you must first set up binding. This is done in the `Bind` tab of z2m. Select Endpoint 1, then select the device you want to control, mark the `OnOff` cluster. Then press the button on the sensor itself to wake it up and then press `Bind` in the z2m interface. The system will notify you of a successful connection or an error.
 
 <img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/binding.jpg"/>
 
-Датчик можно настроить на управление только от температуры, только от влажности или от обоих значений одновременно.
+The sensor can be configured to control only temperature, only humidity, or both values ​​simultaneously.
 
-## Потребление
+## Energy consumption
 
-При настройке по умолчанию `Read interval` 10 секунд двух батареек ААА должно хватить минимум на 2 года.
+With the default setting of `Read interval`, 10 seconds of two AAA batteries should last at least 2 years.
 
 <img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/read_period_10sec.jpg"/>
 
-При настройке `Read interval` 60 секунд двух батареек ААА должно хватить лет на 8.
+With a `Read interval` setting of 60 seconds (and the same values ​​in `MinInterval` in the temperature and humidity reports), two AAA batteries should last about 8 years.
 
 <img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/read_period_60sec.jpg"/>
 
-Связаться со мной можно в **[Telegram](https://t.me/slacky1965)**.
+You can contact me at **[Telegram](https://t.me/slacky1965)**.
 
-### Если захотите отблагодарить автора, то это можно сделать через [ЮMoney](https://yoomoney.ru/to/4100118300223495)
-
-P.S. Датчик покупался по ссылке вот из этого [проекта](https://pvvx.github.io/TS0201_TZ3000/) в октябре 2024, но сейчас продавец в Россию не отправляет. И спасибо [Виктору](https://pvvx.github.io/) за предоставленную информацию по этому датчику. Второй датчик покупался [вот тут](https://aliexpress.ru/item/1005007755890938.html?sku_id=12000042104302703) (за это отдельное спасибо [Олегу](https://t.me/Novgorod_DIYZi)).
+### If you would like to thank the author, you can do so via [YouMoney](https://yoomoney.ru/to/4100118300223495).
 
 ## История версий
 - 1.0.01
-	- Начало.
+	- Initial version.
 - 1.0.02
-	- Выявлены и устранены баги с передачей влажности и высокой температуры.
+	- Bugs with the transmission of humidity and high temperature have been identified and fixed.
 - 1.0.03
-	- Откорректирована принудительная передача репортов при нажатии на кнопку.
+	- Corrected forced send of reports when pressing the button.
+	- Fixed bugs with reports (SDK is not perfect).
 	
-[Наверх](#Top)
+[Top](#Top)
 
 
