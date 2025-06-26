@@ -69,6 +69,9 @@ const uint16_t app_ep1_outClusterList[] =
 #ifdef ZCL_ON_OFF
     ZCL_CLUSTER_GEN_ON_OFF,
 #endif
+    ZCL_CLUSTER_GEN_POWER_CFG,
+    ZCL_CLUSTER_MS_TEMPERATURE_MEASUREMENT,
+    ZCL_CLUSTER_MS_RELATIVE_HUMIDITY,
 };
 
 /**
