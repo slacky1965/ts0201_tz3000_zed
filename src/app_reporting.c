@@ -1,66 +1,112 @@
 #include "app_main.h"
 
-static void forceReportBatVoltage(void *args) {
+static void forceReportBattery(void *args) {
+
+    struct report_t {
+        u8 numAttr;
+        zclReport_t attr[2];
+    };
+
+    struct report_t report;
+
     epInfo_t dstEpInfo;
     TL_SETSTRUCTCONTENT(dstEpInfo, 0);
 
     dstEpInfo.profileId = HA_PROFILE_ID;
     dstEpInfo.dstAddrMode = APS_DSTADDR_EP_NOTPRESETNT;
+
+    report.numAttr = 0;
 
     zclAttrInfo_t *pAttrEntry;
 
     pAttrEntry = zcl_findAttribute(APP_ENDPOINT1, ZCL_CLUSTER_GEN_POWER_CFG, ZCL_ATTRID_BATTERY_VOLTAGE);
-    if (pAttrEntry)
-        zcl_sendReportCmd(APP_ENDPOINT1, &dstEpInfo,  TRUE, ZCL_FRAME_SERVER_CLIENT_DIR,
-                ZCL_CLUSTER_GEN_POWER_CFG, pAttrEntry->id, pAttrEntry->type, pAttrEntry->data);
 
-}
-
-static void forceReportBatPercent(void *args) {
-    epInfo_t dstEpInfo;
-    TL_SETSTRUCTCONTENT(dstEpInfo, 0);
-
-    dstEpInfo.profileId = HA_PROFILE_ID;
-    dstEpInfo.dstAddrMode = APS_DSTADDR_EP_NOTPRESETNT;
-
-    zclAttrInfo_t *pAttrEntry;
+    if (pAttrEntry) {
+        report.attr[report.numAttr].attrID = pAttrEntry->id;
+        report.attr[report.numAttr].dataType = pAttrEntry->type;
+        report.attr[report.numAttr].attrData = pAttrEntry->data;
+        report.numAttr++;
+    }
 
     pAttrEntry = zcl_findAttribute(APP_ENDPOINT1, ZCL_CLUSTER_GEN_POWER_CFG, ZCL_ATTRID_BATTERY_PERCENTAGE_REMAINING);
-    if (pAttrEntry)
-        zcl_sendReportCmd(APP_ENDPOINT1, &dstEpInfo,  TRUE, ZCL_FRAME_SERVER_CLIENT_DIR,
-                ZCL_CLUSTER_GEN_POWER_CFG, pAttrEntry->id, pAttrEntry->type, pAttrEntry->data);
 
+    if (pAttrEntry) {
+        report.attr[report.numAttr].attrID = pAttrEntry->id;
+        report.attr[report.numAttr].dataType = pAttrEntry->type;
+        report.attr[report.numAttr].attrData = pAttrEntry->data;
+        report.numAttr++;
+    }
+
+    if (report.numAttr) {
+        zcl_sendReportAttrsCmd(APP_ENDPOINT1, &dstEpInfo, TRUE, ZCL_FRAME_SERVER_CLIENT_DIR, ZCL_CLUSTER_GEN_POWER_CFG, (zclReportCmd_t* )&report);
+    }
 }
 
+
 static void forceReportTemperature(void *args) {
+
+    struct report_t {
+        u8 numAttr;
+        zclReport_t attr[1];
+    };
+
+    struct report_t report;
+
     epInfo_t dstEpInfo;
     TL_SETSTRUCTCONTENT(dstEpInfo, 0);
 
     dstEpInfo.profileId = HA_PROFILE_ID;
     dstEpInfo.dstAddrMode = APS_DSTADDR_EP_NOTPRESETNT;
+
+    report.numAttr = 0;
 
     zclAttrInfo_t *pAttrEntry;
 
     pAttrEntry = zcl_findAttribute(APP_ENDPOINT1, ZCL_CLUSTER_MS_TEMPERATURE_MEASUREMENT, ZCL_TEMPERATURE_MEASUREMENT_ATTRID_MEASUREDVALUE);
-    if (pAttrEntry)
-        zcl_sendReportCmd(APP_ENDPOINT1, &dstEpInfo,  TRUE, ZCL_FRAME_SERVER_CLIENT_DIR,
-                ZCL_CLUSTER_MS_TEMPERATURE_MEASUREMENT, pAttrEntry->id, pAttrEntry->type, pAttrEntry->data);
 
+    if (pAttrEntry) {
+        report.attr[report.numAttr].attrID = pAttrEntry->id;
+        report.attr[report.numAttr].dataType = pAttrEntry->type;
+        report.attr[report.numAttr].attrData = pAttrEntry->data;
+        report.numAttr++;
+    }
+
+    if (report.numAttr) {
+        zcl_sendReportAttrsCmd(APP_ENDPOINT1, &dstEpInfo, TRUE, ZCL_FRAME_SERVER_CLIENT_DIR, ZCL_CLUSTER_MS_TEMPERATURE_MEASUREMENT, (zclReportCmd_t* )&report);
+    }
 }
 
 static void forceReportHumidity(void *args) {
+
+    struct report_t {
+        u8 numAttr;
+        zclReport_t attr[1];
+    };
+
+    struct report_t report;
+
     epInfo_t dstEpInfo;
     TL_SETSTRUCTCONTENT(dstEpInfo, 0);
 
     dstEpInfo.profileId = HA_PROFILE_ID;
     dstEpInfo.dstAddrMode = APS_DSTADDR_EP_NOTPRESETNT;
 
+    report.numAttr = 0;
+
     zclAttrInfo_t *pAttrEntry;
 
     pAttrEntry = zcl_findAttribute(APP_ENDPOINT1, ZCL_CLUSTER_MS_RELATIVE_HUMIDITY, ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_MEASUREDVALUE);
-    if (pAttrEntry)
-        zcl_sendReportCmd(APP_ENDPOINT1, &dstEpInfo,  TRUE, ZCL_FRAME_SERVER_CLIENT_DIR,
-                ZCL_CLUSTER_MS_RELATIVE_HUMIDITY, pAttrEntry->id, pAttrEntry->type, pAttrEntry->data);
+
+    if (pAttrEntry) {
+        report.attr[report.numAttr].attrID = pAttrEntry->id;
+        report.attr[report.numAttr].dataType = pAttrEntry->type;
+        report.attr[report.numAttr].attrData = pAttrEntry->data;
+        report.numAttr++;
+    }
+
+    if (report.numAttr) {
+        zcl_sendReportAttrsCmd(APP_ENDPOINT1, &dstEpInfo, TRUE, ZCL_FRAME_SERVER_CLIENT_DIR, ZCL_CLUSTER_MS_RELATIVE_HUMIDITY, (zclReportCmd_t* )&report);
+    }
 }
 
 int32_t forcedReportCb(void *arg) {
@@ -86,8 +132,7 @@ int32_t forcedReportCb(void *arg) {
 
     if(zb_isDeviceJoinedNwk()){
 
-        TL_SCHEDULE_TASK(forceReportBatVoltage, NULL);
-        TL_SCHEDULE_TASK(forceReportBatPercent, NULL);
+        TL_SCHEDULE_TASK(forceReportBattery, NULL);
         TL_SCHEDULE_TASK(forceReportTemperature, NULL);
         TL_SCHEDULE_TASK(forceReportHumidity, NULL);
 

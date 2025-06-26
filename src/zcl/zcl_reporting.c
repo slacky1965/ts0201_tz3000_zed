@@ -268,6 +268,7 @@ _CODE_ZCL_ bool reportableChangeValueChk(u8 dataType, u8 *curValue, u8 *prevValu
 				}else if(P < C){
 					needReport = ((C - P) >= R) ? TRUE : FALSE;
 				}
+//				printf("UINT16 - P: %d, C: %d, R: %d, need: %d\r\n", P, C, R, needReport);
 			}
 			break;
 		case ZCL_DATA_TYPE_UINT24:
@@ -317,6 +318,7 @@ _CODE_ZCL_ bool reportableChangeValueChk(u8 dataType, u8 *curValue, u8 *prevValu
 				}else if(P < C){
 					needReport = ((C - P) >= R) ? TRUE : FALSE;
 				}
+//                printf("INT16 - P: %d, C: %d, R: %d, need: %d\r\n", P, C, R, needReport);
 			}
 			break;
 		case ZCL_DATA_TYPE_INT24:
@@ -557,6 +559,7 @@ _CODE_ZCL_ void reportAttrTimerStart(void)
 		}
 	}
 
+//	printf("seconds: %d\r\n", seconds);
 	if(seconds != 0xFFFF){
 		reportAttrTimerEvt = TL_ZB_TIMER_SCHEDULE(reportAttrTimerCb, (void *)((u32)seconds), seconds * 1000);
 	}
@@ -590,6 +593,7 @@ _CODE_ZCL_ void reportAttrTimerStop(void)
 _CODE_ZCL_ void report_handler(void)
 {
 	if(zb_isDeviceJoinedNwk()){
+//	    printf("report_handler()\r\n");
 		reportAttrs();
 		reportAttrTimerStart();
 	}
