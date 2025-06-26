@@ -195,6 +195,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                     if (temp != config.temperature_offset) {
                         config.temperature_offset = temp;
                         save = true;
+                        app_cht8305_set_temperature();
                     }
                 }
             } else if (attr[i].attrID == ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_ONOFF) {
@@ -254,6 +255,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                     if (hum != config.humidity_offset) {
                         config.humidity_offset = hum;
                         save = true;
+                        app_cht8305_set_humidity();
                     }
                 }
             } else if (attr[i].attrID == ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_HUMIDITY_ONOFF) {
@@ -356,7 +358,8 @@ static void app_zclDfltRspCmd(uint16_t clusterId, zclDefaultRspCmd_t *pDftRspCmd
  */
 static void app_zclCfgReportCmd(uint8_t endPoint, uint16_t clusterId, zclCfgReportCmd_t *pCfgReportCmd)
 {
-    //printf("app_zclCfgReportCmd\r\n");
+//    printf("app_zclCfgReportCmd\r\n");
+    reportAttrTimerStop();
 }
 
 /*********************************************************************
@@ -370,7 +373,7 @@ static void app_zclCfgReportCmd(uint8_t endPoint, uint16_t clusterId, zclCfgRepo
  */
 static void app_zclCfgReportRspCmd(uint16_t clusterId, zclCfgReportRspCmd_t *pCfgReportRspCmd)
 {
-    //printf("app_zclCfgReportRspCmd\r\n");
+//    printf("app_zclCfgReportRspCmd\r\n");
 
 }
 
