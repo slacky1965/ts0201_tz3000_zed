@@ -7,10 +7,5 @@
                              "_TZ3000_fllyghyj"
                              ],
         "force": true
-    },
-    {
-        "url": "images/6565-0395-10023001-ts0201_tz3000_zed.zigbee",
-        "modelId": "TS0201-z-SlD",
-        "force": true
     }
 ]
