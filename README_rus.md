@@ -4,12 +4,15 @@
 
 - _TZ3000_xr3htd96
 - _TZ3000_fllyghyj
+- _TZ3000_0s1izerx
 
 <img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/ts0201.jpg"/>
 
 <img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/ts0201_pcb.jpg"/>
 
 <img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/ts0201_pcb2.jpg"/>
+
+<img src="https://raw.githubusercontent.com/slacky1965/ts0201_tz3000_zed/refs/heads/main/doc/images/ts0201_pcb3.jpg"/>
 
 **Автор не несет никакой отвественности, если вы, воспользовавшись этим проектом, превратите свой умный датчик в полоумный.**
 
