@@ -1,5 +1,7 @@
 # <a id="Top">Tuya Temperature and Relative Humidity Sensor Zigbee on CHT8305 with custom firmware</a>
 
+### [Описание на русском](README_rus.md)
+
 ### Custom firmware for Tuya sensor models
 
 - _TZ3000_xr3htd96
