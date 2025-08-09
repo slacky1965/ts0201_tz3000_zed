@@ -126,7 +126,7 @@ You can contact me at **[Telegram](https://t.me/slacky1965)**.
 
 ### If you would like to thank the author, you can do so via [YouMoney](https://yoomoney.ru/to/4100118300223495).
 
-## История версий
+## Version History
 - 1.0.01
 	- Initial version.
 - 1.0.02
