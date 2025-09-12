@@ -135,6 +135,8 @@ You can contact me at **[Telegram](https://t.me/slacky1965)**.
 	- Corrected forced send of reports when pressing the button.
 	- Fixed bugs with reports (SDK is not perfect).
 	- Added temperature, humidity and battery clusters to `Output Cluster List`.
+- 1.0.04
+	- Added reports of ALL values ​​by pressing a button.
 	
 [Top](#Top)
 
