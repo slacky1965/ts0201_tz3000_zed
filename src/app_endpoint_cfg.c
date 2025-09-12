@@ -269,7 +269,7 @@ zcl_onOffSwitchCfgAttr_t g_zcl_onOffSwitchCfgAttrs = {
 const zclAttrInfo_t onoff_switch_cfg_attrTbl[] =
 {
     { ZCL_ATTRID_SWITCH_TYPE,               ZCL_ENUM8,  R,  (u8*)&g_zcl_onOffSwitchCfgAttrs.switchType    },
-    { ZCL_ATTRID_SWITCH_ACTION,             ZCL_ENUM8,  RW, (u8*)&g_zcl_onOffSwitchCfgAttrs.switchActions },
+    { ZCL_ATTRID_SWITCH_ACTION,             ZCL_ENUM8,  RWR,(u8*)&g_zcl_onOffSwitchCfgAttrs.switchActions },
 
     { ZCL_ATTRID_GLOBAL_CLUSTER_REVISION,   ZCL_UINT16, R,  (u8*)&zcl_attr_global_clusterRevision},
 };
