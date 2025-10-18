@@ -49,6 +49,13 @@ const uint16_t app_ep1_inClusterList[] =
     ZCL_CLUSTER_MS_RELATIVE_HUMIDITY,
 };
 
+const uint16_t app_ep2_inClusterList[] =
+{
+#ifdef ZCL_ON_OFF_SWITCH_CFG
+    ZCL_CLUSTER_GEN_ON_OFF_SWITCH_CONFIG,
+#endif
+};
+
 /**
  *  @brief Definition for Outgoing cluster / Client Cluster
  */
@@ -74,12 +81,20 @@ const uint16_t app_ep1_outClusterList[] =
     ZCL_CLUSTER_MS_RELATIVE_HUMIDITY,
 };
 
+const uint16_t app_ep2_outClusterList[] =
+{
+#ifdef ZCL_ON_OFF
+    ZCL_CLUSTER_GEN_ON_OFF,
+#endif
+};
+
 /**
  *  @brief Definition for Server cluster number and Client cluster number
  */
 #define APP_EP1_IN_CLUSTER_NUM   (sizeof(app_ep1_inClusterList)/sizeof(app_ep1_inClusterList[0]))
 #define APP_EP1_OUT_CLUSTER_NUM  (sizeof(app_ep1_outClusterList)/sizeof(app_ep1_outClusterList[0]))
-
+#define APP_EP2_IN_CLUSTER_NUM   (sizeof(app_ep2_inClusterList)/sizeof(app_ep2_inClusterList[0]))
+#define APP_EP2_OUT_CLUSTER_NUM  (sizeof(app_ep2_outClusterList)/sizeof(app_ep2_outClusterList[0]))
 
 /**
  *  @brief Definition for simple description for HA profile
@@ -96,6 +111,17 @@ const af_simple_descriptor_t app_ep1Desc = {
     (uint16_t *)app_ep1_outClusterList,     /* Application output cluster list */
 };
 
+const af_simple_descriptor_t app_ep2Desc = {
+    HA_PROFILE_ID,                          /* Application profile identifier */
+    HA_DEV_SIMPLE_SENSOR,                   /* Application device identifier */
+    APP_ENDPOINT2,                          /* Endpoint */
+    2,                                      /* Application device version */
+    0,                                      /* Reserved */
+    APP_EP2_IN_CLUSTER_NUM,                 /* Application input cluster count */
+    APP_EP2_OUT_CLUSTER_NUM,                /* Application output cluster count */
+    (uint16_t *)app_ep2_inClusterList,      /* Application input cluster list */
+    (uint16_t *)app_ep2_outClusterList,     /* Application output cluster list */
+};
 
 /* Basic */
 zcl_basicAttr_t g_zcl_basicAttrs =
@@ -261,20 +287,36 @@ const zclAttrInfo_t humidity_attrTbl[] = {
 #ifdef ZCL_ON_OFF_SWITCH_CFG
 /* On/Off Config */
 
-zcl_onOffSwitchCfgAttr_t g_zcl_onOffSwitchCfgAttrs = {
-    .switchType       = ZCL_SWITCH_TYPE_TOGGLE,
-    .switchActions    = ZCL_SWITCH_ACTION_OFF_ON,
+zcl_onOffSwitchCfgAttr_t g_zcl_onOffSwitchCfgAttrs[ONOFFCFG_AMT] = {
+    {
+        .switchType       = ZCL_SWITCH_TYPE_TOGGLE,
+        .switchActions    = ZCL_SWITCH_ACTION_OFF_ON,
+    },
+    {
+        .switchType       = ZCL_SWITCH_TYPE_TOGGLE,
+        .switchActions    = ZCL_SWITCH_ACTION_OFF_ON,
+    }
 };
 
-const zclAttrInfo_t onoff_switch_cfg_attrTbl[] =
+const zclAttrInfo_t onoff_switch_cfg_attr1Tbl[] =
 {
-    { ZCL_ATTRID_SWITCH_TYPE,               ZCL_ENUM8,  R,  (u8*)&g_zcl_onOffSwitchCfgAttrs.switchType    },
-    { ZCL_ATTRID_SWITCH_ACTION,             ZCL_ENUM8,  RWR,(u8*)&g_zcl_onOffSwitchCfgAttrs.switchActions },
+    { ZCL_ATTRID_SWITCH_TYPE,               ZCL_ENUM8,  R,  (u8*)&g_zcl_onOffSwitchCfgAttrs[0].switchType    },
+    { ZCL_ATTRID_SWITCH_ACTION,             ZCL_ENUM8,  RWR,(u8*)&g_zcl_onOffSwitchCfgAttrs[0].switchActions },
 
     { ZCL_ATTRID_GLOBAL_CLUSTER_REVISION,   ZCL_UINT16, R,  (u8*)&zcl_attr_global_clusterRevision},
 };
 
-#define ZCL_ON_OFF_SWITCH_CFG_ATTR_NUM       sizeof(onoff_switch_cfg_attrTbl) / sizeof(zclAttrInfo_t)
+#define ZCL_ON_OFF_SWITCH_CFG_ATTR1_NUM       sizeof(onoff_switch_cfg_attr1Tbl) / sizeof(zclAttrInfo_t)
+
+const zclAttrInfo_t onoff_switch_cfg_attr2Tbl[] =
+{
+    { ZCL_ATTRID_SWITCH_TYPE,               ZCL_ENUM8,  R,  (u8*)&g_zcl_onOffSwitchCfgAttrs[1].switchType    },
+    { ZCL_ATTRID_SWITCH_ACTION,             ZCL_ENUM8,  RWR,(u8*)&g_zcl_onOffSwitchCfgAttrs[1].switchActions },
+
+    { ZCL_ATTRID_GLOBAL_CLUSTER_REVISION,   ZCL_UINT16, R,  (u8*)&zcl_attr_global_clusterRevision},
+};
+
+#define ZCL_ON_OFF_SWITCH_CFG_ATTR2_NUM       sizeof(onoff_switch_cfg_attr2Tbl) / sizeof(zclAttrInfo_t)
 
 #endif //ZCL_ON_OFF_SWITCH_CFG
 
@@ -297,9 +339,16 @@ const zcl_specClusterInfo_t g_appEp1ClusterList[] = {
     {ZCL_CLUSTER_MS_TEMPERATURE_MEASUREMENT, MANUFACTURER_CODE_NONE, ZCL_TEMPERATURE_ATTR_NUM,       temperature_attrTbl,       zcl_temperature_measurement_register,   app_temperatureCb   },
     {ZCL_CLUSTER_MS_RELATIVE_HUMIDITY,       MANUFACTURER_CODE_NONE, ZCL_HUMIDITY_ATTR_NUM,          humidity_attrTbl,          zcl_humidity_measurement_register,      app_humidityCb      },
 #ifdef ZCL_ON_OFF_SWITCH_CFG
-    {ZCL_CLUSTER_GEN_ON_OFF_SWITCH_CONFIG,   MANUFACTURER_CODE_NONE, ZCL_ON_OFF_SWITCH_CFG_ATTR_NUM, onoff_switch_cfg_attrTbl,  zcl_onOffSwitchCfg_register,            NULL                },
+    {ZCL_CLUSTER_GEN_ON_OFF_SWITCH_CONFIG,   MANUFACTURER_CODE_NONE, ZCL_ON_OFF_SWITCH_CFG_ATTR1_NUM, onoff_switch_cfg_attr1Tbl,  zcl_onOffSwitchCfg_register,            NULL              },
 #endif
 };
 
 uint8_t APP_EP1_CB_CLUSTER_NUM = (sizeof(g_appEp1ClusterList)/sizeof(g_appEp1ClusterList[0]));
 
+const zcl_specClusterInfo_t g_appEp2ClusterList[] = {
+#ifdef ZCL_ON_OFF_SWITCH_CFG
+    {ZCL_CLUSTER_GEN_ON_OFF_SWITCH_CONFIG,   MANUFACTURER_CODE_NONE, ZCL_ON_OFF_SWITCH_CFG_ATTR2_NUM, onoff_switch_cfg_attr2Tbl,  zcl_onOffSwitchCfg_register,            NULL              },
+#endif
+};
+
+uint8_t APP_EP2_CB_CLUSTER_NUM = (sizeof(g_appEp2ClusterList)/sizeof(g_appEp2ClusterList[0]));

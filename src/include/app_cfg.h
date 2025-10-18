@@ -47,8 +47,11 @@ extern "C" {
 #define REPORTING_MAX_MAX       65000           /* 18 hour                  */
 
 /* for polling */
-#define LONG_POLL           REPORTING_MIN
-#define TIMEOUT_NET         TIMEOUT_30MIN
+#define LONG_POLL               REPORTING_MIN
+#define TIMEOUT_NET             TIMEOUT_30MIN
+
+/* for onoff */
+#define ONOFFCFG_AMT            2               /* 2 endpoints for OnOff temperature and humidity controls */
 
 /**********************************************************************
  * Product Information

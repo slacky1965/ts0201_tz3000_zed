@@ -84,20 +84,24 @@ typedef struct {
     u8 switchActions;
 } zcl_onOffSwitchCfgAttr_t;
 
+extern const zcl_specClusterInfo_t g_appEp1ClusterList[];
+extern const zcl_specClusterInfo_t g_appEp2ClusterList[];
+extern const af_simple_descriptor_t app_ep1Desc;
+extern const af_simple_descriptor_t app_ep2Desc;
+
 extern uint8_t APP_EP1_CB_CLUSTER_NUM;
+extern uint8_t APP_EP2_CB_CLUSTER_NUM;
 
 #define zcl_sceneAttrGet()          &g_zcl_sceneAttrs
 #define zcl_temperatureAttrGet()    &g_zcl_temperatureAttrs
 #define zcl_humidityAttrGet()       &g_zcl_humidityAttrs
-#define zcl_onOffSwitchCfgAttrGet() &g_zcl_onOffSwitchCfgAttrs
+#define zcl_onOffSwitchCfgAttrGet() g_zcl_onOffSwitchCfgAttrs
 
 /* Attributes */
 extern zcl_basicAttr_t              g_zcl_basicAttrs;
 extern zcl_identifyAttr_t           g_zcl_identifyAttrs;
-//extern zcl_groupAttr_t              g_zcl_groupAttrs;
-//extern zcl_sceneAttr_t              g_zcl_sceneAttrs;
 extern zcl_temperatureAttr_t        g_zcl_temperatureAttrs;
 extern zcl_humidityAttr_t           g_zcl_humidityAttrs;
-extern zcl_onOffSwitchCfgAttr_t     g_zcl_onOffSwitchCfgAttrs;
+extern zcl_onOffSwitchCfgAttr_t     g_zcl_onOffSwitchCfgAttrs[];
 
 #endif /* SRC_INCLUDE_APP_ENDPOINT_CFG_H_ */

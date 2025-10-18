@@ -68,9 +68,6 @@ extern bdb_appCb_t g_zbBdbCb;
 
 extern bdb_commissionSetting_t g_bdbCommissionSetting;
 
-extern const zcl_specClusterInfo_t g_appEp1ClusterList[];
-extern const af_simple_descriptor_t app_ep1Desc;
-
 void app_zclProcessIncomingMsg(zclIncoming_t *pInHdlrMsg);
 
 status_t app_basicCb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *cmdPayload);
