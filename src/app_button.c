@@ -1,11 +1,8 @@
 #include "app_main.h"
 
-bool factory_reset = false;
-
 static int32_t net_steer_start_offCb(void *args) {
 
     g_appCtx.net_steer_start = false;
-    factory_reset = false;
 
     light_blink_stop();
 

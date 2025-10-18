@@ -194,7 +194,11 @@ void app_task(void) {
 #if PM_ENABLE
         button_handler();
         if(!button_idle()) {
+#if DEBUG_PM
             app_pm_lowPowerEnter();
+#else
+            drv_pm_lowPowerEnter();
+#endif
         }
 #endif
     }

@@ -126,7 +126,6 @@ void zb_bdbInitCb(u8 status, u8 joinedNetwork){
 		 *
 		 */
 		if(joinedNetwork){
-            factory_reset = false;
             g_appCtx.net_steer_start = false;
             app_setPollRate(TIMEOUT_1MIN);
 #ifdef ZCL_OTA
@@ -173,7 +172,6 @@ void zb_bdbCommissioningCb(u8 status, void *arg){
 
 	switch(status){
 		case BDB_COMMISSION_STA_SUCCESS:
-            factory_reset = false;
             g_appCtx.net_steer_start = false;
 
             light_blink_stop();
@@ -338,7 +336,7 @@ void app_leaveCnfHandler(nlme_leave_cnf_t *pLeaveCnf)
         }
         steerTimerEvt = TL_ZB_TIMER_SCHEDULE(app_bdbNetworkSteerStart, NULL, jitter);
 
-        if (!g_appCtx.net_steer_start) light_blink_start(90, 100, 1000);
+//        if (!g_appCtx.net_steer_start) light_blink_start(90, 100, 1000);
     }
 }
 

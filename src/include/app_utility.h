@@ -35,8 +35,6 @@
 #define TIMEOUT_60MIN       3600 * 1000     /* timeout 60 min   */
 #define TIMEOUT_2HOUR  (TIMEOUT_60MIN*2)    /* timeout 2 hour   */
 
-extern bool factory_reset;
-
 void start_message();
 int32_t poll_rateAppCb(void *arg);
 int32_t delayedMcuResetCb(void *arg);
