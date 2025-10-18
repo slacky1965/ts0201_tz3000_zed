@@ -12,6 +12,7 @@
 #include "app_config.h"
 #include "app_button.h"
 #include "app_led.h"
+#include "app_pm.h"
 #include "app_on_off.h"
 #include "app_battery.h"
 #include "app_reporting.h"

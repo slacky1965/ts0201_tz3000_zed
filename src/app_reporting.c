@@ -258,3 +258,36 @@ int32_t forcedReportCb(void *arg) {
     return -1;
 }
 
+void app_check_reporting() {
+
+    reportCfgInfo_t *pEntry = NULL;
+
+    for (uint8_t i = 0; i < ZCL_REPORTING_TABLE_NUM; i++) {
+        pEntry = &reportingTab.reportCfgInfo[i];
+        if (pEntry->used && zb_bindingTblSearched(pEntry->clusterID, pEntry->endPoint)) {
+            if ((pEntry->clusterID == ZCL_CLUSTER_MS_TEMPERATURE_MEASUREMENT &&
+                        pEntry->attrID == ZCL_TEMPERATURE_MEASUREMENT_ATTRID_MEASUREDVALUE) ||
+                    (pEntry->clusterID == ZCL_CLUSTER_MS_RELATIVE_HUMIDITY &&
+                        pEntry->attrID == ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_MEASUREDVALUE)) {
+//                printf("1. cl: 0x%04x, attr: 0x%04x\r\n", pEntry->clusterID, pEntry->attrID);
+//                printf("1. cfg_period: %d, min: %d, max: %d\r\n", config.read_sensors_period, pEntry->minInterval, pEntry->maxInterval);
+                pEntry->minInterval = config.read_sensors_period;
+                if (pEntry->maxInterval < REPORTING_MAX || pEntry->maxInterval > REPORTING_MAX_MAX) {
+                    pEntry->maxInterval = REPORTING_MAX;
+                }
+            } else if (pEntry->clusterID == ZCL_CLUSTER_GEN_POWER_CFG &&
+                    (pEntry->attrID == ZCL_ATTRID_BATTERY_VOLTAGE || pEntry->attrID == ZCL_ATTRID_BATTERY_PERCENTAGE_REMAINING)) {
+//                printf("2. cl: 0x%04x, attr: 0x%04x\r\n", pEntry->clusterID, pEntry->attrID);
+//                printf("2. cfg_period: %d, min: %d, max: %d\r\n", config.read_sensors_period, pEntry->minInterval, pEntry->maxInterval);
+                if (pEntry->minInterval < REPORTING_BATTERY_MIN) {
+                    pEntry->minInterval = REPORTING_BATTERY_MIN;
+                }
+                if (pEntry->maxInterval < REPORTING_BATTERY_MAX || pEntry->maxInterval > REPORTING_MAX_MAX) {
+                    pEntry->maxInterval = REPORTING_BATTERY_MAX;
+                }
+            }
+        }
+    }
+
+    reportAttrTimerStop();
+}

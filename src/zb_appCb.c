@@ -45,25 +45,27 @@
 /**********************************************************************
  * LOCAL FUNCTIONS
  */
-void zb_bdbInitCb(uint8_t status, uint8_t joinedNetwork);
-void zb_bdbCommissioningCb(uint8_t status, void *arg);
-void zb_bdbIdentifyCb(uint8_t endpoint, uint16_t srcAddr, uint16_t identifyTime);
+void zb_bdbInitCb(u8 status, u8 joinedNetwork);
+void zb_bdbCommissioningCb(u8 status, void *arg);
+void zb_bdbIdentifyCb(u8 endpoint, u16 srcAddr, u16 identifyTime);
 void zb_bdbFindBindSuccessCb(findBindDst_t *pDstInfo);
 
 
 /**********************************************************************
  * LOCAL VARIABLES
  */
-bdb_appCb_t g_zbBdbCb = {
-    zb_bdbInitCb,
-    zb_bdbCommissioningCb,
-    zb_bdbIdentifyCb,
-    zb_bdbFindBindSuccessCb
+bdb_appCb_t g_zbBdbCb =
+{
+	zb_bdbInitCb,
+	zb_bdbCommissioningCb,
+	zb_bdbIdentifyCb,
+	zb_bdbFindBindSuccessCb
 };
 
 #ifdef ZCL_OTA
-ota_callBack_t app_otaCb = {
-    app_otaProcessMsgHandler,
+ota_callBack_t app_otaCb =
+{
+	app_otaProcessMsgHandler,
 };
 #endif
 
@@ -73,29 +75,30 @@ ev_timer_event_t *switchRejoinBackoffTimerEvt = NULL;
 /**********************************************************************
  * FUNCTIONS
  */
-int32_t app_bdbNetworkSteerStart(void *arg) {
-    bdb_networkSteerStart();
+s32 app_bdbNetworkSteerStart(void *arg){
+	bdb_networkSteerStart();
 
-    return -1;
+	steerTimerEvt = NULL;
+	return -1;
 }
 
 #if FIND_AND_BIND_SUPPORT
-int32_t app_bdbFindAndBindStart(void *arg) {
-    BDB_ATTR_GROUP_ID_SET(0x1234);//only for initiator
-    bdb_findAndBindStart(BDB_COMMISSIONING_ROLE_INITIATOR);
+s32 app_bdbFindAndBindStart(void *arg){
+	BDB_ATTR_GROUP_ID_SET(0x1234);//only for initiator
+	bdb_findAndBindStart(BDB_COMMISSIONING_ROLE_INITIATOR);
 
-    g_switchAppCtx.bdbFBTimerEvt = NULL;
-    return -1;
+	g_switchAppCtx.bdbFBTimerEvt = NULL;
+	return -1;
 }
 #endif
 
-int32_t app_rejoinBacckoff(void *arg) {
-    if (zb_isDeviceFactoryNew()) {
-        switchRejoinBackoffTimerEvt = NULL;
-        return -1;
-    }
+s32 app_rejoinBacckoff(void *arg){
+	if(zb_isDeviceFactoryNew()){
+		switchRejoinBackoffTimerEvt = NULL;
+		return -1;
+	}
 
-    zb_rejoinReq(zb_apsChannelMaskGet(), g_bdbAttrs.scanDuration);
+	zb_rejoinReq(zb_apsChannelMaskGet(), g_bdbAttrs.scanDuration);
     return 0;
 }
 
@@ -110,82 +113,49 @@ int32_t app_rejoinBacckoff(void *arg) {
  *
  * @return  None
  */
-void zb_bdbInitCb(uint8_t status, uint8_t joinedNetwork) {
-//    printf("bdbInitCb: sta = %x, joined = %x\r\n", status, joinedNetwork);
+void zb_bdbInitCb(u8 status, u8 joinedNetwork){
+    printf("bdbInitCb: sta = %x, joined = %x\r\n", status, joinedNetwork);
 
-    if (status == BDB_INIT_STATUS_SUCCESS) {
-        /*
-         * for non-factory-new device:
-         * 		load zcl data from NV, start poll rate, start ota query, bdb_networkSteerStart
-         *
-         * for factory-new device:
-         * 		steer a network
-         *
-         */
-        if (joinedNetwork) {
+	if(status == BDB_INIT_STATUS_SUCCESS){
+		/*
+		 * for non-factory-new device:
+		 * 		load zcl data from NV, start poll rate, start ota query, bdb_networkSteerStart
+		 *
+		 * for factory-new device:
+		 * 		steer a network
+		 *
+		 */
+		if(joinedNetwork){
             factory_reset = false;
             g_appCtx.net_steer_start = false;
             app_setPollRate(TIMEOUT_1MIN);
 #ifdef ZCL_OTA
-            ota_queryStart(OTA_PERIODIC_QUERY_INTERVAL);
+			ota_queryStart(OTA_PERIODIC_QUERY_INTERVAL);
 #endif
 
 #ifdef ZCL_POLL_CTRL
 			app_zclCheckInStart();
 #endif
-        } else  if (g_appCtx.net_steer_start) {
-            uint16_t jitter = 0;
-            do {
-                jitter = zb_random() % 0x0fff;
-            } while (jitter == 0);
-            TL_ZB_TIMER_SCHEDULE(app_bdbNetworkSteerStart, NULL, jitter);
-        }
-    } else {
-        if (joinedNetwork) {
+		} else  if (g_appCtx.net_steer_start) {
+			u16 jitter = 0;
+			do{
+				jitter = zb_random() % 0x0fff;
+			}while(jitter == 0);
+
+			if(steerTimerEvt){
+				TL_ZB_TIMER_CANCEL(&steerTimerEvt);
+			}
+			steerTimerEvt = TL_ZB_TIMER_SCHEDULE(app_bdbNetworkSteerStart, NULL, jitter);
+		}
+	}else{
+		if(joinedNetwork){
 //			zb_rejoinReqWithBackOff(zb_apsChannelMaskGet(), g_bdbAttrs.scanDuration);
-            if (!switchRejoinBackoffTimerEvt) {
-                switchRejoinBackoffTimerEvt = TL_ZB_TIMER_SCHEDULE(app_rejoinBacckoff, NULL, 60 * 1000);
-            }
-        }
-    }
+			if(!switchRejoinBackoffTimerEvt){
+				switchRejoinBackoffTimerEvt = TL_ZB_TIMER_SCHEDULE(app_rejoinBacckoff, NULL, 60 * 1000);
+			}
+		}
+	}
 }
-
-/*
-BDB_COMMISSION_STA_SUCCESS = 0,         //<! The commissioning sub-procedure was successful.
-BDB_COMMISSION_STA_IN_PROGRESS,         //<! One of the commissioning sub-procedures has started but is not yet complete
-BDB_COMMISSION_STA_NOT_AA_CAPABLE,      //<! The initiator is not address assignment capable during touchlink.
-BDB_COMMISSION_STA_NO_NETWORK,          //<! A network has not been found during network steering or touchlink
-BDB_COMMISSION_STA_TARGET_FAILURE,      //<! A node has not joined a network when requested during touchlink
-BDB_COMMISSION_STA_FORMATION_FAILURE,   //<! A network could not be formed during network formation.
-BDB_COMMISSION_STA_NO_IDENTIFY_QUERY_RESPONSE,//<! No response to an identify query command has been received during finding & binding
-BDB_COMMISSION_STA_BINDING_TABLE_FULL,  //<! A binding table entry could not be created due to insufficient space in the binding table during finding & binding
-BDB_COMMISSION_STA_NO_SCAN_RESPONSE,    //<! No response to a scan request inter-PAN command has been received during touchlink
-BDB_COMMISSION_STA_NOT_PERMITTED,       //<! A touchlink (steal) attempt was made when a node is already connected to a centralized security network
-BDB_COMMISSION_STA_TCLK_EX_FAILURE,     //<! The Trust Center link key exchange procedure has failed attempting to join a centralized security network.
-
-BDB_COMMISSION_STA_PARENT_LOST,
-BDB_COMMISSION_STA_REJOIN_FAILURE,
-BDB_COMMISSION_STA_FORMATION_DONE,
-*/
-
-#if UART_PRINTF_MODE && DEBUG_STA_STATUS
-const static uint8_t bdb_commission_sta_status[][64] = {
-        "BDB_COMMISSION_STA_SUCCESS",
-        "BDB_COMMISSION_STA_IN_PROGRESS",
-        "BDB_COMMISSION_STA_NOT_AA_CAPABLE",
-        "BDB_COMMISSION_STA_NO_NETWORK",
-        "BDB_COMMISSION_STA_TARGET_FAILURE",
-        "BDB_COMMISSION_STA_FORMATION_FAILURE",
-        "BDB_COMMISSION_STA_NO_IDENTIFY_QUERY_RESPONSE",
-        "BDB_COMMISSION_STA_BINDING_TABLE_FULL",
-        "BDB_COMMISSION_STA_NO_SCAN_RESPONSE",
-        "BDB_COMMISSION_STA_NOT_PERMITTED",
-        "BDB_COMMISSION_STA_TCLK_EX_FAILURE",
-        "BDB_COMMISSION_STA_PARENT_LOST",
-        "BDB_COMMISSION_STA_REJOIN_FAILURE",
-        "BDB_COMMISSION_STA_FORMATION_DONE"
-};
-#endif /* UART_PRINTF_MODE */
 
 /*********************************************************************
  * @fn      zb_bdbCommissioningCb
@@ -198,29 +168,30 @@ const static uint8_t bdb_commission_sta_status[][64] = {
  *
  * @return  None
  */
-void zb_bdbCommissioningCb(uint8_t status, void *arg) {
-//    printf("zb_bdbCommissioningCb: sta = %x\r\n", status);
+void zb_bdbCommissioningCb(u8 status, void *arg){
+    printf("zb_bdbCommissioningCb: sta = %x\r\n", status);
 
-    uint16_t jitter = 0;
-
-    switch (status) {
-        case BDB_COMMISSION_STA_SUCCESS:
+	switch(status){
+		case BDB_COMMISSION_STA_SUCCESS:
             factory_reset = false;
             g_appCtx.net_steer_start = false;
-
-            app_setPollRate(TIMEOUT_1MIN);
-
-            if(steerTimerEvt){
-                TL_ZB_TIMER_CANCEL(&steerTimerEvt);
-            }
 
             light_blink_stop();
             light_blink_start(1, 3000, 10);
 
-//            if(switchRejoinBackoffTimerEvt){
-//                TL_ZB_TIMER_CANCEL(&switchRejoinBackoffTimerEvt);
-//            }
-//
+            app_setPollRate(TIMEOUT_1MIN);
+
+			if(steerTimerEvt){
+				TL_ZB_TIMER_CANCEL(&steerTimerEvt);
+			}
+
+			if(switchRejoinBackoffTimerEvt){
+				TL_ZB_TIMER_CANCEL(&switchRejoinBackoffTimerEvt);
+			}
+			if(!g_zbNwkCtx.joined){
+				zb_rejoinReq(zb_apsChannelMaskGet(), g_bdbAttrs.scanDuration);
+			}
+
 #ifdef ZCL_POLL_CTRL
 			app_zclCheckInStart();
 #endif
@@ -233,63 +204,55 @@ void zb_bdbCommissioningCb(uint8_t status, void *arg) {
 				g_switchAppCtx.bdbFBTimerEvt = TL_ZB_TIMER_SCHEDULE(app_bdbFindAndBindStart, NULL, 50);
 			}
 #endif
-			if (switchRejoinBackoffTimerEvt) {
-			    TL_ZB_TIMER_CANCEL(&switchRejoinBackoffTimerEvt);
+			break;
+		case BDB_COMMISSION_STA_IN_PROGRESS:
+			break;
+		case BDB_COMMISSION_STA_NOT_AA_CAPABLE:
+			break;
+		case BDB_COMMISSION_STA_NO_NETWORK:
+		case BDB_COMMISSION_STA_TCLK_EX_FAILURE:
+		case BDB_COMMISSION_STA_TARGET_FAILURE:
+		    if (g_appCtx.net_steer_start) {
+				u16 jitter = 0;
+				do{
+					jitter = zb_random() % 0x0fff;
+				}while(jitter == 0);
+
+				if(steerTimerEvt){
+					TL_ZB_TIMER_CANCEL(&steerTimerEvt);
+				}
+				steerTimerEvt = TL_ZB_TIMER_SCHEDULE(app_bdbNetworkSteerStart, NULL, jitter);
 			}
 			break;
-        case BDB_COMMISSION_STA_IN_PROGRESS:
-            break;
-        case BDB_COMMISSION_STA_NOT_AA_CAPABLE:
-            break;
-        case BDB_COMMISSION_STA_NO_NETWORK:
-        case BDB_COMMISSION_STA_TCLK_EX_FAILURE:
-        case BDB_COMMISSION_STA_TARGET_FAILURE:
-            if (g_appCtx.net_steer_start) {
-                do {
-                    jitter = zb_random() % 0x0fff;
-                } while (jitter == 0);
-                TL_ZB_TIMER_SCHEDULE(app_bdbNetworkSteerStart, NULL, jitter);
-            }
-            break;
-        case BDB_COMMISSION_STA_FORMATION_FAILURE:
-            break;
-        case BDB_COMMISSION_STA_NO_IDENTIFY_QUERY_RESPONSE:
-            break;
-        case BDB_COMMISSION_STA_BINDING_TABLE_FULL:
-            break;
-        case BDB_COMMISSION_STA_NO_SCAN_RESPONSE:
-            break;
-        case BDB_COMMISSION_STA_NOT_PERMITTED:
-            break;
-        case BDB_COMMISSION_STA_PARENT_LOST:
-            //zb_rejoinSecModeSet(REJOIN_INSECURITY);
-            zb_rejoinReq(zb_apsChannelMaskGet(), g_bdbAttrs.scanDuration);
+		case BDB_COMMISSION_STA_FORMATION_FAILURE:
+			break;
+		case BDB_COMMISSION_STA_NO_IDENTIFY_QUERY_RESPONSE:
+			break;
+		case BDB_COMMISSION_STA_BINDING_TABLE_FULL:
+			break;
+		case BDB_COMMISSION_STA_NO_SCAN_RESPONSE:
+			break;
+		case BDB_COMMISSION_STA_NOT_PERMITTED:
+			break;
+		case BDB_COMMISSION_STA_PARENT_LOST:
+			//zb_rejoinSecModeSet(REJOIN_INSECURITY);
+			zb_rejoinReq(zb_apsChannelMaskGet(), g_bdbAttrs.scanDuration);
 //			zb_rejoinReqWithBackOff(zb_apsChannelMaskGet(), g_bdbAttrs.scanDuration);
-            break;
-        case BDB_COMMISSION_STA_REJOIN_FAILURE:
-//            light_blink_stop();
-//            light_blink_start(3, 30, 250);
-            if (!switchRejoinBackoffTimerEvt) {
-                switchRejoinBackoffTimerEvt = TL_ZB_TIMER_SCHEDULE(app_rejoinBacckoff, NULL, 60 * 1000);
-            }
-//#if PM_ENABLE
-//            if (!g_appCtx.timerNoJoinedEvt) {
-//                g_appCtx.timerNoJoinedEvt = TL_ZB_TIMER_SCHEDULE(no_joinedCb, NULL, TIMEOUT_NET);
-//#if UART_PRINTF_MODE && DEBUG_STA_STATUS
-//                printf("Not joined, status: %s (%d)\r\n", bdb_commission_sta_status[status], status);
-//#endif /* UART_PRINTF_MODE */
-//            }
-//#endif
-            break;
-        default:
-            break;
-    }
+			break;
+		case BDB_COMMISSION_STA_REJOIN_FAILURE:
+			if(!switchRejoinBackoffTimerEvt){
+				switchRejoinBackoffTimerEvt = TL_ZB_TIMER_SCHEDULE(app_rejoinBacckoff, NULL, 60 * 1000);
+			}
+			break;
+		default:
+			break;
+	}
 }
 
-
-extern void app_zclIdentifyCmdHandler(uint8_t endpoint, uint16_t srcAddr, uint16_t identifyTime);
-void zb_bdbIdentifyCb(uint8_t endpoint, uint16_t srcAddr, uint16_t identifyTime){
+void zb_bdbIdentifyCb(u8 endpoint, u16 srcAddr, u16 identifyTime){
 #if FIND_AND_BIND_SUPPORT
+	extern void app_zclIdentifyCmdHandler(u8 endpoint, u16 srcAddr, u16 identifyTime);
+
 	app_zclIdentifyCmdHandler(endpoint, srcAddr, identifyTime);
 #endif
 }
@@ -320,54 +283,26 @@ void zb_bdbFindBindSuccessCb(findBindDst_t *pDstInfo){
 
 
 #ifdef ZCL_OTA
+void app_otaProcessMsgHandler(u8 evt, u8 status)
+{
+	//printf("app_otaProcessMsgHandler: status = %x\n", status);
+	if(evt == OTA_EVT_START){
+		if(status == ZCL_STA_SUCCESS){
+			zb_setPollRate(QUEUE_POLL_RATE);
+		}else{
 
-//extern ota_clientInfo_t otaClientInfo;
-//void ota_upgradeComplete(u8 status);
-//
-//static void app_ota_abort() {
-//
-//    /* reset update OTA */
-//    nv_resetModule(NV_MODULE_OTA);
-//
-//    memset((uint8_t*) &otaClientInfo, 0, sizeof(otaClientInfo));
-//    otaClientInfo.clientOtaFlg = OTA_FLAG_INIT_DONE;
-//    otaClientInfo.crcValue = 0xffffffff;
-//
-//    zcl_attr_imageTypeID = 0xffff;
-//    zcl_attr_fileOffset = 0xffffffff;
-//    zcl_attr_downloadFileVer = 0xffffffff;
-//}
+		}
+	}else if(evt == OTA_EVT_COMPLETE){
+		zb_setPollRate(POLL_RATE * 3);
 
-void app_otaProcessMsgHandler(uint8_t evt, uint8_t status) {
-    //printf("app_otaProcessMsgHandler: status = %x\r\n", status);
-
-    if(evt == OTA_EVT_START){
-        if(status == ZCL_STA_SUCCESS){
-#if UART_PRINTF_MODE && DEBUG_OTA
-            printf("OTA update start.\r\n");
-#endif /* UART_PRINTF_MODE */
-            zb_setPollRate(QUEUE_POLL_RATE);
-        }else{
-
-        }
-    }else if(evt == OTA_EVT_COMPLETE){
-        app_setPollRate(TIMEOUT_20SEC);
-
-        if(status == ZCL_STA_SUCCESS){
-#if UART_PRINTF_MODE && DEBUG_OTA
-            printf("OTA update successful.\r\n");
-#endif /* UART_PRINTF_MODE */
-            ota_mcuReboot();
-        }else{
-#if UART_PRINTF_MODE && DEBUG_OTA
-            printf("OTA update failure. Try again.\r\n");
-#endif /* UART_PRINTF_MODE */
-            ota_queryStart(OTA_PERIODIC_QUERY_INTERVAL);
-        }
-    }else if(evt == OTA_EVT_IMAGE_DONE){
-        app_setPollRate(TIMEOUT_20SEC);
-    }
-
+		if(status == ZCL_STA_SUCCESS){
+			ota_mcuReboot();
+		}else{
+			ota_queryStart(OTA_PERIODIC_QUERY_INTERVAL);
+		}
+	}else if(evt == OTA_EVT_IMAGE_DONE){
+		zb_setPollRate(POLL_RATE * 3);
+	}
 }
 #endif
 
@@ -380,13 +315,30 @@ void app_otaProcessMsgHandler(uint8_t evt, uint8_t status) {
  *
  * @return  None
  */
-void app_leaveCnfHandler(nlme_leave_cnf_t *pLeaveCnf) {
-    if (pLeaveCnf->status == SUCCESS) {
-        //SYSTEM_RESET();
+void app_leaveCnfHandler(nlme_leave_cnf_t *pLeaveCnf)
+{
+    printf("app_leaveCnfHandler\r\n");
 
-        if (switchRejoinBackoffTimerEvt) {
-            TL_ZB_TIMER_CANCEL(&switchRejoinBackoffTimerEvt);
+    if(pLeaveCnf->status == SUCCESS){
+    	//SYSTEM_RESET();
+
+		if(switchRejoinBackoffTimerEvt){
+			TL_ZB_TIMER_CANCEL(&switchRejoinBackoffTimerEvt);
+		}
+
+        zb_deviceFactoryNewSet(true);
+
+        uint16_t jitter = 0;
+        do {
+            jitter = zb_random() % 0x0fff;
+        } while (jitter == 0);
+
+        if (steerTimerEvt) {
+            TL_ZB_TIMER_CANCEL(&steerTimerEvt);
         }
+        steerTimerEvt = TL_ZB_TIMER_SCHEDULE(app_bdbNetworkSteerStart, NULL, jitter);
+
+        if (!g_appCtx.net_steer_start) light_blink_start(90, 100, 1000);
     }
 }
 
@@ -401,12 +353,6 @@ void app_leaveCnfHandler(nlme_leave_cnf_t *pLeaveCnf) {
  */
 void app_leaveIndHandler(nlme_leave_ind_t *pLeaveInd)
 {
-    //printf("app_leaveIndHandler, rejoin = %d\r\n", pLeaveInd->rejoin);
+    //printf("app_leaveIndHandler, rejoin = %d\n", pLeaveInd->rejoin);
     //printfArray(pLeaveInd->device_address, 8);
 }
-
-bool app_nwkUpdateIndicateHandler(nwkCmd_nwkUpdate_t *pNwkUpdate){
-    return FAILURE;
-}
-
-

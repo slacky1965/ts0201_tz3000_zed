@@ -43,7 +43,8 @@ extern "C" {
 #define REPORTING_MIN           10              /* 10 sec                   */
 #define REPORTING_MAX           3600            /* 60 min                   */
 #define REPORTING_BATTERY_MIN   3600            /* 1 hour                   */
-#define REPORTING_BATTERY_MAX   0               /* reporting on the change  */
+#define REPORTING_BATTERY_MAX   21600           /* 6 hours                  */
+#define REPORTING_MAX_MAX       65000           /* 18 hour                  */
 
 /* for polling */
 #define LONG_POLL           REPORTING_MIN
