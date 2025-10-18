@@ -16,6 +16,7 @@ $(OUT_PATH)/$(SRC_PATH)/app_i2c.o \
 $(OUT_PATH)/$(SRC_PATH)/app_cht8305.o \
 $(OUT_PATH)/$(SRC_PATH)/app_button.o \
 $(OUT_PATH)/$(SRC_PATH)/app_led.o \
+$(OUT_PATH)/$(SRC_PATH)/app_pm.o \
 $(OUT_PATH)/$(SRC_PATH)/app_on_off.o \
 $(OUT_PATH)/$(SRC_PATH)/app_battery.o \
 $(OUT_PATH)/$(SRC_PATH)/app_reporting.o \
