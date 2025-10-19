@@ -15,19 +15,19 @@ static void cmdOnOff(uint8_t ep, uint8_t command) {
     switch(command) {
         case ZCL_CMD_ONOFF_OFF:
 #if UART_PRINTF_MODE && DEBUG_ONOFF
-            printf("OnOff command: off\r\n");
+            printf("OnOff command: 'off' in endPoint: %d\r\n", ep);
 #endif /* UART_PRINTF_MODE */
             zcl_onOff_offCmd(ep, &dstEpInfo, FALSE);
             break;
         case ZCL_CMD_ONOFF_ON:
 #if UART_PRINTF_MODE && DEBUG_ONOFF
-            printf("OnOff command: on\r\n");
+            printf("OnOff command: 'on' in endPoint: %d\r\n", ep);
 #endif /* UART_PRINTF_MODE */
             zcl_onOff_onCmd(ep, &dstEpInfo, FALSE);
             break;
         case ZCL_CMD_ONOFF_TOGGLE:
 #if UART_PRINTF_MODE && DEBUG_ONOFF
-            printf("OnOff command: toggle\r\n");
+            printf("OnOff command: 'toggle' in endPoint: %d\r\n", ep);
 #endif /* UART_PRINTF_MODE */
             zcl_onOff_toggleCmd(ep, &dstEpInfo, FALSE);
             break;
@@ -115,6 +115,7 @@ static void proc_hum_onoff(uint8_t ep) {
         }
 
         if (config.humidity_onoff) {
+//            printf("sw_onoff: %d\r\n", sw_onoff[idx]);
             if (!sw_onoff[idx]) {
                 if ((humAttrs->value >= humAttrs->humidity_onoff_high &&
                         onoffCfgAttrs->switchActions == ZCL_SWITCH_ACTION_OFF_ON) ||
