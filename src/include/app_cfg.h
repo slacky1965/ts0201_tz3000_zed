@@ -73,7 +73,7 @@ extern "C" {
 #define DEBUG_BUTTON                    ON
 #define DEBUG_REPORTING                 OFF
 #define DEBUG_BATTERY                   OFF
-#define DEBUG_PM                        ON
+#define DEBUG_PM                        OFF
 #define DEBUG_OTA                       OFF
 #define DEBUG_CHT8305                   ON
 #define DEBUG_STA_STATUS                OFF
