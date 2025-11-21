@@ -6,11 +6,12 @@ OUT_DIR += \
 /$(SRC_PATH)/common
  
 OBJS += \
+$(OUT_PATH)/$(SRC_PATH)/common/main.o \
+$(OUT_PATH)/$(SRC_PATH)/common/flash.o \
 $(OUT_PATH)/$(SRC_PATH)/zcl/zcl_relative_humidity_measurement.o \
 $(OUT_PATH)/$(SRC_PATH)/zcl/zcl_onoffSwitchCfg.o \
 $(OUT_PATH)/$(SRC_PATH)/zcl/zcl_reporting.o \
 $(OUT_PATH)/$(SRC_PATH)/cht8305/cht8305.o \
-$(OUT_PATH)/$(SRC_PATH)/common/main.o \
 $(OUT_PATH)/$(SRC_PATH)/app_config.o \
 $(OUT_PATH)/$(SRC_PATH)/app_i2c.o \
 $(OUT_PATH)/$(SRC_PATH)/app_cht8305.o \

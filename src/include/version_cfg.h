@@ -28,9 +28,7 @@
 #include "../common/comm_cfg.h"
 
 #define APP_RELEASE                         0x10        //app release 1.0
-#ifndef VERSION_BUILD
-    #define APP_BUILD                       0x04        //app build 04, full version - v1.0.04
-#endif
+#define APP_BUILD                           0x5        //app build 04, full version - v1.0.04
 
 #define STACK_RELEASE                       0x30        //stack release 3.0
 #define STACK_BUILD                         0x01        //stack build 01
@@ -73,13 +71,21 @@
  * 0x0e - Livolo_curtain_control
  * 0x0f - Livolo_thermostat
  * 0x10 - EKF_switch_2keys_battery
- * 0x11 - Tuya Thermostat - "u9bfwha0"
- *                          "aoclfnxz"
- *                          "edl8pz1k"
+ * 0x11 - Tuya Thermostat
  * 0x12 - ECM_DIN1_counter
  * 0x13 - Tuya CO2 Sensor
  * 0x14 - Air monitor
  * 0x15 - Tuya Temperature and Humidity sensors
+ * 0x16 - Tuya Temperature and Humidity sensors ts0601_tze200 ZG-227Z
+ * 0x17 - Tuya water leak sensor ZG-222ZA, ZTU or tlsr825x with 1M
+ * 0x18 - Tuya water leak sensor ZG-222ZA, tlsr825x with 512K
+ * 0x19 - Tuya water leak sensor SNZB-05, tlsr8656 with 512K
+ * 0x1A - ElectricityMeter_ABC
+ * 0x1B - Test Remote Constol
+ * 0x1C - Tuya mini relay control _TZ3000_kqvb5akv
+ * 0x1D - Tuya relay QS-Zigbee-SEC02 _TZ3000_m8f3z8ju
+ * 0x1E - Tuya relay QS-Zigbee-SEC01 _TZ3000_hdc8bbha
+ * 0x1F - Tuya plug TS011F with monitoring
  *
  */
 
