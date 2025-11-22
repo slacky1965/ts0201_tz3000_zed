@@ -143,6 +143,7 @@ void user_app_init(void)
 
     /* register endPoint */
     af_endpointRegister(APP_ENDPOINT1, (af_simple_descriptor_t *)&app_ep1Desc, zcl_rx_handler, NULL);
+    af_endpointRegister(APP_ENDPOINT2, (af_simple_descriptor_t *)&app_ep2Desc, zcl_rx_handler, NULL);
 
     zcl_reportingTabInit();
     zcl_onOffCfgAttr_restore();
@@ -150,6 +151,7 @@ void user_app_init(void)
 
     /* Register ZCL specific cluster information */
     zcl_register(APP_ENDPOINT1, APP_EP1_CB_CLUSTER_NUM, (zcl_specClusterInfo_t *)g_appEp1ClusterList);
+    zcl_register(APP_ENDPOINT2, APP_EP2_CB_CLUSTER_NUM, (zcl_specClusterInfo_t *)g_appEp2ClusterList);
 
 #if ZCL_OTA_SUPPORT
     ota_init(OTA_TYPE_CLIENT, (af_simple_descriptor_t *)&app_ep1Desc, &app_otaInfo, &app_otaCb);
@@ -194,7 +196,11 @@ void app_task(void) {
 #if PM_ENABLE
         button_handler();
         if(!button_idle()) {
+#if DEBUG_PM
+            app_pm_lowPowerEnter();
+#else
             drv_pm_lowPowerEnter();
+#endif
         }
 #endif
     }
@@ -249,11 +255,6 @@ void user_init(bool isRetention)
     if(!isRetention) {
 
         start_message();
-
-#ifdef CHECK_BOOTLOADER
-        bootloader_check();
-#endif
-
 
         /* Initialize Stack */
         stack_init();

@@ -47,7 +47,7 @@
  *
  * Normal mode is used by default.
  */
-#define BOOT_LOADER_MODE					1
+#define BOOT_LOADER_MODE					0
 
 
 
@@ -93,7 +93,7 @@
         #define CHIP_TYPE                   TLSR_8267
     #endif
 #elif defined(MCU_CORE_8258)
-        #define CHIP_TYPE                   TLSR_8258_1M //TLSR_8258_512K //
+        #define CHIP_TYPE                   TLSR_8258_512K //TLSR_8258_1M //
 #elif defined(MCU_CORE_8278)
         #define CHIP_TYPE                   TLSR_8278
 #elif defined(MCU_CORE_B91)

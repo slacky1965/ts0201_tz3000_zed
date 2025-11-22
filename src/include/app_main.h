@@ -12,12 +12,12 @@
 #include "app_config.h"
 #include "app_button.h"
 #include "app_led.h"
+#include "app_pm.h"
 #include "app_on_off.h"
 #include "app_battery.h"
 #include "app_reporting.h"
 #include "app_endpoint_cfg.h"
 #include "app_utility.h"
-#include "app_bootloader.h"
 #include "app_i2c.h"
 #include "app_cht8305.h"
 
@@ -66,9 +66,6 @@ extern app_ctx_t g_appCtx;
 extern bdb_appCb_t g_zbBdbCb;
 
 extern bdb_commissionSetting_t g_bdbCommissionSetting;
-
-extern const zcl_specClusterInfo_t g_appEp1ClusterList[];
-extern const af_simple_descriptor_t app_ep1Desc;
 
 void app_zclProcessIncomingMsg(zclIncoming_t *pInHdlrMsg);
 

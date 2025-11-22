@@ -185,6 +185,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                         config.read_sensors_period = ms_period;
                         save = true;
                         app_setPollRate(TIMEOUT_20SEC);
+                        app_check_reporting();
                     }
                 }
             } else if (attr[i].attrID == ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_OFFSET) {
@@ -308,6 +309,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
     if (clusterId == ZCL_CLUSTER_GEN_ON_OFF_SWITCH_CONFIG) {
         for (u8 i = 0; i < numAttr; i++) {
             if (attr[i].attrID == ZCL_ATTRID_SWITCH_ACTION) {
+//                printf("Switch action: %d by endPoint: %d\r\n", attr[i].attrData[0], endPoint);
                 zcl_onOffCfgAttr_save();
             }
         }

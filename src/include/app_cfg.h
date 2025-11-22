@@ -43,11 +43,15 @@ extern "C" {
 #define REPORTING_MIN           10              /* 10 sec                   */
 #define REPORTING_MAX           3600            /* 60 min                   */
 #define REPORTING_BATTERY_MIN   3600            /* 1 hour                   */
-#define REPORTING_BATTERY_MAX   0               /* reporting on the change  */
+#define REPORTING_BATTERY_MAX   21600           /* 6 hours                  */
+#define REPORTING_MAX_MAX       65000           /* 18 hour                  */
 
 /* for polling */
-#define LONG_POLL           REPORTING_MIN
-#define TIMEOUT_NET         TIMEOUT_30MIN
+#define LONG_POLL               REPORTING_MIN
+#define TIMEOUT_NET             TIMEOUT_30MIN
+
+/* for onoff */
+#define ONOFFCFG_AMT            2               /* 2 endpoints for OnOff temperature and humidity controls */
 
 /**********************************************************************
  * Product Information
@@ -63,7 +67,7 @@ extern "C" {
 #include "version_cfg.h"
 
 /* Debug mode config */
-#define	UART_PRINTF_MODE                ON
+#define	UART_PRINTF_MODE                OFF
 #define USB_PRINTF_MODE         		OFF
 
 #define DEBUG_BUTTON                    ON
@@ -71,7 +75,7 @@ extern "C" {
 #define DEBUG_BATTERY                   OFF
 #define DEBUG_PM                        OFF
 #define DEBUG_OTA                       OFF
-#define DEBUG_CHT8305                   ON
+#define DEBUG_CHT8305                   OFF
 #define DEBUG_STA_STATUS                OFF
 #define DEBUG_ONOFF                     ON
 /* PM */
