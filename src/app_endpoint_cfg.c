@@ -290,11 +290,11 @@ const zclAttrInfo_t humidity_attrTbl[] = {
 zcl_onOffSwitchCfgAttr_t g_zcl_onOffSwitchCfgAttrs[ONOFFCFG_AMT] = {
     {
         .switchType       = ZCL_SWITCH_TYPE_TOGGLE,
-        .switchActions    = ZCL_SWITCH_ACTION_OFF_ON,
+        .switchActions    = ZCL_SWITCH_ACTION_ON_OFF,
     },
     {
         .switchType       = ZCL_SWITCH_TYPE_TOGGLE,
-        .switchActions    = ZCL_SWITCH_ACTION_OFF_ON,
+        .switchActions    = ZCL_SWITCH_ACTION_ON_OFF,
     }
 };
 

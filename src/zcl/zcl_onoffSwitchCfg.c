@@ -80,8 +80,8 @@ nv_sts_t zcl_onOffCfgAttr_restore(void) {
         g_zcl_onOffSwitchCfgAttrs[0].switchActions = zcl_nv_onOffCfg[0].switchActions;
         g_zcl_onOffSwitchCfgAttrs[1].switchActions = zcl_nv_onOffCfg[1].switchActions;
     } else {
-        g_zcl_onOffSwitchCfgAttrs[0].switchActions = ZCL_SWITCH_ACTION_OFF_ON;
-        g_zcl_onOffSwitchCfgAttrs[1].switchActions = ZCL_SWITCH_ACTION_OFF_ON;
+        g_zcl_onOffSwitchCfgAttrs[0].switchActions = ZCL_SWITCH_ACTION_ON_OFF;
+        g_zcl_onOffSwitchCfgAttrs[1].switchActions = ZCL_SWITCH_ACTION_ON_OFF;
     }
 #else
     st = NV_ENABLE_PROTECT_ERROR;
