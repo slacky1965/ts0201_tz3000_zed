@@ -67,7 +67,7 @@ extern "C" {
 #include "version_cfg.h"
 
 /* Debug mode config */
-#define	UART_PRINTF_MODE                ON
+#define	UART_PRINTF_MODE                OFF
 #define USB_PRINTF_MODE         		OFF
 
 #define DEBUG_BUTTON                    ON
@@ -75,7 +75,7 @@ extern "C" {
 #define DEBUG_BATTERY                   OFF
 #define DEBUG_PM                        OFF
 #define DEBUG_OTA                       OFF
-#define DEBUG_CHT8305                   ON
+#define DEBUG_CHT8305                   OFF
 #define DEBUG_STA_STATUS                OFF
 #define DEBUG_ONOFF                     ON
 /* PM */

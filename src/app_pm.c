@@ -38,7 +38,7 @@ void app_pm_lowPowerEnter(void) {
         }
     }
 
-    printf("sleepTime: %d, longSleep: %d, period: %d\r\n", sleepTime, longSleep, timerEvt?timerEvt->period:-1);
+//    printf("sleepTime: %d, longSleep: %d, period: %d\r\n", sleepTime, longSleep, timerEvt?timerEvt->period:-1);
 
 #if defined(MCU_CORE_826x)
     drv_pm_sleep_mode_e sleepMode = (wakeupSrc & PM_WAKEUP_SRC_TIMER) ? PM_SLEEP_MODE_SUSPEND : PM_SLEEP_MODE_DEEPSLEEP;

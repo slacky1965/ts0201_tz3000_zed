@@ -114,7 +114,7 @@ s32 app_rejoinBacckoff(void *arg){
  * @return  None
  */
 void zb_bdbInitCb(u8 status, u8 joinedNetwork){
-    printf("bdbInitCb: sta = %x, joined = %x\r\n", status, joinedNetwork);
+//    printf("bdbInitCb: sta = %x, joined = %x\r\n", status, joinedNetwork);
 
 	if(status == BDB_INIT_STATUS_SUCCESS){
 		/*
@@ -168,7 +168,7 @@ void zb_bdbInitCb(u8 status, u8 joinedNetwork){
  * @return  None
  */
 void zb_bdbCommissioningCb(u8 status, void *arg){
-    printf("zb_bdbCommissioningCb: sta = %x\r\n", status);
+//    printf("zb_bdbCommissioningCb: sta = %x\r\n", status);
 
 	switch(status){
 		case BDB_COMMISSION_STA_SUCCESS:
@@ -315,7 +315,7 @@ void app_otaProcessMsgHandler(u8 evt, u8 status)
  */
 void app_leaveCnfHandler(nlme_leave_cnf_t *pLeaveCnf)
 {
-    printf("app_leaveCnfHandler\r\n");
+//    printf("app_leaveCnfHandler\r\n");
 
     if(pLeaveCnf->status == SUCCESS){
     	//SYSTEM_RESET();
