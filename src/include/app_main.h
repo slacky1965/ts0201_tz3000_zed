@@ -18,7 +18,6 @@
 #include "app_reporting.h"
 #include "app_endpoint_cfg.h"
 #include "app_utility.h"
-#include "app_bootloader.h"
 #include "app_i2c.h"
 #include "app_cht8305.h"
 

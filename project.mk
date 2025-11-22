@@ -23,7 +23,6 @@ $(OUT_PATH)/$(SRC_PATH)/app_battery.o \
 $(OUT_PATH)/$(SRC_PATH)/app_reporting.o \
 $(OUT_PATH)/$(SRC_PATH)/app_endpoint_cfg.o \
 $(OUT_PATH)/$(SRC_PATH)/app_utility.o \
-$(OUT_PATH)/$(SRC_PATH)/app_bootloader.o \
 $(OUT_PATH)/$(SRC_PATH)/app_main.o \
 $(OUT_PATH)/$(SRC_PATH)/zb_appCb.o \
 $(OUT_PATH)/$(SRC_PATH)/zcl_appCb.o

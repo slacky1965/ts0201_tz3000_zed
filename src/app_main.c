@@ -256,11 +256,6 @@ void user_init(bool isRetention)
 
         start_message();
 
-#ifdef CHECK_BOOTLOADER
-        bootloader_check();
-#endif
-
-
         /* Initialize Stack */
         stack_init();
 
