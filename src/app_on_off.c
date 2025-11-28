@@ -103,7 +103,6 @@ static void proc_temp_onoff(uint8_t ep) {
         if (sw_onoff[idx] && !config.temperature_onoff) {
             sw_onoff[idx] = false;
             if(timerTempEvt) TL_ZB_TIMER_CANCEL(&timerTempEvt);
-            if(timerTempEvt) TL_ZB_TIMER_CANCEL(&timerTempEvt);
             switch(onoffCfgAttrs->switchActions) {
                 case ZCL_SWITCH_ACTION_ON_OFF:
                     cmdOnOff(ep, ZCL_CMD_ONOFF_ON);
@@ -163,7 +162,6 @@ static void proc_hum_onoff(uint8_t ep) {
 
         if (sw_onoff[idx] && !config.humidity_onoff) {
             sw_onoff[idx] = false;
-            if(timerHumEvt) TL_ZB_TIMER_CANCEL(&timerHumEvt);
             if(timerHumEvt) TL_ZB_TIMER_CANCEL(&timerHumEvt);
             switch(onoffCfgAttrs->switchActions) {
                 case ZCL_SWITCH_ACTION_ON_OFF:
