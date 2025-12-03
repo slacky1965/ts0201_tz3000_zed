@@ -52,7 +52,7 @@ int32_t set_pollRateCb(void *args) {
 
 //    printf("set_pollRateCb\r\n");
 
-    zb_setPollRate(POLL_RATE * config.read_sensors_period);
+    zb_setPollRate(POLL_RATE * 6); //config.read_sensors_period);
 
     g_appCtx.timerSetPollRateEvt = NULL;
     return -1;

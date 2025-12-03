@@ -1,6 +1,8 @@
 #include "app_main.h"
 
-static bool sw_onoff[ONOFFCFG_AMT] = {0};
+#define IDLE 0xFF
+
+static uint8_t sw_onoff[ONOFFCFG_AMT] = {IDLE};
 static ev_timer_event_t *timerTempEvt = NULL;
 static ev_timer_event_t *timerHumEvt = NULL;
 static int16_t temp_save;
@@ -42,6 +44,8 @@ static void cmdOnOff(uint8_t ep, uint8_t command) {
 
 static int32_t temp_cmd_repeatCb(void *args) {
 
+    printf("temp_cmd_repeatCb()\r\n");
+
     uint8_t ep = (uint8_t)((uint32_t)args);
     uint8_t idx = ep-1;
 
@@ -65,6 +69,8 @@ static int32_t temp_cmd_repeatCb(void *args) {
 }
 
 static int32_t hum_cmd_repeatCb(void *args) {
+
+    printf("hum_cmd_repeatCb()\r\n");
 
     uint8_t ep = (uint8_t)((uint32_t)args);
     uint8_t idx = ep-1;
@@ -100,33 +106,44 @@ static void proc_temp_onoff(uint8_t ep) {
     if(zb_isDeviceJoinedNwk()) {
 
 
-        if (sw_onoff[idx] && !config.temperature_onoff) {
-            sw_onoff[idx] = false;
+        if (!config.temperature_onoff) {
             if(timerTempEvt) TL_ZB_TIMER_CANCEL(&timerTempEvt);
-            switch(onoffCfgAttrs->switchActions) {
-                case ZCL_SWITCH_ACTION_ON_OFF:
-                    cmdOnOff(ep, ZCL_CMD_ONOFF_ON);
-                    break;
-                case ZCL_SWITCH_ACTION_OFF_ON:
-                    cmdOnOff(ep, ZCL_CMD_ONOFF_OFF);
-                    break;
-//                    case ZCL_SWITCH_ACTION_TOGGLE:
-//                        cmdOnOff(ep, ZCL_CMD_ONOFF_TOGGLE);
-//                        break;
-                default:
-                    break;
+            if (sw_onoff[idx] == ON) {
+                cmdOnOff(ep, ZCL_CMD_ONOFF_OFF);
             }
-        }
-
-        if (config.temperature_onoff) {
+            if (sw_onoff[idx] != IDLE) {
+                sw_onoff[idx] = IDLE;
+            }
+        } else {
             if (config.read_sensors_period <= seconds) seconds *= 1000;
             else seconds = config.read_sensors_period * 1000;
-            if (!sw_onoff[idx]) {
+            if (sw_onoff[idx] == IDLE) {
+                temp_save = tempAttrs->value;
+                if(timerTempEvt) TL_ZB_TIMER_CANCEL(&timerTempEvt);
+                timerTempEvt = TL_ZB_TIMER_SCHEDULE(temp_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
+                if (onoffCfgAttrs->switchActions == ZCL_SWITCH_ACTION_ON_OFF) {
+                    if (tempAttrs->value < tempAttrs->temperature_onoff_high) {
+                        sw_onoff[idx] = ON;
+                        cmdOnOff(ep, ZCL_CMD_ONOFF_ON);
+                    } else {
+                        sw_onoff[idx] = OFF;
+                        cmdOnOff(ep, ZCL_CMD_ONOFF_OFF);
+                    }
+                } else {
+                    if (tempAttrs->value > tempAttrs->temperature_onoff_low) {
+                        sw_onoff[idx] = ON;
+                        cmdOnOff(ep, ZCL_CMD_ONOFF_ON);
+                    } else {
+                        sw_onoff[idx] = OFF;
+                        cmdOnOff(ep, ZCL_CMD_ONOFF_OFF);
+                    }
+                }
+            } else if (sw_onoff[idx] == OFF) {
                 if ((tempAttrs->value >= tempAttrs->temperature_onoff_high &&
                         onoffCfgAttrs->switchActions == ZCL_SWITCH_ACTION_OFF_ON) ||
                         (tempAttrs->value <= tempAttrs->temperature_onoff_low &&
                                 onoffCfgAttrs->switchActions == ZCL_SWITCH_ACTION_ON_OFF)) {
-                    sw_onoff[idx] = true;
+                    sw_onoff[idx] = ON;
                     temp_save = tempAttrs->value;
                     if(timerTempEvt) TL_ZB_TIMER_CANCEL(&timerTempEvt);
                     timerTempEvt = TL_ZB_TIMER_SCHEDULE(temp_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
@@ -137,7 +154,7 @@ static void proc_temp_onoff(uint8_t ep) {
                         onoffCfgAttrs->switchActions == ZCL_SWITCH_ACTION_ON_OFF) ||
                         (tempAttrs->value <= tempAttrs->temperature_onoff_low &&
                                 onoffCfgAttrs->switchActions == ZCL_SWITCH_ACTION_OFF_ON)) {
-                    sw_onoff[idx] = false;
+                    sw_onoff[idx] = OFF;
                     temp_save = tempAttrs->value;
                     if(timerTempEvt) TL_ZB_TIMER_CANCEL(&timerTempEvt);
                     timerTempEvt = TL_ZB_TIMER_SCHEDULE(temp_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
@@ -160,33 +177,44 @@ static void proc_hum_onoff(uint8_t ep) {
     if(zb_isDeviceJoinedNwk()) {
 
 
-        if (sw_onoff[idx] && !config.humidity_onoff) {
-            sw_onoff[idx] = false;
+        if (!config.humidity_onoff) {
             if(timerHumEvt) TL_ZB_TIMER_CANCEL(&timerHumEvt);
-            switch(onoffCfgAttrs->switchActions) {
-                case ZCL_SWITCH_ACTION_ON_OFF:
-                    cmdOnOff(ep, ZCL_CMD_ONOFF_ON);
-                    break;
-                case ZCL_SWITCH_ACTION_OFF_ON:
-                    cmdOnOff(ep, ZCL_CMD_ONOFF_OFF);
-                    break;
-//                    case ZCL_SWITCH_ACTION_TOGGLE:
-//                        cmdOnOff(ep, ZCL_CMD_ONOFF_TOGGLE);
-//                        break;
-                default:
-                    break;
+            if (sw_onoff[idx] == ON) {
+                cmdOnOff(ep, ZCL_CMD_ONOFF_OFF);
             }
-        }
-
-        if (config.humidity_onoff) {
+            if (sw_onoff[idx] != IDLE) {
+                sw_onoff[idx] = IDLE;
+            }
+        } else {
             if (config.read_sensors_period <= seconds) seconds *= 1000;
             else seconds = config.read_sensors_period * 1000;
-            if (!sw_onoff[idx]) {
+            if (sw_onoff[idx] == IDLE) {
+                hum_save = humAttrs->value;
+                if(timerHumEvt) TL_ZB_TIMER_CANCEL(&timerHumEvt);
+                timerHumEvt = TL_ZB_TIMER_SCHEDULE(hum_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
+                if (onoffCfgAttrs->switchActions == ZCL_SWITCH_ACTION_ON_OFF) {
+                    if (humAttrs->value < humAttrs->humidity_onoff_high) {
+                        sw_onoff[idx] = ON;
+                        cmdOnOff(ep, ZCL_CMD_ONOFF_ON);
+                    } else {
+                        sw_onoff[idx] = OFF;
+                        cmdOnOff(ep, ZCL_CMD_ONOFF_OFF);
+                    }
+                } else {
+                    if (humAttrs->value > humAttrs->humidity_onoff_low) {
+                        sw_onoff[idx] = ON;
+                        cmdOnOff(ep, ZCL_CMD_ONOFF_ON);
+                    } else {
+                        sw_onoff[idx] = OFF;
+                        cmdOnOff(ep, ZCL_CMD_ONOFF_OFF);
+                    }
+                }
+            } else if (sw_onoff[idx] == OFF) {
                 if ((humAttrs->value >= humAttrs->humidity_onoff_high &&
                         onoffCfgAttrs->switchActions == ZCL_SWITCH_ACTION_OFF_ON) ||
                         (humAttrs->value <= humAttrs->humidity_onoff_low &&
                                 onoffCfgAttrs->switchActions == ZCL_SWITCH_ACTION_ON_OFF)) {
-                    sw_onoff[idx] = true;
+                    sw_onoff[idx] = ON;
                     hum_save = humAttrs->value;
                     if(timerHumEvt) TL_ZB_TIMER_CANCEL(&timerHumEvt);
                     timerHumEvt = TL_ZB_TIMER_SCHEDULE(hum_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
@@ -197,7 +225,7 @@ static void proc_hum_onoff(uint8_t ep) {
                         onoffCfgAttrs->switchActions == ZCL_SWITCH_ACTION_ON_OFF) ||
                         (humAttrs->value <= humAttrs->humidity_onoff_low &&
                                 onoffCfgAttrs->switchActions == ZCL_SWITCH_ACTION_OFF_ON)) {
-                    sw_onoff[idx] = false;
+                    sw_onoff[idx] = OFF;
                     hum_save = humAttrs->value;
                     if(timerHumEvt) TL_ZB_TIMER_CANCEL(&timerHumEvt);
                     timerHumEvt = TL_ZB_TIMER_SCHEDULE(hum_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
