@@ -9,6 +9,7 @@
 #include "zcl_relative_humidity_measurement.h"
 #include "zcl_onoffSwitchCfg.h"
 #include "zcl_custom_attr.h"
+#include "app_timer.h"
 #include "app_config.h"
 #include "app_button.h"
 #include "app_led.h"
