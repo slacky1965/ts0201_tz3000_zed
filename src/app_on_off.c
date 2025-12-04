@@ -1,8 +1,10 @@
 #include "app_main.h"
 
-#define IDLE 0xFF
+#define IDLE        0xFF
+#define TEMP_IDX   (APP_ENDPOINT1 - 1)
+#define HUM_IDX    (APP_ENDPOINT2 - 1)
 
-static uint8_t sw_onoff[ONOFFCFG_AMT] = {IDLE};
+static uint8_t sw_onoff[ONOFFCFG_AMT] = {IDLE, IDLE};
 static ev_timer_event_t *timerTempEvt = NULL;
 static ev_timer_event_t *timerHumEvt = NULL;
 static int16_t temp_save;
@@ -44,7 +46,7 @@ static void cmdOnOff(uint8_t ep, uint8_t command) {
 
 static int32_t temp_cmd_repeatCb(void *args) {
 
-    printf("temp_cmd_repeatCb()\r\n");
+//    printf("temp_cmd_repeatCb()\r\n");
 
     uint8_t ep = (uint8_t)((uint32_t)args);
     uint8_t idx = ep-1;
@@ -70,7 +72,7 @@ static int32_t temp_cmd_repeatCb(void *args) {
 
 static int32_t hum_cmd_repeatCb(void *args) {
 
-    printf("hum_cmd_repeatCb()\r\n");
+//    printf("hum_cmd_repeatCb()\r\n");
 
     uint8_t ep = (uint8_t)((uint32_t)args);
     uint8_t idx = ep-1;
@@ -121,6 +123,7 @@ static void proc_temp_onoff(uint8_t ep) {
                 temp_save = tempAttrs->value;
                 if(timerTempEvt) TL_ZB_TIMER_CANCEL(&timerTempEvt);
                 timerTempEvt = TL_ZB_TIMER_SCHEDULE(temp_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
+//                printf("Temp value: %d, low: %d, high: %d\r\n", tempAttrs->value, tempAttrs->temperature_onoff_low, tempAttrs->temperature_onoff_high);
                 if (onoffCfgAttrs->switchActions == ZCL_SWITCH_ACTION_ON_OFF) {
                     if (tempAttrs->value < tempAttrs->temperature_onoff_high) {
                         sw_onoff[idx] = ON;
@@ -192,6 +195,7 @@ static void proc_hum_onoff(uint8_t ep) {
                 hum_save = humAttrs->value;
                 if(timerHumEvt) TL_ZB_TIMER_CANCEL(&timerHumEvt);
                 timerHumEvt = TL_ZB_TIMER_SCHEDULE(hum_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
+//                printf("Hum value: %d, low: %d, high: %d\r\n", humAttrs->value, humAttrs->humidity_onoff_low, humAttrs->humidity_onoff_high);
                 if (onoffCfgAttrs->switchActions == ZCL_SWITCH_ACTION_ON_OFF) {
                     if (humAttrs->value < humAttrs->humidity_onoff_high) {
                         sw_onoff[idx] = ON;
@@ -238,8 +242,19 @@ static void proc_hum_onoff(uint8_t ep) {
 
 void proc_temp_hum_onoff() {
 
+//#if UART_PRINTF_MODE && DEBUG_ONOFF
+//    printf("Start OnOff control\r\n");
+//#endif /* UART_PRINTF_MODE */
+
     proc_temp_onoff(APP_ENDPOINT1);
     proc_hum_onoff(APP_ENDPOINT2);
 
 }
 
+void reset_control_temp() {
+    sw_onoff[TEMP_IDX] = IDLE;
+}
+
+void reset_control_hum() {
+    sw_onoff[HUM_IDX] = IDLE;
+}

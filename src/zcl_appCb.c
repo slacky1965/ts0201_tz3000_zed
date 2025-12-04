@@ -223,6 +223,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                                        (uint8_t*)&config.temperature_onoff_low);
                     }
                 }
+                reset_control_temp();
                 proc_temp_hum_onoff();
             } else if (attr[i].attrID == ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_ONOFF_HIGH) {
                 uint16_t temperature_high = attr[i].attrData[0] & 0xff;
@@ -241,6 +242,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                                        (uint8_t*)&config.temperature_onoff_high);
                     }
                 }
+                reset_control_temp();
                 proc_temp_hum_onoff();
             }
         }
@@ -283,6 +285,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                                        (uint8_t*)&config.humidity_onoff_low);
                     }
                 }
+                reset_control_hum();
                 proc_temp_hum_onoff();
             } else if (attr[i].attrID == ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_HUMIDITY_ONOFF_HIGH) {
                 uint16_t humidity_high = attr[i].attrData[0] & 0xff;
@@ -301,6 +304,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                                        (uint8_t*)&config.humidity_onoff_high);
                     }
                 }
+                reset_control_hum();
                 proc_temp_hum_onoff();
             }
         }
@@ -311,6 +315,8 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
             if (attr[i].attrID == ZCL_ATTRID_SWITCH_ACTION) {
 //                printf("Switch action: %d by endPoint: %d\r\n", attr[i].attrData[0], endPoint);
                 zcl_onOffCfgAttr_save();
+                reset_control_temp();
+                reset_control_hum();
             }
         }
     }
