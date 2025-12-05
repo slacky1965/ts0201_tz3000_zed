@@ -242,9 +242,9 @@ static void proc_hum_onoff(uint8_t ep) {
 
 void proc_temp_hum_onoff() {
 
-//#if UART_PRINTF_MODE && DEBUG_ONOFF
-//    printf("Start OnOff control\r\n");
-//#endif /* UART_PRINTF_MODE */
+#if UART_PRINTF_MODE && DEBUG_ONOFF
+    printf("Start OnOff control\r\n");
+#endif /* UART_PRINTF_MODE */
 
     proc_temp_onoff(APP_ENDPOINT1);
     proc_hum_onoff(APP_ENDPOINT2);
