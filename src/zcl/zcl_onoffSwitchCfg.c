@@ -28,7 +28,9 @@ nv_sts_t zcl_onOffCfgAttr_save(void) {
     nv_sts_t st = NV_SUCC;
     bool save = false;
 
-//    printf("zcl_onOffCfgAttr_save()\r\n");
+#if UART_PRINTF_MODE && DEBUG_SAVE
+    printf("Saved OnOffCfg\r\n");
+#endif
 
 #ifdef ZCL_ON_OFF_SWITCH_CFG
 #if NV_ENABLE
@@ -77,9 +79,15 @@ nv_sts_t zcl_onOffCfgAttr_restore(void) {
     st = nv_flashReadNew(1, NV_MODULE_ZCL,  NV_ITEM_ZCL_ON_OFF, sizeof(zcl_onOffSwitchCfgAttr_t)*ONOFFCFG_AMT, (u8*)zcl_nv_onOffCfg);
 
     if(st == NV_SUCC){
+#if UART_PRINTF_MODE && DEBUG_SAVE
+        printf("Restored OnOfCfg\r\n");
+#endif
         g_zcl_onOffSwitchCfgAttrs[0].switchActions = zcl_nv_onOffCfg[0].switchActions;
         g_zcl_onOffSwitchCfgAttrs[1].switchActions = zcl_nv_onOffCfg[1].switchActions;
     } else {
+#if UART_PRINTF_MODE && DEBUG_SAVE
+        printf("Default OnOffCfg\r\n");
+#endif
         g_zcl_onOffSwitchCfgAttrs[0].switchActions = ZCL_SWITCH_ACTION_ON_OFF;
         g_zcl_onOffSwitchCfgAttrs[1].switchActions = ZCL_SWITCH_ACTION_ON_OFF;
     }

@@ -19,7 +19,7 @@ nv_sts_t config_save() {
 
 #if NV_ENABLE
 
-#if UART_PRINTF_MODE
+#if UART_PRINTF_MODE && DEBUG_SAVE
     printf("Saved config\r\n");
 #endif
 
@@ -44,14 +44,14 @@ nv_sts_t config_restore() {
 
     if (st == NV_SUCC && temp_config.crc == checksum((uint8_t*)&temp_config, sizeof(config_t)-1)) {
 
-#if UART_PRINTF_MODE
+#if UART_PRINTF_MODE && DEBUG_SAVE
         printf("Restored config\r\n");
 #endif
 
         memcpy(&config, &temp_config, (sizeof(config_t)));
     } else {
         /* default config */
-#if UART_PRINTF_MODE
+#if UART_PRINTF_MODE && DEBUG_SAVE
         printf("Default config\r\n");
 #endif
         config.read_sensors_period = DEFAULT_READ_SENSORS_PERIOD;

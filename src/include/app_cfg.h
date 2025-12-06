@@ -77,6 +77,7 @@ extern "C" {
 #define DEBUG_OTA                       OFF
 #define DEBUG_CHT8305                   OFF
 #define DEBUG_STA_STATUS                OFF
+#define DEBUG_SAVE                      ON
 #define DEBUG_ONOFF                     ON
 /* PM */
 #define PM_ENABLE						ON
