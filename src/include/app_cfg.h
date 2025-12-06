@@ -67,7 +67,7 @@ extern "C" {
 #include "version_cfg.h"
 
 /* Debug mode config */
-#define	UART_PRINTF_MODE                ON
+#define	UART_PRINTF_MODE                OFF
 #define USB_PRINTF_MODE         		OFF
 
 #define DEBUG_BUTTON                    ON
