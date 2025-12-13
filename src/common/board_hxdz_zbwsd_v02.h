@@ -1,5 +1,11 @@
-#ifndef SRC_COMMON_BOARD_TS201_TZ3000_H_
-#define SRC_COMMON_BOARD_TS201_TZ3000_H_
+#if (BOARD == BOARD_HXDZ_ZBWSD_V02)
+
+#pragma once
+
+/* Enable C linkage for C++ Compilers: */
+#if defined(__cplusplus)
+extern "C" {
+#endif
 
 #define VOLTAGE_DETECT_PIN      GPIO_PC5
 
@@ -63,6 +69,9 @@ enum {
 #define KB_DRIVE_PINS  {NULL }
 #define KB_SCAN_PINS   {BUTTON1}
 
+/* Disable C linkage for C++ Compilers: */
+#if defined(__cplusplus)
+}
+#endif
 
-
-#endif /* SRC_COMMON_BOARD_TS201_TZ3000_H_ */
+#endif

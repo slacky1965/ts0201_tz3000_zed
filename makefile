@@ -1,5 +1,5 @@
 # Set Project Name
-PROJECT_NAME := ts0201_tz3000_zed
+PROJECT_NAME ?= ts0201_tz3000_0x15_zed
 
 # Set the serial port number for downloading the firmware
 DOWNLOAD_PORT := COM3
@@ -27,7 +27,7 @@ LIBS := -lzb_ed -ldrivers_8258
 
 DEVICE_TYPE = -DEND_DEVICE=1
 MCU_TYPE = -DMCU_CORE_8258=1
-BOOT_FLAG = -DMCU_CORE_8258 -DMCU_STARTUP_8258
+BOOT_FLAG = -DMCU_CORE_8258 -DMCU_STARTUP_8258 $(PROJECT_DEF)
 
 SDK_PATH := ./tl_zigbee_sdk
 SRC_PATH := ./src
@@ -87,6 +87,7 @@ GCC_FLAGS += \
 endif
   
 GCC_FLAGS += \
+$(PROJECT_DEF) \
 $(DEVICE_TYPE) \
 $(MCU_TYPE)
 
@@ -189,7 +190,6 @@ $(BIN_FILE): $(ELF_FILE)
 	@cp $(BIN_FILE) $(BIN_PATH)/$(PROJECT_NAME)_$(VERSION_RELEASE).$(VERSION_BUILD).bin
 	@echo 'Create zigbee OTA file'
 	@python3 $(MAKE_OTA) -t $(PROJECT_NAME) -s "Slacky-DIY OTA" $(BIN_PATH)/$(PROJECT_NAME)_$(VERSION_RELEASE).$(VERSION_BUILD).bin 
-	@python3 $(MAKE_OTA) -t $(PROJECT_NAME) -i 0x0395 -s "Slacky-DIY OTA" $(BIN_PATH)/$(PROJECT_NAME)_$(VERSION_RELEASE).$(VERSION_BUILD).bin 
 	@echo 'Create zigbee Tuya OTA file'
 	@python3 $(MAKE_OTA) -t $(PROJECT_NAME) -m 4417 -i 54179 -v0x1111114b -s "Slacky-DIY OTA" $(BIN_PATH)/$(PROJECT_NAME)_$(VERSION_RELEASE).$(VERSION_BUILD).bin   
 	@echo ' '
@@ -204,12 +204,15 @@ sizedummy: $(ELF_FILE)
 
 # Other Targets
 clean:
-	@echo $(INCLUDE_PATHS)
-	-$(RM) $(FLASH_IMAGE) $(ELFS) $(OBJS) $(SIZEDUMMY) $(LST_FILE) $(ELF_FILE) $(BIN_PATH)/*.bin $(BIN_PATH)/*.zigbee
+	-$(RM) $(FLASH_IMAGE) $(ELFS) $(OBJS) $(SIZEDUMMY) $(LST_FILE) $(ELF_FILE)
+	-@echo ' '
+
+clean-bin:
+	-$(RM) $(BIN_PATH)/*.bin $(BIN_PATH)/*.zigbee
 	-@echo ' '
 
 clean-project:
-	-$(RM) $(FLASH_IMAGE) $(ELFS) $(SIZEDUMMY) $(LST_FILE) $(ELF_FILE) $(BIN_PATH)/*.bin $(BIN_PATH)/*.zigbee
+	-$(RM) $(FLASH_IMAGE) $(ELFS) $(SIZEDUMMY) $(LST_FILE) $(ELF_FILE)
 	-$(RM) -R $(OUT_PATH)/$(SRC_PATH)/*.o
 	-@echo ' '
 	

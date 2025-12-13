@@ -39,6 +39,11 @@ extern "C" {
 #define MCU_CORE_8258   1
 #endif
 
+/* I2C driver type */
+#define I2C_DRV_NONE    0
+#define I2C_DRV_HARD    1
+#define I2C_DRV_SOFT    2
+
 /* for reporting */
 #define REPORTING_MIN           10              /* 10 sec                   */
 #define REPORTING_MAX           3600            /* 60 min                   */
@@ -54,17 +59,21 @@ extern "C" {
 #define ONOFFCFG_AMT            2               /* 2 endpoints for OnOff temperature and humidity controls */
 
 /**********************************************************************
+ * Version configuration
+ */
+#include "version_cfg.h"
+
+/**********************************************************************
  * Product Information
  */
 
 #define ZCL_BASIC_MFG_NAME     {10,'S','l','a','c','k','y','-','D','I','Y'}
+#if BOARD == BOARD_HXDZ_ZBWSD_V02
 #define ZCL_BASIC_MODEL_ID     {12,'T','S','0','2','0','1','-','z','-','S','l','D'}
+#elif BOARD == BOARD_IHSENO_IC_V0
+#define ZCL_BASIC_MODEL_ID     {14,'T','S','0','2','0','1','-','z','2', '1','-','S','l','D'}
+#endif
 
-
-/**********************************************************************
- * Version configuration
- */
-#include "version_cfg.h"
 
 /* Debug mode config */
 #define	UART_PRINTF_MODE                ON
@@ -89,18 +98,18 @@ extern "C" {
 #define TOUCHLINK_SUPPORT				ON
 #define FIND_AND_BIND_SUPPORT			OFF
 
-/* Board ID */
-#define BOARD_826x_EVK                  0
-#define BOARD_826x_DONGLE               1
-#define BOARD_826x_DONGLE_PA            2
-#define BOARD_8258_EVK                  3
-#define BOARD_8258_EVK_V1P2             4//C1T139A30_V1.2
-#define BOARD_8258_DONGLE               5
-#define BOARD_8278_EVK                  6
-#define BOARD_8278_DONGLE               7
-#define BOARD_B91_EVK                   8
-#define BOARD_B91_DONGLE                9
-#define BOARD_TS201_TZ3000              10
+///* Board ID */
+//#define BOARD_826x_EVK                  0
+//#define BOARD_826x_DONGLE               1
+//#define BOARD_826x_DONGLE_PA            2
+//#define BOARD_8258_EVK                  3
+//#define BOARD_8258_EVK_V1P2             4//C1T139A30_V1.2
+//#define BOARD_8258_DONGLE               5
+//#define BOARD_8278_EVK                  6
+//#define BOARD_8278_DONGLE               7
+//#define BOARD_B91_EVK                   8
+//#define BOARD_B91_DONGLE                9
+//#define BOARD_TS201_TZ3000              10
 
 /* Board define */
 #if defined(MCU_CORE_826x)
@@ -114,7 +123,7 @@ extern "C" {
 #if (CHIP_TYPE == TLSR_8258_1M)
     #define FLASH_CAP_SIZE_1M           1
 #endif
-    #define BOARD                       BOARD_TS201_TZ3000
+//    #define BOARD                       BOARD_TS201_TZ3000
     #define CLOCK_SYS_CLOCK_HZ          48000000
     #define NV_ITEM_APP_USER_CFG        (NV_ITEM_APP_GP_TRANS_TABLE + 1)    // see sdk/proj/drivers/drv_nv.h
 #elif defined(MCU_CORE_8278)
@@ -130,29 +139,34 @@ extern "C" {
 #endif
 
 /* Board include */
-#if (BOARD == BOARD_826x_EVK)
-    #include "board_826x_evk.h"
-#elif (BOARD == BOARD_826x_DONGLE)
-    #include "board_826x_dongle.h"
-#elif (BOARD == BOARD_826x_DONGLE_PA)
-    #include "board_826x_dongle_pa.h"
-#elif (BOARD == BOARD_8258_DONGLE)
-    #include "board_8258_dongle.h"
-#elif (BOARD == BOARD_8258_EVK)
-    #include "board_8258_evk.h"
-#elif (BOARD == BOARD_8258_EVK_V1P2)
-    #include "board_8258_evk_v1p2.h"
-#elif (BOARD == BOARD_8278_EVK)
-    #include "board_8278_evk.h"
-#elif (BOARD == BOARD_8278_DONGLE)
-    #include "board_8278_dongle.h"
-#elif (BOARD == BOARD_B91_EVK)
-    #include "board_b91_evk.h"
-#elif (BOARD == BOARD_B91_DONGLE)
-    #include "board_b91_dongle.h"
-#elif (BOARD == BOARD_TS201_TZ3000)
-    #include "board_ts201_tz3000.h"
+#if defined(BOARD)
+#include "board_hxdz_zbwsd_v02.h"
+#include "board_ihseno_ic_v0.h"
 #endif
+
+//#if (BOARD == BOARD_826x_EVK)
+//    #include "board_826x_evk.h"
+//#elif (BOARD == BOARD_826x_DONGLE)
+//    #include "board_826x_dongle.h"
+//#elif (BOARD == BOARD_826x_DONGLE_PA)
+//    #include "board_826x_dongle_pa.h"
+//#elif (BOARD == BOARD_8258_DONGLE)
+//    #include "board_8258_dongle.h"
+//#elif (BOARD == BOARD_8258_EVK)
+//    #include "board_8258_evk.h"
+//#elif (BOARD == BOARD_8258_EVK_V1P2)
+//    #include "board_8258_evk_v1p2.h"
+//#elif (BOARD == BOARD_8278_EVK)
+//    #include "board_8278_evk.h"
+//#elif (BOARD == BOARD_8278_DONGLE)
+//    #include "board_8278_dongle.h"
+//#elif (BOARD == BOARD_B91_EVK)
+//    #include "board_b91_evk.h"
+//#elif (BOARD == BOARD_B91_DONGLE)
+//    #include "board_b91_dongle.h"
+//#elif (BOARD == BOARD_TS201_TZ3000)
+//    #include "board_ts201_tz3000.h"
+//#endif
 
 
 /* Voltage detect module */

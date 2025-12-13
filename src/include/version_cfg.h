@@ -27,19 +27,22 @@
 
 #include "../common/comm_cfg.h"
 
+#define BOARD_HXDZ_ZBWSD_V02                0x15
+#define BOARD_IHSENO_IC_V0                  0x21
+#define BOARD_3                             0x22
+#define BOARD_4                             0x23
+#define BOARD_5                             0x24
+
+#ifndef BOARD
+#define BOARD                               BOARD_HXDZ_ZBWSD_V02
+#endif
+
 #define APP_RELEASE                         0x10        //app release 1.0
 #define APP_BUILD                           0x05        //app build 05, full version - v1.0.05
 
 #define STACK_RELEASE                       0x30        //stack release 3.0
 #define STACK_BUILD                         0x01        //stack build 01
 #define HW_VERSION                          0x01
-
-#ifndef ZCL_BASIC_MFG_NAME
-    #define ZCL_BASIC_MFG_NAME     {6,'T','E','L','I','N','K'}
-#endif
-#ifndef ZCL_BASIC_MODEL_ID
-    #define ZCL_BASIC_MODEL_ID     {8,'T','L','S','R','8','2','5','x'}
-#endif
 
 #ifndef BUILD_DATE
 #define BUILD_DATE "20250611"
@@ -75,7 +78,7 @@
  * 0x12 - ECM_DIN1_counter
  * 0x13 - Tuya CO2 Sensor
  * 0x14 - Air monitor
- * 0x15 - Tuya Temperature and Humidity sensors
+ * 0x15 - Tuya Temperature and Humidity sensors (board_hxdz_zbwsd_v02.h)
  * 0x16 - Tuya Temperature and Humidity sensors ts0601_tze200 ZG-227Z
  * 0x17 - Tuya water leak sensor ZG-222ZA, ZTU or tlsr825x with 1M
  * 0x18 - Tuya water leak sensor ZG-222ZA, tlsr825x with 512K
@@ -86,10 +89,15 @@
  * 0x1D - Tuya relay QS-Zigbee-SEC02 _TZ3000_m8f3z8ju
  * 0x1E - Tuya relay QS-Zigbee-SEC01 _TZ3000_hdc8bbha
  * 0x1F - Tuya plug TS011F with monitoring
+ * 0x20 - Tuya door/window sensor TS0203
+ * 0x21 - Tuya Temperature and Humidity sensors (board_ihseno_ic_v0.h)
+ * 0x22 - Tuya Temperature and Humidity sensors (board_ihseno_ic_v0.h)
+ * 0x23 - Tuya Temperature and Humidity sensors (board_ihseno_ic_v0.h)
+ * 0x24 - Tuya Temperature and Humidity sensors (board_ihseno_ic_v0.h)
  *
  */
 
-#define IMAGE_TYPE_APP              (0x15 | (IMAGE_TYPE_BOOT_FLAG << 7))
+#define IMAGE_TYPE_APP              (BOARD | (IMAGE_TYPE_BOOT_FLAG << 7))
 
 /*********************************************************************************************
  * During OTA upgrade, the upgraded device will check the rules of the following three fields.
