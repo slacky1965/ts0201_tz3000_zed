@@ -1,5 +1,7 @@
 #include "app_main.h"
 
+#define HUMIDITY_TEST   OFF
+
 #define IDLE        0xFF
 #define TEMP_IDX   (APP_ENDPOINT1 - 1)
 #define HUM_IDX    (APP_ENDPOINT2 - 1)
@@ -9,6 +11,11 @@ static ev_timer_event_t *timerTempEvt = NULL;
 static ev_timer_event_t *timerHumEvt = NULL;
 static int16_t temp_save;
 static uint16_t hum_save;
+
+#if HUMIDITY_TEST
+static uint16_t hum_test = 1800;        // 18%
+static uint8_t hum_direction = 1;
+#endif
 
 static void cmdOnOff(uint8_t ep, uint8_t command) {
     epInfo_t dstEpInfo;
@@ -77,7 +84,14 @@ static int32_t hum_cmd_repeatCb(void *args) {
     uint8_t ep = (uint8_t)((uint32_t)args);
     uint8_t idx = ep-1;
 
+#if HUMIDITY_TEST
+    zcl_humidityAttr_t humAttrs_test;
+    humAttrs_test.value = hum_test;
+    zcl_humidityAttr_t *humAttrs = &humAttrs_test;
+#else
     zcl_humidityAttr_t *humAttrs = zcl_humidityAttrGet();
+#endif
+
     zcl_onOffSwitchCfgAttr_t *onoffCfgAttrs = zcl_onOffSwitchCfgAttrGet();
     onoffCfgAttrs += idx;
 
@@ -106,7 +120,6 @@ static void proc_temp_onoff(uint8_t ep) {
     onoffCfgAttrs += idx;
 
     if(zb_isDeviceJoinedNwk()) {
-
 
         if (!config.temperature_onoff) {
             if(timerTempEvt) TL_ZB_TIMER_CANCEL(&timerTempEvt);
@@ -173,7 +186,30 @@ static void proc_hum_onoff(uint8_t ep) {
     uint8_t idx = ep - 1;
     uint32_t seconds = 60;
 
+#if HUMIDITY_TEST
+    zcl_humidityAttr_t humAttrs_test;
+    humAttrs_test.value = hum_test;
+    zcl_humidityAttr_t *humAttrs = &humAttrs_test;
+    printf("humidity: %d%%\r\n", humAttrs->value / 100);
+    if (hum_direction) {
+        if (hum_test >= 2200) {
+            hum_direction = 0;
+            hum_test -= 100;
+        } else {
+            hum_test += 100;
+        }
+    } else {
+        if (hum_test <= 1800) {
+            hum_direction = 1;
+            hum_test += 100;
+        } else {
+            hum_test -= 100;
+        }
+    }
+#else
     zcl_humidityAttr_t *humAttrs = zcl_humidityAttrGet();
+#endif
+
     zcl_onOffSwitchCfgAttr_t *onoffCfgAttrs = zcl_onOffSwitchCfgAttrGet();
     onoffCfgAttrs += idx;
 
@@ -223,6 +259,9 @@ static void proc_hum_onoff(uint8_t ep) {
                     if(timerHumEvt) TL_ZB_TIMER_CANCEL(&timerHumEvt);
                     timerHumEvt = TL_ZB_TIMER_SCHEDULE(hum_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
                     cmdOnOff(ep, ZCL_CMD_ONOFF_ON);
+#if HUMIDITY_TEST
+                    printf("ON. hum: %d%%\r\n", humAttrs->value / 100);
+#endif
                 }
             } else {
                 if ((humAttrs->value >= humAttrs->humidity_onoff_high &&
@@ -234,6 +273,9 @@ static void proc_hum_onoff(uint8_t ep) {
                     if(timerHumEvt) TL_ZB_TIMER_CANCEL(&timerHumEvt);
                     timerHumEvt = TL_ZB_TIMER_SCHEDULE(hum_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
                     cmdOnOff(ep, ZCL_CMD_ONOFF_OFF);
+#if HUMIDITY_TEST
+                    printf("OFF. hum: %d%%\r\n", humAttrs->value / 100);
+#endif
                 }
             }
         }
