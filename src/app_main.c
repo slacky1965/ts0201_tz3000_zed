@@ -169,7 +169,7 @@ void user_app_init(void)
 
     app_i2c_init();
 
-    app_cht8305_init();
+    app_sensor_init();
 
 //#if UART_PRINTF_MODE
 //    printf("IMAGE_TYPE: 0x%x\r\n", IMAGE_TYPE);
@@ -185,7 +185,7 @@ void app_task(void) {
     if (zb_isDeviceJoinedNwk()) {
         if (app_timer_exceed(g_appCtx.read_sensor_time, (uint32_t)config.read_sensors_period * 1000)) {
             g_appCtx.read_sensor_time = app_timeout_get();
-            app_cht8305_measurement();
+            app_sensor_measurement();
             light_blink_stop();
             light_blink_start(1, 30, 30);
 

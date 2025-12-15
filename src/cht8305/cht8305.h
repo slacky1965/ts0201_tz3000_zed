@@ -1,7 +1,9 @@
 #ifndef SRC_CHT8305_CHT8305_H_
 #define SRC_CHT8305_CHT8305_H_
 
-#include "app_main.h"
+#if (SENSOR_USED == SENSOR_CHT8305)
+
+//#include "app_main.h"
 
 #define CHT8305_I2C_ADDRESS         0x40
 #define CHT8305_I2C_ADDRESS2        0x41
@@ -70,5 +72,7 @@ struct _cht8305_dev {
 
 cht8305_error_t cht8305_init(cht8305_dev_t *dev);
 cht8305_error_t cht8305_readSensor();
+
+#endif
 
 #endif /* SRC_CHT8305_CHT8305_H_ */

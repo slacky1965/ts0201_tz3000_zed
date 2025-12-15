@@ -153,12 +153,12 @@
 				<useDefaultCommand>true</useDefaultCommand>
 				<runAllBuilders>true</runAllBuilders>
 			</target>
-			<target name="firmware" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+			<target name="firmware 0x15" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 				<buildCommand>make</buildCommand>
-				<buildArguments/>
+				<buildArguments>PROJECT_NAME="ts0201_tz3000_0x15_zed" PROJECT_DEF="-DBOARD=BOARD_HXDZ_ZBWSD_V02"</buildArguments>
 				<buildTarget>all</buildTarget>
 				<stopOnError>true</stopOnError>
-				<useDefaultCommand>true</useDefaultCommand>
+				<useDefaultCommand>false</useDefaultCommand>
 				<runAllBuilders>true</runAllBuilders>
 			</target>
 			<target name="test-flash" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
@@ -183,20 +183,51 @@
 				<useDefaultCommand>true</useDefaultCommand>
 				<runAllBuilders>true</runAllBuilders>
 			</target>
-			<target name="firmware flash 0" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-				<buildCommand>make</buildCommand>
-				<buildArguments/>
-				<buildTarget>flash0</buildTarget>
-				<stopOnError>true</stopOnError>
-				<useDefaultCommand>true</useDefaultCommand>
-				<runAllBuilders>true</runAllBuilders>
-			</target>
 			<target name="firmware flash 8000" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 				<buildCommand>make</buildCommand>
 				<buildArguments/>
 				<buildTarget>flash8000</buildTarget>
 				<stopOnError>true</stopOnError>
 				<useDefaultCommand>true</useDefaultCommand>
+				<runAllBuilders>true</runAllBuilders>
+			</target>
+			<target name="firmware 0x21" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+				<buildCommand>make</buildCommand>
+				<buildArguments>PROJECT_NAME="ts0201_tz3000_0x21_zed" PROJECT_DEF="-DBOARD=BOARD_IHSENO_IC_V0"</buildArguments>
+				<buildTarget>all</buildTarget>
+				<stopOnError>true</stopOnError>
+				<useDefaultCommand>false</useDefaultCommand>
+				<runAllBuilders>true</runAllBuilders>
+			</target>
+			<target name="clean-bin" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+				<buildCommand>make</buildCommand>
+				<buildTarget>clean-bin</buildTarget>
+				<stopOnError>true</stopOnError>
+				<useDefaultCommand>true</useDefaultCommand>
+				<runAllBuilders>true</runAllBuilders>
+			</target>
+			<target name="all test" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+				<buildCommand>make</buildCommand>
+				<buildArguments>PROJECT_NAME="ts0201_tz3000_0x22_zed" PROJECT_DEF="-DBOARD=BOARD_IHSENO_IC_V1"</buildArguments>
+				<buildTarget>all</buildTarget>
+				<stopOnError>true</stopOnError>
+				<useDefaultCommand>false</useDefaultCommand>
+				<runAllBuilders>true</runAllBuilders>
+			</target>
+			<target name="firmware 0x21 flash" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+				<buildCommand>make</buildCommand>
+				<buildArguments>PROJECT_NAME="ts0201_tz3000_0x21_zed" PROJECT_DEF="-DBOARD=BOARD_IHSENO_IC_V0"</buildArguments>
+				<buildTarget>flash0</buildTarget>
+				<stopOnError>true</stopOnError>
+				<useDefaultCommand>false</useDefaultCommand>
+				<runAllBuilders>true</runAllBuilders>
+			</target>
+			<target name="firmware 0x15 flash" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+				<buildCommand>make</buildCommand>
+				<buildArguments>PROJECT_NAME="ts0201_tz3000_0x15_zed" PROJECT_DEF="-DBOARD=BOARD_HXDZ_ZBWSD_V02"</buildArguments>
+				<buildTarget>flash0</buildTarget>
+				<stopOnError>true</stopOnError>
+				<useDefaultCommand>false</useDefaultCommand>
 				<runAllBuilders>true</runAllBuilders>
 			</target>
 		</buildTargets>

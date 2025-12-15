@@ -1,5 +1,20 @@
-#ifndef SRC_COMMON_BOARD_TS201_TZ3000_H_
-#define SRC_COMMON_BOARD_TS201_TZ3000_H_
+#ifndef SRC_COMMON_BOARD_HXDZ_ZBWSD_V02_H_
+#define SRC_COMMON_BOARD_HXDZ_ZBWSD_V02_H_
+
+//#include "app_cfg.h"
+//#include "version_cfg.h"
+
+#if (BOARD == BOARD_HXDZ_ZBWSD_V02)
+
+/**********************************************************************
+ * Product Information
+ */
+#define ZCL_BASIC_MFG_NAME     {10,'S','l','a','c','k','y','-','D','I','Y'}
+#define ZCL_BASIC_MODEL_ID     {12,'T','S','0','2','0','1','-','z','-','S','l','D'}
+
+
+#define I2C_DRV_USED            I2C_DRV_HARD
+#define SENSOR_USED             SENSOR_CHT8305
 
 #define VOLTAGE_DETECT_PIN      GPIO_PC5
 
@@ -10,8 +25,8 @@
  *
  */
 
-#define I2C_PIN_GROUP       I2C_GPIO_GROUP_C2C3
-#define I2C_CLOCK           200000//200K
+#define I2C_PIN_GROUP           I2C_GPIO_GROUP_C2C3
+#define I2C_CLOCK               200000//200K
 
 /**************************** Configure UART ***************************************/
 #if UART_PRINTF_MODE
@@ -63,6 +78,6 @@ enum {
 #define KB_DRIVE_PINS  {NULL }
 #define KB_SCAN_PINS   {BUTTON1}
 
+#endif /* (BOARD == BOARD_HXDZ_ZBWSD_V02) */
 
-
-#endif /* SRC_COMMON_BOARD_TS201_TZ3000_H_ */
+#endif /* SRC_COMMON_BOARD_HXDZ_ZBWSD_V02_H_ */
