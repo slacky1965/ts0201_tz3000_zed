@@ -123,6 +123,7 @@
 		<buildTargets>
 			<target name="clean" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 				<buildCommand>make</buildCommand>
+				<buildArguments/>
 				<buildTarget>clean</buildTarget>
 				<stopOnError>true</stopOnError>
 				<useDefaultCommand>true</useDefaultCommand>
@@ -130,6 +131,7 @@
 			</target>
 			<target name="flash-erase" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 				<buildCommand>make</buildCommand>
+				<buildArguments/>
 				<buildTarget>erase-flash</buildTarget>
 				<stopOnError>true</stopOnError>
 				<useDefaultCommand>true</useDefaultCommand>
@@ -137,6 +139,7 @@
 			</target>
 			<target name="reset" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 				<buildCommand>make</buildCommand>
+				<buildArguments/>
 				<buildTarget>reset</buildTarget>
 				<stopOnError>true</stopOnError>
 				<useDefaultCommand>true</useDefaultCommand>
@@ -144,6 +147,7 @@
 			</target>
 			<target name="flash bootloader" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 				<buildCommand>make</buildCommand>
+				<buildArguments/>
 				<buildTarget>flash-bootloader</buildTarget>
 				<stopOnError>true</stopOnError>
 				<useDefaultCommand>true</useDefaultCommand>
@@ -159,6 +163,7 @@
 			</target>
 			<target name="test-flash" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 				<buildCommand>make</buildCommand>
+				<buildArguments/>
 				<buildTarget>test-flash</buildTarget>
 				<stopOnError>true</stopOnError>
 				<useDefaultCommand>true</useDefaultCommand>
@@ -166,7 +171,6 @@
 			</target>
 			<target name="flash-orig-read" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 				<buildCommand>make</buildCommand>
-				<buildArguments/>
 				<buildTarget>flash-orig-read</buildTarget>
 				<stopOnError>true</stopOnError>
 				<useDefaultCommand>true</useDefaultCommand>
@@ -174,7 +178,6 @@
 			</target>
 			<target name="flash-orig-write" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 				<buildCommand>make</buildCommand>
-				<buildArguments/>
 				<buildTarget>flash-orig-write</buildTarget>
 				<stopOnError>true</stopOnError>
 				<useDefaultCommand>true</useDefaultCommand>
@@ -182,6 +185,7 @@
 			</target>
 			<target name="firmware flash 8000" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 				<buildCommand>make</buildCommand>
+				<buildArguments/>
 				<buildTarget>flash8000</buildTarget>
 				<stopOnError>true</stopOnError>
 				<useDefaultCommand>true</useDefaultCommand>
@@ -197,7 +201,6 @@
 			</target>
 			<target name="clean-bin" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 				<buildCommand>make</buildCommand>
-				<buildArguments/>
 				<buildTarget>clean-bin</buildTarget>
 				<stopOnError>true</stopOnError>
 				<useDefaultCommand>true</useDefaultCommand>
@@ -211,7 +214,7 @@
 				<useDefaultCommand>false</useDefaultCommand>
 				<runAllBuilders>true</runAllBuilders>
 			</target>
-			<target name="firmware 0x21 flash 0" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+			<target name="firmware 0x21 flash" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 				<buildCommand>make</buildCommand>
 				<buildArguments>PROJECT_NAME="ts0201_tz3000_0x21_zed" PROJECT_DEF="-DBOARD=BOARD_IHSENO_IC_V0"</buildArguments>
 				<buildTarget>flash0</buildTarget>
@@ -219,7 +222,7 @@
 				<useDefaultCommand>false</useDefaultCommand>
 				<runAllBuilders>true</runAllBuilders>
 			</target>
-			<target name="firmware 0x15 flash 0" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+			<target name="firmware 0x15 flash" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
 				<buildCommand>make</buildCommand>
 				<buildArguments>PROJECT_NAME="ts0201_tz3000_0x15_zed" PROJECT_DEF="-DBOARD=BOARD_HXDZ_ZBWSD_V02"</buildArguments>
 				<buildTarget>flash0</buildTarget>
