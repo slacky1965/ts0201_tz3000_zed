@@ -1,8 +1,17 @@
-#include "app_main.h"
+#include "tl_common.h"
+#include "zcl_include.h"
+#include "zcl_relative_humidity_measurement.h"
+
+#if (SENSOR_USED == SENSOR_CHT8305)
+
+#include "app_cht8305.h"
+#include "app_i2c.h"
+#include "app_config.h"
+#include "app_endpoint_cfg.h"
 
 static cht8305_dev_t cht8305_dev;
 
-#if UART_PRINTF_MODE && DEBUG_CHT8305
+#if UART_PRINTF_MODE && DEBUG_SENSOR
 static void cht8305_error_codes_print_result(const char api_name[], int8_t rslt) {
     if (rslt != CHT8305_OK)
     {
@@ -122,7 +131,7 @@ uint8_t app_cht8305_init() {
 
 
     ret = cht8305_init(&cht8305_dev);
-#if UART_PRINTF_MODE && DEBUG_CHT8305
+#if UART_PRINTF_MODE && DEBUG_SENSOR
     cht8305_error_codes_print_result("cht8305_init", ret);
 #endif
 
@@ -137,7 +146,7 @@ void app_cht8305_measurement() {
 
     uint8_t ret = cht8305_readSensor();
 
-#if UART_PRINTF_MODE && DEBUG_CHT8305
+#if UART_PRINTF_MODE && DEBUG_SENSOR
     cht8305_error_codes_print_result("app_cht8305_measurement", ret);
 //    printf("temperature_raw: 0x%04x\r\n", cht8305_dev.raw_temp);
 //    printf("humidity_raw:    0x%04x\r\n", cht8305_dev.raw_hum);
@@ -153,7 +162,7 @@ void  app_cht8305_set_temperature() {
 
     int16_t temperature = ((int32_t)(16500 * cht8305_dev.raw_temp) / 65535) - 4000 + config.temperature_offset;
 
-#if UART_PRINTF_MODE && DEBUG_CHT8305
+#if UART_PRINTF_MODE && DEBUG_SENSOR
         printf("temperature: %d\r\n", temperature);
 #endif
 
@@ -164,7 +173,7 @@ void app_cht8305_set_humidity() {
 
     int16_t humidity = ((uint32_t)(10000 * cht8305_dev.raw_hum) / 65535) + config.humidity_offset;
 
-#if UART_PRINTF_MODE && DEBUG_CHT8305
+#if UART_PRINTF_MODE && DEBUG_SENSOR
     printf("humidity: %d\r\n", humidity);
 #endif
     if (humidity < 0)
@@ -174,3 +183,5 @@ void app_cht8305_set_humidity() {
 
     zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_MS_RELATIVE_HUMIDITY, ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_MEASUREDVALUE, (uint8_t*)&humidity);
 }
+
+#endif

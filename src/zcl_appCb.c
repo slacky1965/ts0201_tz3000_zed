@@ -196,7 +196,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                     if (temp != config.temperature_offset) {
                         config.temperature_offset = temp;
                         save = true;
-                        app_cht8305_set_temperature();
+                        app_sensor_set_temperature();
                     }
                 }
             } else if (attr[i].attrID == ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_ONOFF) {
@@ -258,7 +258,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                     if (hum != config.humidity_offset) {
                         config.humidity_offset = hum;
                         save = true;
-                        app_cht8305_set_humidity();
+                        app_sensor_set_humidity();
                     }
                 }
             } else if (attr[i].attrID == ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_HUMIDITY_ONOFF) {

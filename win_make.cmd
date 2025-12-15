@@ -1,0 +1,6 @@
+make clean
+make clean-bin
+make PROJECT_NAME="ts0201_tz3000_0x15_zed" PROJECT_DEF="-DBOARD=BOARD_HXDZ_ZBWSD_V02"
+
+make clean
+make PROJECT_NAME="ts0201_tz3000_0x21_zed" PROJECT_DEF="-DBOARD=BOARD_IHSENO_IC_V0"
