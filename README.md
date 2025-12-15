@@ -1,4 +1,4 @@
-# <a id="Top">Tuya Temperature and Relative Humidity Sensor Zigbee on CHT8305 with custom firmware</a>
+# <a id="Top">Tuya Temperature and Relative Humidity Sensor Zigbee with custom firmware</a>
 
 ### Custom firmware for Tuya sensor models
 
