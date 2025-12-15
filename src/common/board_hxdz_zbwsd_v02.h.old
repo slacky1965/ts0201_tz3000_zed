@@ -1,17 +1,11 @@
-#ifndef SRC_COMMON_BOARD_HXDZ_ZBWSD_V02_H_
-#define SRC_COMMON_BOARD_HXDZ_ZBWSD_V02_H_
-
-//#include "app_cfg.h"
-//#include "version_cfg.h"
-
 #if (BOARD == BOARD_HXDZ_ZBWSD_V02)
 
-/**********************************************************************
- * Product Information
- */
-#define ZCL_BASIC_MFG_NAME     {10,'S','l','a','c','k','y','-','D','I','Y'}
-#define ZCL_BASIC_MODEL_ID     {12,'T','S','0','2','0','1','-','z','-','S','l','D'}
+#pragma once
 
+/* Enable C linkage for C++ Compilers: */
+#if defined(__cplusplus)
+extern "C" {
+#endif
 
 #define I2C_DRV_USED            I2C_DRV_HARD
 #define SENSOR_USED             SENSOR_CHT8305
@@ -78,6 +72,9 @@ enum {
 #define KB_DRIVE_PINS  {NULL }
 #define KB_SCAN_PINS   {BUTTON1}
 
-#endif /* (BOARD == BOARD_HXDZ_ZBWSD_V02) */
+/* Disable C linkage for C++ Compilers: */
+#if defined(__cplusplus)
+}
+#endif
 
-#endif /* SRC_COMMON_BOARD_HXDZ_ZBWSD_V02_H_ */
+#endif

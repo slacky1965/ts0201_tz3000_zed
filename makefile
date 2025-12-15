@@ -1,5 +1,6 @@
 # Set Project Name
 PROJECT_NAME ?= ts0201_tz3000_0x15_zed
+PROJECT_DEF ?= "-DBOARD=BOARD_HXDZ_ZBWSD_V02"
 
 # Set the serial port number for downloading the firmware
 DOWNLOAD_PORT := COM3
@@ -61,6 +62,7 @@ INCLUDE_PATHS := \
 -I$(SRC_PATH)/include \
 -I$(SRC_PATH)/common \
 -I$(SRC_PATH)/cht8305 \
+-I$(SRC_PATH)/sht30 \
 -I$(SRC_PATH)/zcl
  
 
@@ -87,9 +89,9 @@ GCC_FLAGS += \
 endif
   
 GCC_FLAGS += \
-$(PROJECT_DEF) \
 $(DEVICE_TYPE) \
-$(MCU_TYPE)
+$(MCU_TYPE) \
+$(PROJECT_DEF)
 
 OBJ_SRCS := 
 S_SRCS := 
@@ -214,6 +216,8 @@ clean-bin:
 clean-project:
 	-$(RM) $(FLASH_IMAGE) $(ELFS) $(SIZEDUMMY) $(LST_FILE) $(ELF_FILE)
 	-$(RM) -R $(OUT_PATH)/$(SRC_PATH)/*.o
+	-$(RM) -R $(OUT_PATH)/$(SRC_PATH)/cht8305/*.o
+	-$(RM) -R $(OUT_PATH)/$(SRC_PATH)/sht30/*.o
 	-@echo ' '
 	
 pre-build:

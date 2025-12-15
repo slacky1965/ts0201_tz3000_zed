@@ -1,11 +1,20 @@
+#ifndef SRC_COMMON_BOARD_IHSENO_IC_V0_H_
+#define SRC_COMMON_BOARD_IHSENO_IC_V0_H_
+
+//#include "tl_common.h"
+//#include "version_cfg.h"
+
 #if (BOARD == BOARD_IHSENO_IC_V0)
 
-#pragma once
+/**********************************************************************
+ * Product Information
+ */
+#define ZCL_BASIC_MFG_NAME     {10,'S','l','a','c','k','y','-','D','I','Y'}
+#define ZCL_BASIC_MODEL_ID     {14,'T','S','0','2','0','1','-','z','2', '1','-','S','l','D'}
 
-/* Enable C linkage for C++ Compilers: */
-#if defined(__cplusplus)
-extern "C" {
-#endif
+
+#define I2C_DRV_USED            I2C_DRV_HARD
+#define SENSOR_USED             SENSOR_SHT30
 
 #define VOLTAGE_DETECT_PIN      GPIO_PC5
 
@@ -69,9 +78,6 @@ enum {
 #define KB_DRIVE_PINS  {NULL }
 #define KB_SCAN_PINS   {BUTTON1}
 
-/* Disable C linkage for C++ Compilers: */
-#if defined(__cplusplus)
-}
-#endif
+#endif /* (BOARD == BOARD_IHSENO_IC_V0) */
 
-#endif
+#endif /* SRC_COMMON_BOARD_IHSENO_IC_V0_H_ */

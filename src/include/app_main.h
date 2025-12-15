@@ -20,7 +20,7 @@
 #include "app_endpoint_cfg.h"
 #include "app_utility.h"
 #include "app_i2c.h"
-#include "app_cht8305.h"
+#include "app_sensor.h"
 
 typedef struct {
     uint8_t keyType; /* CERTIFICATION_KEY or MASTER_KEY key for touch-link or distribute network

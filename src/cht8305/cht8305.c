@@ -1,4 +1,7 @@
+#include "tl_common.h"
 #include "cht8305.h"
+
+#if (SENSOR_USED == SENSOR_CHT8305)
 
 static cht8305_dev_t *dev = NULL;
 
@@ -51,25 +54,26 @@ cht8305_error_t cht8305_init(cht8305_dev_t *pdev) {
 
 cht8305_error_t cht8305_readSensor() {
 
-    cht8305_error_t ret = CHT8305_OK;
-
     uint8_t buff[4];
 
-    ret = dev->write(CHT8305_REG_TMP, buff, 0, dev);
+    if (!dev) {
+        return CHT8305_ERR_DEV_NOT_FOUND;
+    }
 
-    if (ret == CHT8305_OK) {
+    if (dev->write(CHT8305_REG_TMP, buff, 0, dev) == CHT8305_OK) {
 
         dev->delay(CHT8305_DELAY_MEASURING);
         uint8_t i = 3;
 
         while(i--) {
-            ret = dev->read(0, 0, buff, 4, dev);
-            if (ret == CHT8305_OK)
+            if (dev->read(0, 0, buff, 4, dev) == CHT8305_OK)
                 dev->raw_temp = (buff[0] << 8) | buff[1];
                 dev->raw_hum = (buff[2] << 8) | buff[3];
-                return ret;
+                return CHT8305_OK;
         }
     }
 
-    return ret;
+    return CHT8305_ERR_COMM_FAIL;
 }
+
+#endif

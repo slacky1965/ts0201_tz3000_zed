@@ -7,7 +7,7 @@
  * @date    2021
  *
  * @par     Copyright (c) 2021, Telink Semiconductor (Shanghai) Co., Ltd. ("TELINK")
- *          All rights reserved.
+ *			All rights reserved.
  *
  *          Licensed under the Apache License, Version 2.0 (the "License");
  *          you may not use this file except in compliance with the License.
@@ -23,20 +23,9 @@
  *
  *******************************************************************************************************/
 
-#ifndef SRC_INCLUDE_VERSION_CFG_H_
-#define SRC_INCLUDE_VERSION_CFG_H_
+#pragma once
 
 #include "../common/comm_cfg.h"
-
-#define BOARD_HXDZ_ZBWSD_V02                0x15
-#define BOARD_IHSENO_IC_V0                  0x21
-#define BOARD_3                             0x22
-#define BOARD_4                             0x23
-#define BOARD_5                             0x24
-
-#ifndef BOARD
-#define BOARD                               BOARD_HXDZ_ZBWSD_V02 //BOARD_IHSENO_IC_V0 //
-#endif
 
 #define APP_RELEASE                         0x10        //app release 1.0
 #define APP_BUILD                           0x05        //app build 05, full version - v1.0.05
@@ -114,5 +103,3 @@
 #define IS_BOOT_LOADER_IMAGE                0
 #define RESV_FOR_APP_RAM_CODE_SIZE          0
 #define IMAGE_OFFSET                        APP_IMAGE_ADDR
-
-#endif /* SRC_INCLUDE_VERSION_CFG_H_ */

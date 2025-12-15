@@ -7,7 +7,7 @@
  * @date    2021
  *
  * @par     Copyright (c) 2021, Telink Semiconductor (Shanghai) Co., Ltd. ("TELINK")
- *          All rights reserved.
+ *			All rights reserved.
  *
  *          Licensed under the Apache License, Version 2.0 (the "License");
  *          you may not use this file except in compliance with the License.
@@ -23,8 +23,12 @@
  *
  *******************************************************************************************************/
 
-#ifndef SRC_INCLUDE_APP_CFG_H_
-#define SRC_INCLUDE_APP_CFG_H_
+#pragma once
+
+/* Enable C linkage for C++ Compilers: */
+#if defined(__cplusplus)
+extern "C" {
+#endif
 
 #include "app_types.h"
 
@@ -58,33 +62,71 @@
 #define SENSOR_CHT8305          0
 #define SENSOR_SHT30            1
 
+#define BOARD_HXDZ_ZBWSD_V02    0x15
+#define BOARD_IHSENO_IC_V0      0x21
+#define BOARD_3                 0x22
+#define BOARD_4                 0x23
+#define BOARD_5                 0x24
+
+#ifndef BOARD
+#define BOARD                   BOARD_HXDZ_ZBWSD_V02
+#endif
+
+
 /**********************************************************************
  * Version configuration
  */
 #include "version_cfg.h"
 
+/**********************************************************************
+ * Product Information
+ */
+
+//#define ZCL_BASIC_MFG_NAME     {10,'S','l','a','c','k','y','-','D','I','Y'}
+//#if BOARD == BOARD_HXDZ_ZBWSD_V02
+//#define ZCL_BASIC_MODEL_ID     {12,'T','S','0','2','0','1','-','z','-','S','l','D'}
+//#elif BOARD == BOARD_IHSENO_IC_V0
+//#define ZCL_BASIC_MODEL_ID     {14,'T','S','0','2','0','1','-','z','2', '1','-','S','l','D'}
+//#else
+//#error BOARD not defined!
+//#endif
+
+
 /* Debug mode config */
-#define UART_PRINTF_MODE                ON
-#define USB_PRINTF_MODE                 OFF
+#define	UART_PRINTF_MODE                ON
+#define USB_PRINTF_MODE         		OFF
 
 #define DEBUG_BUTTON                    ON
 #define DEBUG_REPORTING                 OFF
 #define DEBUG_BATTERY                   OFF
 #define DEBUG_PM                        OFF
 #define DEBUG_OTA                       OFF
-#define DEBUG_SENSOR                    OFF
+#define DEBUG_CHT8305                   OFF
 #define DEBUG_STA_STATUS                OFF
 #define DEBUG_SAVE                      ON
 #define DEBUG_ONOFF                     ON
 /* PM */
-#define PM_ENABLE                       ON
+#define PM_ENABLE						ON
 
 /* PA */
-#define PA_ENABLE                       OFF
+#define PA_ENABLE						OFF
 
 /* BDB */
-#define TOUCHLINK_SUPPORT               ON
-#define FIND_AND_BIND_SUPPORT           OFF
+#define TOUCHLINK_SUPPORT				ON
+#define FIND_AND_BIND_SUPPORT			OFF
+
+///* Board ID */
+//#define BOARD_826x_EVK                  0
+//#define BOARD_826x_DONGLE               1
+//#define BOARD_826x_DONGLE_PA            2
+//#define BOARD_8258_EVK                  3
+//#define BOARD_8258_EVK_V1P2             4//C1T139A30_V1.2
+//#define BOARD_8258_DONGLE               5
+//#define BOARD_8278_EVK                  6
+//#define BOARD_8278_DONGLE               7
+//#define BOARD_B91_EVK                   8
+//#define BOARD_B91_DONGLE                9
+//#define BOARD_TS201_TZ3000              10
 
 /* Board define */
 #if defined(MCU_CORE_826x)
@@ -119,6 +161,31 @@
 #include "board_ihseno_ic_v0.h"
 #endif
 
+//#if (BOARD == BOARD_826x_EVK)
+//    #include "board_826x_evk.h"
+//#elif (BOARD == BOARD_826x_DONGLE)
+//    #include "board_826x_dongle.h"
+//#elif (BOARD == BOARD_826x_DONGLE_PA)
+//    #include "board_826x_dongle_pa.h"
+//#elif (BOARD == BOARD_8258_DONGLE)
+//    #include "board_8258_dongle.h"
+//#elif (BOARD == BOARD_8258_EVK)
+//    #include "board_8258_evk.h"
+//#elif (BOARD == BOARD_8258_EVK_V1P2)
+//    #include "board_8258_evk_v1p2.h"
+//#elif (BOARD == BOARD_8278_EVK)
+//    #include "board_8278_evk.h"
+//#elif (BOARD == BOARD_8278_DONGLE)
+//    #include "board_8278_dongle.h"
+//#elif (BOARD == BOARD_B91_EVK)
+//    #include "board_b91_evk.h"
+//#elif (BOARD == BOARD_B91_DONGLE)
+//    #include "board_b91_dongle.h"
+//#elif (BOARD == BOARD_TS201_TZ3000)
+//    #include "board_ts201_tz3000.h"
+//#endif
+
+
 /* Voltage detect module */
 /* If VOLTAGE_DETECT_ENABLE is set,
  * 1) if MCU_CORE_826x is defined, the DRV_ADC_VBAT_MODE mode is used by default,
@@ -133,13 +200,13 @@
 #define VOLTAGE_DETECT_ADC_PIN                      VOLTAGE_DETECT_PIN
 
 /* Watch dog module */
-#define MODULE_WATCHDOG_ENABLE                      ON
+#define MODULE_WATCHDOG_ENABLE						OFF
 
 /* UART module */
-#define MODULE_UART_ENABLE                          OFF
+#define	MODULE_UART_ENABLE							OFF
 
 #if (ZBHCI_USB_PRINT || ZBHCI_USB_CDC || ZBHCI_USB_HID || ZBHCI_UART)
-    #define ZBHCI_EN                                1
+	#define ZBHCI_EN								1
 #endif
 
 /**********************************************************************
@@ -165,10 +232,13 @@
  * EV configuration
  */
 typedef enum{
-    EV_POLL_ED_DETECT,
-    EV_POLL_HCI,
+	EV_POLL_ED_DETECT,
+	EV_POLL_HCI,
     EV_POLL_IDLE,
-    EV_POLL_MAX,
+	EV_POLL_MAX,
 }ev_poll_e;
 
-#endif /* SRC_INCLUDE_APP_CFG_H_ */
+/* Disable C linkage for C++ Compilers: */
+#if defined(__cplusplus)
+}
+#endif
