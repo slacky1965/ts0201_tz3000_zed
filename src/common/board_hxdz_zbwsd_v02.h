@@ -1,9 +1,6 @@
 #ifndef SRC_COMMON_BOARD_HXDZ_ZBWSD_V02_H_
 #define SRC_COMMON_BOARD_HXDZ_ZBWSD_V02_H_
 
-//#include "app_cfg.h"
-//#include "version_cfg.h"
-
 #if (BOARD == BOARD_HXDZ_ZBWSD_V02)
 
 /**********************************************************************

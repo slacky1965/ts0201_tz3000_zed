@@ -1,16 +1,13 @@
 #ifndef SRC_COMMON_BOARD_IHSENO_IC_V0_H_
 #define SRC_COMMON_BOARD_IHSENO_IC_V0_H_
 
-//#include "tl_common.h"
-//#include "version_cfg.h"
-
 #if (BOARD == BOARD_IHSENO_IC_V0)
 
 /**********************************************************************
  * Product Information
  */
 #define ZCL_BASIC_MFG_NAME     {10,'S','l','a','c','k','y','-','D','I','Y'}
-#define ZCL_BASIC_MODEL_ID     {14,'T','S','0','2','0','1','-','z','2', '1','-','S','l','D'}
+#define ZCL_BASIC_MODEL_ID     {14,'T','S','0','2','0','1','-','z','2','1','-','S','l','D'}
 
 
 #define I2C_DRV_USED            I2C_DRV_HARD

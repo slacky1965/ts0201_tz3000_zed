@@ -1,5 +1,5 @@
-#ifndef SRC_CHT8305_CHT8305_H_
-#define SRC_CHT8305_CHT8305_H_
+#ifndef SRC_SENSORS_CHT8305_H_
+#define SRC_SENSORS_CHT8305_H_
 
 #if (SENSOR_USED == SENSOR_CHT8305)
 
@@ -49,6 +49,7 @@ typedef enum {
     CHT8305_ERR_INVALID_LEN,
     CHT8305_ERR_DEV_NOT_FOUND,
     CHT8305_ERR_ADDR_NOT_FOUND,
+    CHT8305_ERR_CRC,
     CHT8305_ERR_ID,
 } cht8305_error_t;
 
@@ -75,4 +76,4 @@ cht8305_error_t cht8305_readSensor();
 
 #endif
 
-#endif /* SRC_CHT8305_CHT8305_H_ */
+#endif /* SRC_SENSORS_CHT8305_H_ */

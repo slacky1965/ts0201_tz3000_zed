@@ -61,8 +61,7 @@ INCLUDE_PATHS := \
 -I$(SRC_PATH) \
 -I$(SRC_PATH)/include \
 -I$(SRC_PATH)/common \
--I$(SRC_PATH)/cht8305 \
--I$(SRC_PATH)/sht30 \
+-I$(SRC_PATH)/sensors \
 -I$(SRC_PATH)/zcl
  
 
