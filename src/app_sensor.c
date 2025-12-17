@@ -1,11 +1,13 @@
 #include "app_main.h"
-//#include "tl_common.h"
-//#include "zcl_include.h"
-//
-//#include "app_i2c.h"
-//#include "app_config.h"
-//#include "app_endpoint_cfg.h"
-//#include "app_sensor.h"
+
+typedef struct {
+    uint8_t (*init)();
+    void    (*measurement)();
+    void    (*set_temperature)();
+    void    (*set_humidity)();
+} sensor_t;
+
+static sensor_t sensor;
 
 #if UART_PRINTF_MODE && DEBUG_SENSOR
 static void sensor_error_codes_print_result(const char api_name[], int8_t rslt, uint8_t addr) {
@@ -302,50 +304,64 @@ uint8_t app_sensor_init() {
     uint8_t ret = 0;
 
 #if (SENSOR_USED == SENSOR_CHT8305)
-    app_cht8305_init();
+    sensor.init = app_cht8305_init;
+    sensor.measurement = app_cht8305_measurement;
+    sensor.set_temperature = app_cht8305_set_temperature;
+    sensor.set_humidity = app_cht8305_set_humidity;
 #elif (SENSOR_USED == SENSOR_SHT30)
-    app_sht30_init();
+    sensor.init = app_sht30_init;
+    sensor.measurement = app_sht30_measurement;
+    sensor.set_temperature = app_sht30_set_temperature;
+    sensor.set_humidity = app_sht30_set_humidity;
 #elif (SENSOR_USED == SENSOR_SHT40)
 #warning TODO: app_sht40_init()
+    sensor.init = app_sht40_init;
+    sensor.measurement = app_sht40_measurement;
+    sensor.set_temperature = app_sht40_set_temperature;
+    sensor.set_humidity = app_sht40_set_humidity;
 #else
 #error Sensor not defined!
 #endif
 
+    ret = sensor.init();
     return ret;
 }
 
 void app_sensor_measurement() {
-#if (SENSOR_USED == SENSOR_CHT8305)
-    app_cht8305_measurement();
-#elif (SENSOR_USED == SENSOR_SHT30)
-    app_sht30_measurement();
-#elif (SENSOR_USED == SENSOR_SHT40)
-#warning TODO: app_sht40_measurement()
-#else
-#error Sensor not defined!
-#endif
+    sensor.measurement();
+//#if (SENSOR_USED == SENSOR_CHT8305)
+//    app_cht8305_measurement();
+//#elif (SENSOR_USED == SENSOR_SHT30)
+//    app_sht30_measurement();
+//#elif (SENSOR_USED == SENSOR_SHT40)
+//#warning TODO: app_sht40_measurement()
+//#else
+//#error Sensor not defined!
+//#endif
 }
 
 void  app_sensor_set_temperature() {
-#if (SENSOR_USED == SENSOR_CHT8305)
-    app_cht8305_set_temperature();
-#elif (SENSOR_USED == SENSOR_SHT30)
-    app_sht30_set_temperature();
-#elif (SENSOR_USED == SENSOR_SHT40)
-#warning TODO: app_sht40_set_temperature()
-#else
-#error Sensor not defined!
-#endif
+    sensor.set_temperature();
+//#if (SENSOR_USED == SENSOR_CHT8305)
+//    app_cht8305_set_temperature();
+//#elif (SENSOR_USED == SENSOR_SHT30)
+//    app_sht30_set_temperature();
+//#elif (SENSOR_USED == SENSOR_SHT40)
+//#warning TODO: app_sht40_set_temperature()
+//#else
+//#error Sensor not defined!
+//#endif
 }
 
 void app_sensor_set_humidity() {
-#if (SENSOR_USED == SENSOR_CHT8305)
-    app_cht8305_measurement();
-#elif (SENSOR_USED == SENSOR_SHT30)
-    app_sht30_measurement();
-#elif (SENSOR_USED == SENSOR_SHT40)
-#warning TODO: app_sht40_measurement()
-#else
-#error Sensor not defined!
-#endif
+    sensor.set_humidity();
+//#if (SENSOR_USED == SENSOR_CHT8305)
+//    app_cht8305_measurement();
+//#elif (SENSOR_USED == SENSOR_SHT30)
+//    app_sht30_measurement();
+//#elif (SENSOR_USED == SENSOR_SHT40)
+//#warning TODO: app_sht40_measurement()
+//#else
+//#error Sensor not defined!
+//#endif
 }

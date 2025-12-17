@@ -31,6 +31,27 @@ typedef enum {
     SHT40_ERR_ID,
 } sht40_error_t;
 
+struct _sht40_dev;
+
+typedef struct _sht40_dev sht40_dev_t;
+
+typedef int8_t (*sht40_read_t)(uint8_t *reg_data, uint32_t len, sht40_dev_t *dev);
+typedef int8_t (*sht40_write_t)(const uint8_t *reg_data, uint32_t len, sht40_dev_t *dev);
+typedef void   (*sht40_delay_t)(uint32_t period);
+
+struct _sht40_dev {
+    uint8_t         addr;
+    sht40_read_t    read;
+    sht40_write_t   write;
+    sht40_delay_t   delay;
+    uint32_t        id;
+    uint16_t        raw_temp;
+    uint16_t        raw_hum;
+};
+
+sht40_error_t sht40_init(sht40_dev_t *dev);
+sht40_error_t sht40_readSensor();
+
 
 #endif /* SENSOR_USED */
 

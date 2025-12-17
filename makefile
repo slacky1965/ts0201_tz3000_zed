@@ -215,8 +215,7 @@ clean-bin:
 clean-project:
 	-$(RM) $(FLASH_IMAGE) $(ELFS) $(SIZEDUMMY) $(LST_FILE) $(ELF_FILE)
 	-$(RM) -R $(OUT_PATH)/$(SRC_PATH)/*.o
-	-$(RM) -R $(OUT_PATH)/$(SRC_PATH)/cht8305/*.o
-	-$(RM) -R $(OUT_PATH)/$(SRC_PATH)/sht30/*.o
+	-$(RM) -R $(OUT_PATH)/$(SRC_PATH)/sensors/*.o
 	-@echo ' '
 	
 pre-build:
