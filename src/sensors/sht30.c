@@ -96,7 +96,7 @@ sht30_error_t sht30_readSensor() {
         uint8_t i = 3;
 
         while(i--) {
-            if (dev->read(0, 0, buff, 6, dev) == SHT30_OK)
+            if (dev->read(0, 0, buff, 6, dev) == SHT30_OK) {
                 if (sht30_crc(buff, 2) != buff[2]) {
                     return SHT30_ERR_CRC;
                 }
@@ -108,6 +108,7 @@ sht30_error_t sht30_readSensor() {
                 dev->raw_temp = (buff[0] << 8) | buff[1];
                 dev->raw_hum = (buff[3] << 8) | buff[4];
                 return SHT30_OK;
+            }
         }
     }
 

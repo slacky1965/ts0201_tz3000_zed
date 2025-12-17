@@ -1,5 +1,5 @@
-#ifndef SRC_SHT30_SHT30_H_
-#define SRC_SHT30_SHT30_H_
+#ifndef SRC_SENSORS_SHT30_H_
+#define SRC_SENSORS_SHT30_H_
 
 #if (SENSOR_USED == SENSOR_SHT30)
 
@@ -76,4 +76,4 @@ sht30_error_t sht30_set_heater(uint8_t enable);
 
 #endif // SENSOR_USED == SENSOR_SHT30
 
-#endif /* SRC_SHT30_SHT30_H_ */
+#endif /* SRC_SENSORS_SHT30_H_ */
