@@ -17,7 +17,8 @@ int8_t scan_i2c_addr(uint8_t address) {
     reg_i2c_speed = r;
     return ((reg_i2c_status & FLD_I2C_NAK)? 0 : address);
 }
-#elif (I2C_DRV_USED == I2C_DRV_SOST)
+
+#elif (I2C_DRV_USED == I2C_DRV_SOFT)
 
 #if I2C_CLOCK > 200000
 #define I2C_TCLK_US 10 // *0.625 us (in 1/16 us)  I2C ~ 222222 Hz
@@ -49,7 +50,7 @@ static void soft_i2c_stop(void) {
     gpio_set_output_en(I2C_SDA, 0); // SDA set "1"
 }
 
-static int soft_i2c_wr_byte(unsigned char  b) {
+static int8_t soft_i2c_wr_byte(unsigned char  b) {
     int ret, i = 8;
     while(i--) {
         sleep_us16(I2C_TCLK_US/2);
@@ -70,7 +71,7 @@ static int soft_i2c_wr_byte(unsigned char  b) {
     sleep_us16(I2C_TCLK_US);
     ret = gpio_read(I2C_SDA);
     gpio_set_output_en(I2C_SCL, 1); // SCL set "0"
-    return ret;
+    return ret?1:0;
 }
 
 static unsigned char soft_i2c_rd_byte(int ack) {
@@ -109,8 +110,8 @@ unsigned char scan_i2c_addr(unsigned char address) {
 }
 
 /* send_i2c_byte() return: NAK (=0 - send ok) */
-int send_i2c_byte(unsigned char i2c_addr, unsigned char cmd) {
-    int ret;
+int8_t send_i2c_byte(unsigned char i2c_addr, unsigned char cmd) {
+    int8_t ret;
     soft_i2c_start();
     ret = soft_i2c_wr_byte(i2c_addr);
     if(ret == 0)
@@ -120,8 +121,8 @@ int send_i2c_byte(unsigned char i2c_addr, unsigned char cmd) {
 }
 
 /* send_i2c_word() return: NAK (=0 - send ok) */
-int send_i2c_word(unsigned char i2c_addr, unsigned short w) {
-    int ret;
+int8_t send_i2c_word(unsigned char i2c_addr, unsigned short w) {
+    uint8_t ret;
     soft_i2c_start();
     ret = soft_i2c_wr_byte(i2c_addr);
     if(ret == 0) {
@@ -134,8 +135,8 @@ int send_i2c_word(unsigned char i2c_addr, unsigned short w) {
 }
 
 /* send_i2c_bytes() return: NAK (=0 - send ok) */
-int send_i2c_bytes(unsigned char i2c_addr, unsigned char * dataBuf, size_t dataLen) {
-    int ret = 0;
+int8_t send_i2c_bytes(unsigned char i2c_addr, unsigned char * dataBuf, size_t dataLen) {
+    int8_t ret = 0;
     int size = dataLen;
     unsigned char *p = dataBuf;
     soft_i2c_start();
@@ -163,7 +164,7 @@ int read_i2c_byte(unsigned char i2c_addr) {
 }
 
 /* read_i2c_bytes() return: NAK (=0 - read ok) */
-int read_i2c_bytes(unsigned char i2c_addr, unsigned char * dataBuf, int dataLen) {
+int8_t read_i2c_bytes(unsigned char i2c_addr, unsigned char * dataBuf, int dataLen) {
     int ret = -1;
     int size = dataLen;
     unsigned char *p = dataBuf;
@@ -180,8 +181,8 @@ int read_i2c_bytes(unsigned char i2c_addr, unsigned char * dataBuf, int dataLen)
 }
 
 /* read_i2cread_i2c_addr_bytes() return: NAK (=0 - read ok) */
-int read_i2c_addr_bytes(unsigned char i2c_addr, unsigned char reg_addr, unsigned char * dataBuf, int dataLen) {
-    int ret = -1;
+int8_t read_i2c_addr_bytes(unsigned char i2c_addr, unsigned char reg_addr, unsigned char * dataBuf, int dataLen) {
+    int8_t ret = -1;
     int size = dataLen;
     unsigned char *p = dataBuf;
     soft_i2c_start();
@@ -235,7 +236,7 @@ int read_i2c_addr_bytes(unsigned char i2c_addr, unsigned char reg_addr, unsigned
 //    return ret;
 //}
 
-void app_i2c_init() {
-}
+//void app_i2c_init() {
+//}
 
 #endif /* I2C_DRV_USED */

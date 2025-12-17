@@ -167,7 +167,9 @@ void user_app_init(void)
 
     app_timer_init();
 
+#if (I2C_DRV_USED == I2C_DRV_HARD)
     app_i2c_init();
+#endif
 
     app_sensor_init();
 

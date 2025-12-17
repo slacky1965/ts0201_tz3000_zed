@@ -66,23 +66,23 @@ static void sensor_error_codes_print_result(const char api_name[], int8_t rslt, 
 
 static cht8305_dev_t cht8305_dev;
 
-int8_t cht8305_i2c_read(uint16_t reg_addr, uint32_t reg_len, uint8_t *reg_data, uint32_t len, cht8305_dev_t *dev) {
+static int8_t cht8305_i2c_read(uint16_t reg_addr, uint32_t reg_len, uint8_t *reg_data, uint32_t len, cht8305_dev_t *dev) {
     drv_i2c_read_series(dev->addr << 1, reg_addr, reg_len, reg_data, len);
     return (reg_i2c_status & FLD_I2C_NAK);
 }
 
-int8_t cht8305_i2c_write(uint16_t reg_addr, const uint8_t *reg_data, uint32_t len, cht8305_dev_t *dev) {
+static int8_t cht8305_i2c_write(uint16_t reg_addr, const uint8_t *reg_data, uint32_t len, cht8305_dev_t *dev) {
     drv_i2c_write_series(dev->addr << 1, reg_addr, 1, (uint8_t*)reg_data, len);
     return (reg_i2c_status & FLD_I2C_NAK);
 }
 
-void cht8305_delay(uint32_t period) {
+static void cht8305_delay(uint32_t period) {
   sleep_ms(period);
 }
 
 
 
-uint8_t app_cht8305_init() {
+static uint8_t app_cht8305_init() {
 
     cht8305_dev.delay = NULL;
     cht8305_dev.read = NULL;
@@ -139,7 +139,33 @@ uint8_t app_cht8305_init() {
     return ret;
 }
 
-void app_cht8305_measurement() {
+static void  app_cht8305_set_temperature() {
+
+    int16_t temperature = ((int32_t)(16500 * cht8305_dev.raw_temp) / 65535) - 4000 + config.temperature_offset;
+
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+        printf("temperature: %d\r\n", temperature);
+#endif
+
+        zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_MS_TEMPERATURE_MEASUREMENT, ZCL_TEMPERATURE_MEASUREMENT_ATTRID_MEASUREDVALUE, (uint8_t*)&temperature);
+}
+
+static void app_cht8305_set_humidity() {
+
+    int16_t humidity = ((uint32_t)(10000 * cht8305_dev.raw_hum) / 65535) + config.humidity_offset;
+
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+    printf("humidity: %d\r\n", humidity);
+#endif
+    if (humidity < 0)
+        humidity = 0;
+    if (humidity > 10000)
+        humidity = 10000;
+
+    zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_MS_RELATIVE_HUMIDITY, ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_MEASUREDVALUE, (uint8_t*)&humidity);
+}
+
+static void app_cht8305_measurement() {
 
     app_i2c_init();
 
@@ -157,54 +183,27 @@ void app_cht8305_measurement() {
     }
 }
 
-void  app_cht8305_set_temperature() {
-
-    int16_t temperature = ((int32_t)(16500 * cht8305_dev.raw_temp) / 65535) - 4000 + config.temperature_offset;
-
-#if UART_PRINTF_MODE && DEBUG_SENSOR
-        printf("temperature: %d\r\n", temperature);
-#endif
-
-        zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_MS_TEMPERATURE_MEASUREMENT, ZCL_TEMPERATURE_MEASUREMENT_ATTRID_MEASUREDVALUE, (uint8_t*)&temperature);
-}
-
-void app_cht8305_set_humidity() {
-
-    int16_t humidity = ((uint32_t)(10000 * cht8305_dev.raw_hum) / 65535) + config.humidity_offset;
-
-#if UART_PRINTF_MODE && DEBUG_SENSOR
-    printf("humidity: %d\r\n", humidity);
-#endif
-    if (humidity < 0)
-        humidity = 0;
-    if (humidity > 10000)
-        humidity = 10000;
-
-    zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_MS_RELATIVE_HUMIDITY, ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_MEASUREDVALUE, (uint8_t*)&humidity);
-}
-
 #elif (SENSOR_USED == SENSOR_SHT30)
 
 static sht30_dev_t sht30_dev;
 
-
-int8_t sht30_i2c_read(uint16_t reg_addr, uint32_t reg_len, uint8_t *reg_data, uint32_t len, sht30_dev_t *dev) {
+static int8_t sht30_i2c_read(uint16_t reg_addr, uint32_t reg_len, uint8_t *reg_data, uint32_t len, sht30_dev_t *dev) {
     drv_i2c_read_series(dev->addr << 1, reg_addr, reg_len, reg_data, len);
     return (reg_i2c_status & FLD_I2C_NAK);
 }
 
-int8_t sht30_i2c_write(uint16_t reg_addr, const uint8_t *reg_data, uint32_t len, sht30_dev_t *dev) {
+static int8_t sht30_i2c_write(uint16_t reg_addr, const uint8_t *reg_data, uint32_t len, sht30_dev_t *dev) {
     drv_i2c_write_series(dev->addr << 1, reg_addr, 2, (uint8_t*)reg_data, len);
     return (reg_i2c_status & FLD_I2C_NAK);
 }
 
-void sht30_delay(uint32_t period) {
+static void sht30_delay(uint32_t period) {
   sleep_ms(period);
 }
 
 
 
-uint8_t app_sht30_init() {
+static uint8_t app_sht30_init() {
 
     sht30_dev.delay = NULL;
     sht30_dev.read = NULL;
@@ -253,7 +252,33 @@ uint8_t app_sht30_init() {
     return ret;
 }
 
-void app_sht30_measurement() {
+static void  app_sht30_set_temperature() {
+
+    int16_t temperature = ((int32_t)(17500 * sht30_dev.raw_temp) / 65535) - 4500 + config.temperature_offset;
+
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+        printf("temperature: %d\r\n", temperature);
+#endif
+
+        zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_MS_TEMPERATURE_MEASUREMENT, ZCL_TEMPERATURE_MEASUREMENT_ATTRID_MEASUREDVALUE, (uint8_t*)&temperature);
+}
+
+static void app_sht30_set_humidity() {
+
+    int16_t humidity = ((uint32_t)(10000 * sht30_dev.raw_hum) / 65535) + config.humidity_offset;
+
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+    printf("humidity: %d\r\n", humidity);
+#endif
+    if (humidity < 0)
+        humidity = 0;
+    if (humidity > 10000)
+        humidity = 10000;
+
+    zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_MS_RELATIVE_HUMIDITY, ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_MEASUREDVALUE, (uint8_t*)&humidity);
+}
+
+static void app_sht30_measurement() {
 
     app_i2c_init();
 
@@ -271,9 +296,85 @@ void app_sht30_measurement() {
     }
 }
 
-void  app_sht30_set_temperature() {
+#elif (SENSOR_USED == SENSOR_SHT40)
 
-    int16_t temperature = ((int32_t)(17500 * sht30_dev.raw_temp) / 65535) - 4500 + config.temperature_offset;
+static sht40_dev_t sht40_dev;
+
+static int8_t sht40_i2c_read(uint16_t reg_addr, uint32_t reg_len, uint8_t *reg_data, uint32_t len, sht40_dev_t *dev) {
+#if (I2C_DRV_USED == I2C_DRV_HARD)
+    drv_i2c_read_series(dev->addr << 1, reg_addr, reg_len, reg_data, len);
+    return (reg_i2c_status & FLD_I2C_NAK);
+#elif (I2C_DRV_USED == I2C_DRV_SOFT)
+    return read_i2c_bytes(dev->addr << 1, reg_data, len);
+#endif
+}
+
+static int8_t sht40_i2c_write(uint16_t reg_addr, const uint8_t *reg_data, uint32_t len, sht40_dev_t *dev) {
+#if (I2C_DRV_USED == I2C_DRV_HARD)
+    drv_i2c_write_series(dev->addr << 1, reg_addr, 2, (uint8_t*)reg_data, len);
+    return (reg_i2c_status & FLD_I2C_NAK);
+#elif (I2C_DRV_USED == I2C_DRV_SOFT)
+    uint8_t buff = reg_addr;
+    return send_i2c_bytes(dev->addr << 1, &buff, 1);
+#endif
+}
+
+
+static void sht40_delay(uint32_t period) {
+  sleep_ms(period);
+}
+
+
+
+static uint8_t app_sht40_init() {
+
+    sht40_dev.delay = NULL;
+    sht40_dev.read = NULL;
+    sht40_dev.write = NULL;
+    sht40_dev.addr = 0;
+    sht40_dev.id = 0;
+
+    uint8_t addr = (SHT4X_I2C_ADDRESS << 1);
+    uint8_t ret = scan_i2c_addr(addr);
+    if (ret == addr) {
+        sht40_dev.addr = SHT4X_I2C_ADDRESS;
+        sht40_dev.delay = sht40_delay;
+        sht40_dev.read = sht40_i2c_read;
+        sht40_dev.write = sht40_i2c_write;
+    } else {
+        addr = (SHT4X_I2C_ADDRESS2 << 1);
+        ret = scan_i2c_addr(addr);
+        if (ret == addr) {
+            sht40_dev.addr = SHT4X_I2C_ADDRESS2;
+            sht40_dev.delay = sht40_delay;
+            sht40_dev.read = sht40_i2c_read;
+            sht40_dev.write = sht40_i2c_write;
+        } else {
+            addr = (SHT4X_I2C_ADDRESS3 << 1);
+            ret = scan_i2c_addr(addr);
+            if (ret == addr) {
+                sht40_dev.addr = SHT4X_I2C_ADDRESS3;
+                sht40_dev.delay = sht40_delay;
+                sht40_dev.read = sht40_i2c_read;
+                sht40_dev.write = sht40_i2c_write;
+            } else {
+                ret = 0;
+            }
+        }
+    }
+
+
+    ret = sht40_init(&sht40_dev);
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+    sensor_error_codes_print_result("sht40_init", ret, SHT4X_I2C_ADDRESS);
+#endif
+
+    return ret;
+}
+
+static void  app_sht40_set_temperature() {
+
+    int16_t temperature = ((int32_t)(17500 * sht40_dev.raw_temp) / 65535) - 4500 + config.temperature_offset;
 
 #if UART_PRINTF_MODE && DEBUG_SENSOR
         printf("temperature: %d\r\n", temperature);
@@ -282,12 +383,12 @@ void  app_sht30_set_temperature() {
         zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_MS_TEMPERATURE_MEASUREMENT, ZCL_TEMPERATURE_MEASUREMENT_ATTRID_MEASUREDVALUE, (uint8_t*)&temperature);
 }
 
-void app_sht30_set_humidity() {
+static void app_sht40_set_humidity() {
 
-    int16_t humidity = ((uint32_t)(10000 * sht30_dev.raw_hum) / 65535) + config.humidity_offset;
+    int16_t humidity = ((uint32_t)(12500 * sht40_dev.raw_hum) / 65535) - 600 + config.humidity_offset;
 
 #if UART_PRINTF_MODE && DEBUG_SENSOR
-    printf("humidity: %d\r\n", humidity);
+    printf("humidity:    %d\r\n", humidity);
 #endif
     if (humidity < 0)
         humidity = 0;
@@ -297,7 +398,23 @@ void app_sht30_set_humidity() {
     zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_MS_RELATIVE_HUMIDITY, ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_MEASUREDVALUE, (uint8_t*)&humidity);
 }
 
+static void app_sht40_measurement() {
+
+    uint8_t ret = sht40_readSensor();
+
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+    sensor_error_codes_print_result("app_sht40_measurement", ret, SHT4X_I2C_ADDRESS);
+//    printf("temperature_raw: 0x%04x\r\n", sht40_dev.raw_temp);
+//    printf("humidity_raw:    0x%04x\r\n", sht40_dev.raw_hum);
 #endif
+
+    if (ret == SENSOR_OK) {
+        app_sht40_set_temperature();
+        app_sht40_set_humidity();
+    }
+}
+
+#endif /* SENSOR_USED */
 
 
 uint8_t app_sensor_init() {
@@ -314,7 +431,6 @@ uint8_t app_sensor_init() {
     sensor.set_temperature = app_sht30_set_temperature;
     sensor.set_humidity = app_sht30_set_humidity;
 #elif (SENSOR_USED == SENSOR_SHT40)
-#warning TODO: app_sht40_init()
     sensor.init = app_sht40_init;
     sensor.measurement = app_sht40_measurement;
     sensor.set_temperature = app_sht40_set_temperature;
@@ -329,39 +445,12 @@ uint8_t app_sensor_init() {
 
 void app_sensor_measurement() {
     sensor.measurement();
-//#if (SENSOR_USED == SENSOR_CHT8305)
-//    app_cht8305_measurement();
-//#elif (SENSOR_USED == SENSOR_SHT30)
-//    app_sht30_measurement();
-//#elif (SENSOR_USED == SENSOR_SHT40)
-//#warning TODO: app_sht40_measurement()
-//#else
-//#error Sensor not defined!
-//#endif
 }
 
 void  app_sensor_set_temperature() {
     sensor.set_temperature();
-//#if (SENSOR_USED == SENSOR_CHT8305)
-//    app_cht8305_set_temperature();
-//#elif (SENSOR_USED == SENSOR_SHT30)
-//    app_sht30_set_temperature();
-//#elif (SENSOR_USED == SENSOR_SHT40)
-//#warning TODO: app_sht40_set_temperature()
-//#else
-//#error Sensor not defined!
-//#endif
 }
 
 void app_sensor_set_humidity() {
     sensor.set_humidity();
-//#if (SENSOR_USED == SENSOR_CHT8305)
-//    app_cht8305_measurement();
-//#elif (SENSOR_USED == SENSOR_SHT30)
-//    app_sht30_measurement();
-//#elif (SENSOR_USED == SENSOR_SHT40)
-//#warning TODO: app_sht40_measurement()
-//#else
-//#error Sensor not defined!
-//#endif
 }

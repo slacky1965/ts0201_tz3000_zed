@@ -66,10 +66,11 @@ cht8305_error_t cht8305_readSensor() {
         uint8_t i = 3;
 
         while(i--) {
-            if (dev->read(0, 0, buff, 4, dev) == CHT8305_OK)
+            if (dev->read(0, 0, buff, 4, dev) == CHT8305_OK) {
                 dev->raw_temp = (buff[0] << 8) | buff[1];
                 dev->raw_hum = (buff[2] << 8) | buff[3];
                 return CHT8305_OK;
+            }
         }
     }
 

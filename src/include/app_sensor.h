@@ -1,8 +1,9 @@
 #ifndef SRC_INCLUDE_APP_SENSOR_H_
 #define SRC_INCLUDE_APP_SENSOR_H_
 
-#include "../sensors/cht8305.h"
-#include "../sensors/sht30.h"
+#include "cht8305.h"
+#include "sht30.h"
+#include "sht40.h"
 
 typedef enum {
     SENSOR_OK = 0,
@@ -18,20 +19,9 @@ typedef enum {
     SENSOR_ERR_ID,
 } sensor_error_t;
 
-
-uint8_t app_cht8305_init();
-void app_cht8305_measurement();
-void app_cht8305_set_temperature();
-void app_cht8305_set_humidity();
-
-uint8_t app_sht30_init();
-void app_sht30_measurement();
-void app_sht30_set_temperature();
-void app_sht30_set_humidity();
-
 uint8_t app_sensor_init();
-void app_sensor_measurement();
-void  app_sensor_set_temperature();
-void app_sensor_set_humidity();
+void    app_sensor_measurement();
+void    app_sensor_set_temperature();
+void    app_sensor_set_humidity();
 
 #endif /* SRC_INCLUDE_APP_SENSOR_H_ */
