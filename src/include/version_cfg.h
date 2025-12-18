@@ -35,7 +35,7 @@
 #define BOARD_5                             0x24
 
 #ifndef BOARD
-#define BOARD                               BOARD_ZBEACON //BOARD_HXDZ_ZBWSD_V02 //BOARD_IHSENO_IC_V0 //
+#define BOARD                               BOARD_ZBEACON //BOARD_IHSENO_IC_V0 //BOARD_HXDZ_ZBWSD_V02 //
 #endif
 
 #define APP_RELEASE                         0x10        //app release 1.0
