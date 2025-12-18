@@ -2,6 +2,14 @@
 PROJECT_NAME ?= ts0201_tz3000_0x15_zed
 PROJECT_DEF ?= "-DBOARD=BOARD_HXDZ_ZBWSD_V02"
 
+ifeq ($(PROJECT_NAME),ts0201_tz3000_0x22_zed)
+MANUF_CODE = 4742
+IMAGE_TYPE = 514
+else
+MANUF_CODE = 4417
+IMAGE_TYPE = 54179
+endif
+
 # Set the serial port number for downloading the firmware
 DOWNLOAD_PORT := COM3
 
@@ -192,7 +200,7 @@ $(BIN_FILE): $(ELF_FILE)
 	@echo 'Create zigbee OTA file'
 	@python3 $(MAKE_OTA) -t $(PROJECT_NAME) -s "Slacky-DIY OTA" $(BIN_PATH)/$(PROJECT_NAME)_$(VERSION_RELEASE).$(VERSION_BUILD).bin 
 	@echo 'Create zigbee Tuya OTA file'
-	@python3 $(MAKE_OTA) -t $(PROJECT_NAME) -m 4417 -i 54179 -v0x1111114b -s "Slacky-DIY OTA" $(BIN_PATH)/$(PROJECT_NAME)_$(VERSION_RELEASE).$(VERSION_BUILD).bin   
+	@python3 $(MAKE_OTA) -t $(PROJECT_NAME) -m $(MANUF_CODE) -i $(IMAGE_TYPE) -v0x1111114b -s "Slacky-DIY OTA" $(BIN_PATH)/$(PROJECT_NAME)_$(VERSION_RELEASE).$(VERSION_BUILD).bin   
 	@echo ' '
 	@echo 'Finished building: $@'
 	@echo ' '
