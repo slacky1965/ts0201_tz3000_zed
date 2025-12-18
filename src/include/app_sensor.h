@@ -19,7 +19,7 @@ typedef enum {
     SENSOR_ERR_ID,
 } sensor_error_t;
 
-uint8_t app_sensor_init();
+sensor_error_t app_sensor_init();
 void    app_sensor_measurement();
 void    app_sensor_set_temperature();
 void    app_sensor_set_humidity();
