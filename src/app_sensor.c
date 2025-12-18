@@ -90,43 +90,66 @@ static uint8_t app_cht8305_init() {
     cht8305_dev.addr = 0;
     cht8305_dev.id = 0;
 
-    uint8_t addr = (CHT8305_I2C_ADDRESS << 1);
-    uint8_t ret = scan_i2c_addr(addr);
-    if (ret == addr) {
-        cht8305_dev.addr = CHT8305_I2C_ADDRESS;
-        cht8305_dev.delay = cht8305_delay;
-        cht8305_dev.read = cht8305_i2c_read;
-        cht8305_dev.write = cht8305_i2c_write;
-    } else {
-        addr = (CHT8305_I2C_ADDRESS2 << 1);
+    uint8_t addr;
+    uint8_t ret;
+
+    for (uint8_t i = 0; i < 5; i++) {
+
+        addr = (CHT8305_I2C_ADDRESS << 1);
         ret = scan_i2c_addr(addr);
         if (ret == addr) {
-            cht8305_dev.addr = CHT8305_I2C_ADDRESS2;
+            cht8305_dev.addr = CHT8305_I2C_ADDRESS;
             cht8305_dev.delay = cht8305_delay;
             cht8305_dev.read = cht8305_i2c_read;
             cht8305_dev.write = cht8305_i2c_write;
+            break;
         } else {
-            addr = (CHT8305_I2C_ADDRESS3 << 1);
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+            sensor_error_codes_print_result("cht8305_init", SENSOR_ERR_ADDR_NOT_FOUND, CHT8305_I2C_ADDRESS);
+#endif
+            addr = (CHT8305_I2C_ADDRESS2 << 1);
             ret = scan_i2c_addr(addr);
             if (ret == addr) {
-                cht8305_dev.addr = CHT8305_I2C_ADDRESS3;
+                cht8305_dev.addr = CHT8305_I2C_ADDRESS2;
                 cht8305_dev.delay = cht8305_delay;
                 cht8305_dev.read = cht8305_i2c_read;
                 cht8305_dev.write = cht8305_i2c_write;
+                break;
             } else {
-                addr = (CHT8305_I2C_ADDRESS4 << 1);
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+                sensor_error_codes_print_result("cht8305_init", SENSOR_ERR_ADDR_NOT_FOUND, CHT8305_I2C_ADDRESS2);
+#endif
+                addr = (CHT8305_I2C_ADDRESS3 << 1);
                 ret = scan_i2c_addr(addr);
                 if (ret == addr) {
-                    cht8305_dev.addr = CHT8305_I2C_ADDRESS4;
+                    cht8305_dev.addr = CHT8305_I2C_ADDRESS3;
                     cht8305_dev.delay = cht8305_delay;
                     cht8305_dev.read = cht8305_i2c_read;
                     cht8305_dev.write = cht8305_i2c_write;
+                    break;
                 } else {
-                    ret = 0;
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+                    sensor_error_codes_print_result("cht8305_init", SENSOR_ERR_ADDR_NOT_FOUND, CHT8305_I2C_ADDRESS3);
+#endif
+                    addr = (CHT8305_I2C_ADDRESS4 << 1);
+                    ret = scan_i2c_addr(addr);
+                    if (ret == addr) {
+                        cht8305_dev.addr = CHT8305_I2C_ADDRESS4;
+                        cht8305_dev.delay = cht8305_delay;
+                        cht8305_dev.read = cht8305_i2c_read;
+                        cht8305_dev.write = cht8305_i2c_write;
+                        break;
+                    } else {
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+                        sensor_error_codes_print_result("cht8305_init", SENSOR_ERR_ADDR_NOT_FOUND, CHT8305_I2C_ADDRESS4);
+#endif
+                        ret = 0;
+                    }
                 }
             }
         }
     }
+
 
 
     ret = cht8305_init(&cht8305_dev);
@@ -211,25 +234,38 @@ static uint8_t app_sht30_init() {
     sht30_dev.addr = 0;
     sht30_dev.id = 0;
 
-    uint8_t addr = (SHT30_I2C_ADDRESS << 1);
-    uint8_t ret = scan_i2c_addr(addr);
-    if (ret == addr) {
-        sht30_dev.addr = SHT30_I2C_ADDRESS;
-        sht30_dev.delay = sht30_delay;
-        sht30_dev.read = sht30_i2c_read;
-        sht30_dev.write = sht30_i2c_write;
-        sht30_dev.repeatability = SHT30_REPEATABILITY_HIGH;
-    } else {
-        addr = (SHT30_I2C_ADDRESS2 << 1);
+    uint8_t addr;
+    uint8_t ret;
+
+    for (uint8_t i = 0; i < 5; i++) {
+        addr = (SHT30_I2C_ADDRESS << 1);
         ret = scan_i2c_addr(addr);
         if (ret == addr) {
-            sht30_dev.addr = SHT30_I2C_ADDRESS2;
+            sht30_dev.addr = SHT30_I2C_ADDRESS;
             sht30_dev.delay = sht30_delay;
             sht30_dev.read = sht30_i2c_read;
             sht30_dev.write = sht30_i2c_write;
             sht30_dev.repeatability = SHT30_REPEATABILITY_HIGH;
+            break;
         } else {
-            ret = 0;
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+            sensor_error_codes_print_result("sht30_init", SENSOR_ERR_ADDR_NOT_FOUND, SHT30_I2C_ADDRESS);
+#endif
+            addr = (SHT30_I2C_ADDRESS2 << 1);
+            ret = scan_i2c_addr(addr);
+            if (ret == addr) {
+                sht30_dev.addr = SHT30_I2C_ADDRESS2;
+                sht30_dev.delay = sht30_delay;
+                sht30_dev.read = sht30_i2c_read;
+                sht30_dev.write = sht30_i2c_write;
+                sht30_dev.repeatability = SHT30_REPEATABILITY_HIGH;
+                break;
+            } else {
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+                sensor_error_codes_print_result("sht30_init", SENSOR_ERR_ADDR_NOT_FOUND, SHT30_I2C_ADDRESS2);
+#endif
+                ret = 0;
+            }
         }
     }
 
@@ -334,35 +370,51 @@ static uint8_t app_sht40_init() {
     sht40_dev.addr = 0;
     sht40_dev.id = 0;
 
-    uint8_t addr = (SHT4X_I2C_ADDRESS << 1);
-    uint8_t ret = scan_i2c_addr(addr);
-    if (ret == addr) {
-        sht40_dev.addr = SHT4X_I2C_ADDRESS;
-        sht40_dev.delay = sht40_delay;
-        sht40_dev.read = sht40_i2c_read;
-        sht40_dev.write = sht40_i2c_write;
-    } else {
-        addr = (SHT4X_I2C_ADDRESS2 << 1);
+    uint8_t addr;
+    uint8_t ret;
+
+    for (uint8_t i = 0; i < 5; i++) {
+        addr = (SHT4X_I2C_ADDRESS << 1);
         ret = scan_i2c_addr(addr);
         if (ret == addr) {
-            sht40_dev.addr = SHT4X_I2C_ADDRESS2;
+            sht40_dev.addr = SHT4X_I2C_ADDRESS;
             sht40_dev.delay = sht40_delay;
             sht40_dev.read = sht40_i2c_read;
             sht40_dev.write = sht40_i2c_write;
+            break;
         } else {
-            addr = (SHT4X_I2C_ADDRESS3 << 1);
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+            sensor_error_codes_print_result("sht40_init", SENSOR_ERR_ADDR_NOT_FOUND, SHT4X_I2C_ADDRESS);
+#endif
+            addr = (SHT4X_I2C_ADDRESS2 << 1);
             ret = scan_i2c_addr(addr);
             if (ret == addr) {
-                sht40_dev.addr = SHT4X_I2C_ADDRESS3;
+                sht40_dev.addr = SHT4X_I2C_ADDRESS2;
                 sht40_dev.delay = sht40_delay;
                 sht40_dev.read = sht40_i2c_read;
                 sht40_dev.write = sht40_i2c_write;
+                break;
             } else {
-                ret = 0;
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+                sensor_error_codes_print_result("sht40_init", SENSOR_ERR_ADDR_NOT_FOUND, SHT4X_I2C_ADDRESS2);
+#endif
+                addr = (SHT4X_I2C_ADDRESS3 << 1);
+                ret = scan_i2c_addr(addr);
+                if (ret == addr) {
+                    sht40_dev.addr = SHT4X_I2C_ADDRESS3;
+                    sht40_dev.delay = sht40_delay;
+                    sht40_dev.read = sht40_i2c_read;
+                    sht40_dev.write = sht40_i2c_write;
+                    break;
+                } else {
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+                    sensor_error_codes_print_result("sht40_init", SENSOR_ERR_ADDR_NOT_FOUND, SHT4X_I2C_ADDRESS3);
+#endif
+                    ret = 0;
+                }
             }
         }
     }
-
 
     ret = sht40_init(&sht40_dev);
 #if UART_PRINTF_MODE && DEBUG_SENSOR
