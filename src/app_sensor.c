@@ -417,8 +417,8 @@ static void app_sht40_measurement() {
 #endif /* SENSOR_USED */
 
 
-uint8_t app_sensor_init() {
-    uint8_t ret = 0;
+sensor_error_t app_sensor_init() {
+    sensor_error_t ret = 0;
 
 #if (SENSOR_USED == SENSOR_CHT8305)
     sensor.init = app_cht8305_init;
