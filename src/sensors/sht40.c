@@ -57,7 +57,7 @@ sht40_error_t sht40_readSensor() {
         return SHT40_ERR_DEV_NOT_FOUND;
     }
 
-    if (dev->write(SHT4X_HIGH_PRECISION_WITH_NO_HEATER, NULL, 0, dev) == SHT40_OK) {
+    if (dev->write(SHT4X_HIGH_PRECISION_WITH_NO_HEATER, buff, 0, dev) == SHT40_OK) {
         dev->delay(SHT4X_DELAY_MEASURING);
         uint8_t i = 3;
 
