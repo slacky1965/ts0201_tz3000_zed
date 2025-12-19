@@ -31,11 +31,15 @@
 #define BOARD_HXDZ_ZBWSD_V02                0x15
 #define BOARD_IHSENO_IC_V0                  0x21
 #define BOARD_ZBEACON                       0x22
-#define BOARD_4                             0x23
+#define BOARD_ZG_227ZS                      0x23
 #define BOARD_5                             0x24
 
 #ifndef BOARD
-#define BOARD                               BOARD_ZBEACON //BOARD_IHSENO_IC_V0 //BOARD_HXDZ_ZBWSD_V02 //
+//#define BOARD                               BOARD_HXDZ_ZBWSD_V02
+//#define BOARD                               BOARD_IHSENO_IC_V0
+//#define BOARD                               BOARD_ZBEACON
+#define BOARD                               BOARD_ZG_227ZS
+//#define BOARD                               BOARD_5
 #endif
 
 #define APP_RELEASE                         0x10        //app release 1.0
@@ -92,9 +96,9 @@
  * 0x1F - Tuya plug TS011F with monitoring
  * 0x20 - Tuya door/window sensor TS0203
  * 0x21 - Tuya Temperature and Humidity sensors (board_ihseno_ic_v0.h)
- * 0x22 - Tuya Temperature and Humidity sensors (board_ihseno_ic_v0.h)
- * 0x23 - Tuya Temperature and Humidity sensors (board_ihseno_ic_v0.h)
- * 0x24 - Tuya Temperature and Humidity sensors (board_ihseno_ic_v0.h)
+ * 0x22 - Tuya Temperature and Humidity sensors (board_zbeacon.h)
+ * 0x23 - Tuya Temperature and Humidity sensors (board_zg_227zs.h)
+ * 0x24 - Tuya Temperature and Humidity sensors (board_*.h)
  *
  */
 

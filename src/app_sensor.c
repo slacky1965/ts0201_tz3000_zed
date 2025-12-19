@@ -466,6 +466,124 @@ static void app_sht40_measurement() {
     }
 }
 
+#elif (SENSOR_USED == SENSOR_AHT20)
+
+static aht20_dev_t aht20_dev;
+
+static int8_t aht20_i2c_read(uint16_t reg_addr, uint32_t reg_len, uint8_t *reg_data, uint32_t len, aht20_dev_t *dev) {
+#if (I2C_DRV_USED == I2C_DRV_HARD)
+    drv_i2c_read_series(dev->addr << 1, reg_addr, reg_len, reg_data, len);
+    return (reg_i2c_status & FLD_I2C_NAK);
+#elif (I2C_DRV_USED == I2C_DRV_SOFT)
+    return read_i2c_bytes(dev->addr << 1, reg_data, len);
+#endif
+}
+
+static int8_t aht20_i2c_write(uint16_t reg_addr, const uint8_t *reg_data, uint32_t len, aht20_dev_t *dev) {
+#if (I2C_DRV_USED == I2C_DRV_HARD)
+    drv_i2c_write_series(dev->addr << 1, reg_addr, 2, (uint8_t*)reg_data, len);
+    return (reg_i2c_status & FLD_I2C_NAK);
+#elif (I2C_DRV_USED == I2C_DRV_SOFT)
+    uint8_t buff[3];
+    buff[0] = reg_addr;
+    if (len) {
+        buff[1] = reg_data[0];
+        buff[2] = reg_data[1];
+        len = 3;
+    } else {
+        len = 1;
+    }
+    return send_i2c_bytes(dev->addr << 1, buff, len);
+#endif
+}
+
+
+static void aht20_delay(uint32_t period) {
+  sleep_ms(period);
+}
+
+
+
+static uint8_t app_aht20_init() {
+
+    aht20_dev.delay = NULL;
+    aht20_dev.read = NULL;
+    aht20_dev.write = NULL;
+    aht20_dev.addr = 0;
+    aht20_dev.id = 0;
+
+    uint8_t addr;
+    uint8_t ret;
+
+    sleep_ms(AHT20_DELAY_POWER);
+
+    for (uint8_t i = 0; i < 5; i++) {
+        addr = (AHT20_I2C_ADDRESS << 1);
+        ret = scan_i2c_addr(addr);
+        if (ret == addr) {
+            aht20_dev.addr = AHT20_I2C_ADDRESS;
+            aht20_dev.delay = aht20_delay;
+            aht20_dev.read = aht20_i2c_read;
+            aht20_dev.write = aht20_i2c_write;
+            break;
+        } else {
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+                    sensor_error_codes_print_result("aht20_init", SENSOR_ERR_ADDR_NOT_FOUND, AHT20_I2C_ADDRESS);
+#endif
+                    ret = 0;
+        }
+    }
+
+    ret = aht20_init(&aht20_dev);
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+    sensor_error_codes_print_result("aht20_init", ret, AHT20_I2C_ADDRESS);
+#endif
+
+    return ret;
+}
+
+static void  app_aht20_set_temperature() {
+
+    int16_t temperature = ((int32_t)(2000 * aht20_dev.raw_temp) / 1048576 - 500) * 10 + config.temperature_offset;
+
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+        printf("temperature: %d\r\n", temperature);
+#endif
+
+        zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_MS_TEMPERATURE_MEASUREMENT, ZCL_TEMPERATURE_MEASUREMENT_ATTRID_MEASUREDVALUE, (uint8_t*)&temperature);
+}
+
+static void app_aht20_set_humidity() {
+
+    int16_t humidity = ((uint32_t)(1000 * aht20_dev.raw_hum) / 1048576) * 10 + config.humidity_offset;
+
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+    printf("humidity:    %d\r\n", humidity);
+#endif
+    if (humidity < 0)
+        humidity = 0;
+    if (humidity > 10000)
+        humidity = 10000;
+
+    zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_MS_RELATIVE_HUMIDITY, ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_MEASUREDVALUE, (uint8_t*)&humidity);
+}
+
+static void app_aht20_measurement() {
+
+    uint8_t ret = aht20_readSensor();
+
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+    sensor_error_codes_print_result("app_aht20_measurement", ret, AHT20_I2C_ADDRESS);
+//    printf("temperature_raw: 0x%04x\r\n", aht20_dev.raw_temp);
+//    printf("humidity_raw:    0x%04x\r\n", aht20_dev.raw_hum);
+#endif
+
+    if (ret == SENSOR_OK) {
+        app_aht20_set_temperature();
+        app_aht20_set_humidity();
+    }
+}
+
 #endif /* SENSOR_USED */
 
 
@@ -487,6 +605,11 @@ sensor_error_t app_sensor_init() {
     sensor.measurement = app_sht40_measurement;
     sensor.set_temperature = app_sht40_set_temperature;
     sensor.set_humidity = app_sht40_set_humidity;
+#elif (SENSOR_USED == SENSOR_AHT20)
+    sensor.init = app_aht20_init;
+    sensor.measurement = app_aht20_measurement;
+    sensor.set_temperature = app_aht20_set_temperature;
+    sensor.set_humidity = app_aht20_set_humidity;
 #else
 #error Sensor not defined!
 #endif

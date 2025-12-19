@@ -14,6 +14,7 @@ $(OUT_PATH)/$(SRC_PATH)/zcl/zcl_reporting.o \
 $(OUT_PATH)/$(SRC_PATH)/sensors/cht8305.o \
 $(OUT_PATH)/$(SRC_PATH)/sensors/sht30.o \
 $(OUT_PATH)/$(SRC_PATH)/sensors/sht40.o \
+$(OUT_PATH)/$(SRC_PATH)/sensors/aht20.o \
 $(OUT_PATH)/$(SRC_PATH)/app_timer.o \
 $(OUT_PATH)/$(SRC_PATH)/app_config.o \
 $(OUT_PATH)/$(SRC_PATH)/app_i2c.o \

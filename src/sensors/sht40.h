@@ -44,9 +44,6 @@ typedef struct _sht40_dev sht40_dev_t;
 typedef int8_t (*sht40_read_t)(uint16_t reg_addr, uint32_t reg_len, uint8_t *reg_data, uint32_t len, sht40_dev_t *dev);
 typedef int8_t (*sht40_write_t)(uint16_t reg_addr, const uint8_t *reg_data, uint32_t len, sht40_dev_t *dev);
 typedef void   (*sht40_delay_t)(uint32_t period);
-//typedef int8_t (*sht40_read_t)(uint8_t *reg_data, uint32_t len, sht40_dev_t *dev);
-//typedef int8_t (*sht40_write_t)(const uint8_t *reg_data, uint32_t len, sht40_dev_t *dev);
-//typedef void   (*sht40_delay_t)(uint32_t period);
 
 struct _sht40_dev {
     uint8_t         addr;

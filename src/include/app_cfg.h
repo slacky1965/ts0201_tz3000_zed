@@ -58,6 +58,7 @@
 #define SENSOR_CHT8305          0
 #define SENSOR_SHT30            1
 #define SENSOR_SHT40            2
+#define SENSOR_AHT20            3
 
 /**********************************************************************
  * Version configuration
@@ -65,7 +66,7 @@
 #include "version_cfg.h"
 
 /* Debug mode config */
-#define UART_PRINTF_MODE                OFF
+#define UART_PRINTF_MODE                ON
 #define USB_PRINTF_MODE                 OFF
 
 #define DEBUG_BUTTON                    ON
@@ -73,7 +74,7 @@
 #define DEBUG_BATTERY                   OFF
 #define DEBUG_PM                        OFF
 #define DEBUG_OTA                       OFF
-#define DEBUG_SENSOR                    ON
+#define DEBUG_SENSOR                    OFF
 #define DEBUG_STA_STATUS                OFF
 #define DEBUG_SAVE                      ON
 #define DEBUG_ONOFF                     ON
@@ -119,6 +120,7 @@
 #include "board_hxdz_zbwsd_v02.h"
 #include "board_ihseno_ic_v0.h"
 #include "board_zbeacon.h"
+#include "board_zg_227zs.h"
 #endif
 
 /* Voltage detect module */

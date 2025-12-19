@@ -4,6 +4,7 @@
 #include "cht8305.h"
 #include "sht30.h"
 #include "sht40.h"
+#include "aht20.h"
 
 typedef enum {
     SENSOR_OK = 0,

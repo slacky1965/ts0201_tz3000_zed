@@ -11,11 +11,9 @@ static uint8_t sht4x_crc(uint8_t *data, uint16_t len) {
     uint16_t i;
     uint16_t j;
 
-    for (j = len; j != 0; --j)
-    {
+    for (j = len; j != 0; --j) {
         crc ^= *data++;
-        for (i = 8; i != 0; --i)
-        {
+        for (i = 8; i != 0; --i) {
             crc = (crc & 0x80) ? (crc << 1) ^ POLYNOM : (crc<<1);
         }
     }
@@ -42,7 +40,9 @@ sht40_error_t sht40_init(sht40_dev_t *pdev) {
 
     dev = pdev;
 
-    if (dev->write(SHT4X_SOFT_RESET, NULL, 0, dev)) return SHT40_ERR_COMM_FAIL;
+    uint8_t buff;
+
+    if (dev->write(SHT4X_SOFT_RESET, &buff, 0, dev)) return SHT40_ERR_COMM_FAIL;
 
     dev->delay(SHT4X_DELAY_SOFT_RESET);
 

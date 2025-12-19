@@ -34,7 +34,7 @@
 #define PB4_INPUT_ENABLE    1
 #define PB4_OUTPUT_ENABLE   0
 #define PB4_DATA_OUT        0
-#define PULL_WAKEUP_SRC_PB4 PM_PIN_PULLUP_10K // Board has hardware pull-ups
+#define PULL_WAKEUP_SRC_PB4 PM_PIN_PULLUP_10K
 
 #define I2C_CLOCK           200000//200K
 
