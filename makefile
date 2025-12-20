@@ -116,7 +116,7 @@ SIZEDUMMY :=
 RM := rm -rf
 
 # All of the sources participating in the build are defined here
--include $(MAKE_INCLUDES)/zdo.mk
+#-include $(MAKE_INCLUDES)/zdo.mk
 -include $(MAKE_INCLUDES)/zcl.mk
 -include $(MAKE_INCLUDES)/wwah.mk
 -include $(MAKE_INCLUDES)/ss.mk
@@ -231,6 +231,8 @@ clean-project:
 	-$(RM) $(FLASH_IMAGE) $(ELFS) $(SIZEDUMMY) $(LST_FILE) $(ELF_FILE)
 	-$(RM) -R $(OUT_PATH)/$(SRC_PATH)/*.o
 	-$(RM) -R $(OUT_PATH)/$(SRC_PATH)/sensors/*.o
+	-$(RM) -R $(OUT_PATH)/$(SRC_PATH)/zcl/*.o
+	-$(RM) -R $(OUT_PATH)/$(SRC_PATH)/zdo/*.o
 	-@echo ' '
 	
 pre-build:

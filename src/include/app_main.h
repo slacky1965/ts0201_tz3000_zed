@@ -21,6 +21,7 @@
 #include "app_utility.h"
 #include "app_i2c.h"
 #include "app_sensor.h"
+#include "app_binding.h"
 
 typedef struct {
     uint8_t keyType; /* CERTIFICATION_KEY or MASTER_KEY key for touch-link or distribute network
@@ -36,6 +37,7 @@ typedef struct {
     ev_timer_event_t *timerBatteryEvt;
     ev_timer_event_t *timerLedEvt;
     ev_timer_event_t *timerNoJoinedEvt;
+    ev_timer_event_t *timerAppBindEvt;
 
 //    uint32_t short_poll;
 //    uint32_t long_poll;

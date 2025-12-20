@@ -43,7 +43,7 @@
 #endif
 
 #define APP_RELEASE                         0x10        //app release 1.0
-#define APP_BUILD                           0x07        //app build 07, full version - v1.0.07
+#define APP_BUILD                           0x08        //app build 08, full version - v1.0.08
 
 #define STACK_RELEASE                       0x30        //stack release 3.0
 #define STACK_BUILD                         0x01        //stack build 01

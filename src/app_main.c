@@ -9,6 +9,7 @@ app_ctx_t g_appCtx = {
         .timerForcedReportEvt = NULL,
         .timerNoJoinedEvt = NULL,
         .timerSetPollRateEvt = NULL,
+        .timerAppBindEvt = NULL,
         .oriSta = false,
         .time_without_joined = 0,
         .net_steer_start = false,
@@ -192,6 +193,10 @@ void app_task(void) {
             light_blink_start(1, 30, 30);
 
             proc_temp_hum_onoff();
+        }
+
+        if (app_edle_bind_tbl()) {
+            g_appCtx.read_sensor_time = 0;
         }
     }
 

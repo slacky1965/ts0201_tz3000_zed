@@ -288,9 +288,15 @@ void proc_temp_hum_onoff() {
 //    printf("Start OnOff control\r\n");
 //#endif /* UART_PRINTF_MODE */
 
-    proc_temp_onoff(APP_ENDPOINT1);
-    proc_hum_onoff(APP_ENDPOINT2);
+    if (app_edle_bind_tbl()) return;
 
+    if (onoff_get_one_device()) {
+        printf("one device\r\n");
+    } else {
+        printf("different devices\r\n");
+        proc_temp_onoff(APP_ENDPOINT1);
+        proc_hum_onoff(APP_ENDPOINT2);
+    }
 }
 
 void reset_control_temp() {

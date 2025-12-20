@@ -87,7 +87,7 @@ static ev_timer_event_t *identifyTimerEvt = NULL;
  */
 void app_zclProcessIncomingMsg(zclIncoming_t *pInHdlrMsg)
 {
-	//printf("app_zclProcessIncomingMsg\n");
+//	printf("app_zclProcessIncomingMsg. cmd: 0x%x\n", pInHdlrMsg->hdr.cmd);
 
 	uint16_t cluster = pInHdlrMsg->msg->indInfo.cluster_id;
 	uint8_t endPoint = pInHdlrMsg->msg->indInfo.dst_ep;

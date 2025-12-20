@@ -128,6 +128,7 @@ void zb_bdbInitCb(u8 status, u8 joinedNetwork){
 		if(joinedNetwork){
             g_appCtx.net_steer_start = false;
             app_setPollRate(TIMEOUT_1MIN);
+
 #ifdef ZCL_OTA
 			ota_queryStart(OTA_PERIODIC_QUERY_INTERVAL);
 #endif
@@ -135,6 +136,12 @@ void zb_bdbInitCb(u8 status, u8 joinedNetwork){
 #ifdef ZCL_POLL_CTRL
 			app_zclCheckInStart();
 #endif
+
+            if (g_appCtx.timerAppBindEvt) {
+                TL_ZB_TIMER_CANCEL(&g_appCtx.timerAppBindEvt);
+            }
+            g_appCtx.timerAppBindEvt = TL_ZB_TIMER_SCHEDULE(app_bindTimerCb, NULL, TIMEOUT_1SEC);
+
 		} else  if (g_appCtx.net_steer_start) {
 			u16 jitter = 0;
 			do{
@@ -168,7 +175,7 @@ void zb_bdbInitCb(u8 status, u8 joinedNetwork){
  * @return  None
  */
 void zb_bdbCommissioningCb(u8 status, void *arg){
-//    printf("zb_bdbCommissioningCb: sta = %x\r\n", status);
+    printf("zb_bdbCommissioningCb: sta = %x\r\n", status);
 
 	switch(status){
 		case BDB_COMMISSION_STA_SUCCESS:
@@ -202,6 +209,12 @@ void zb_bdbCommissioningCb(u8 status, void *arg){
 				g_switchAppCtx.bdbFBTimerEvt = TL_ZB_TIMER_SCHEDULE(app_bdbFindAndBindStart, NULL, 50);
 			}
 #endif
+
+            if (g_appCtx.timerAppBindEvt) {
+                TL_ZB_TIMER_CANCEL(&g_appCtx.timerAppBindEvt);
+            }
+            g_appCtx.timerAppBindEvt = TL_ZB_TIMER_SCHEDULE(app_bindTimerCb, NULL, TIMEOUT_1SEC);
+
 			break;
 		case BDB_COMMISSION_STA_IN_PROGRESS:
 			break;
@@ -265,6 +278,7 @@ void zb_bdbIdentifyCb(u8 endpoint, u16 srcAddr, u16 identifyTime){
  * @return  None
  */
 void zb_bdbFindBindSuccessCb(findBindDst_t *pDstInfo){
+//    printf("zb_bdbFindBindSuccessCb\r\n");
 #if FIND_AND_BIND_SUPPORT
 	epInfo_t dstEpInfo;
 	TL_SETSTRUCTCONTENT(dstEpInfo, 0);
