@@ -140,7 +140,7 @@ void zb_bdbInitCb(u8 status, u8 joinedNetwork){
             if (g_appCtx.timerAppBindEvt) {
                 TL_ZB_TIMER_CANCEL(&g_appCtx.timerAppBindEvt);
             }
-            g_appCtx.timerAppBindEvt = TL_ZB_TIMER_SCHEDULE(app_bindTimerCb, NULL, TIMEOUT_1SEC);
+            g_appCtx.timerAppBindEvt = TL_ZB_TIMER_SCHEDULE(app_bindTimerCb, NULL, TIMEOUT_5SEC);
 
 		} else  if (g_appCtx.net_steer_start) {
 			u16 jitter = 0;
@@ -175,7 +175,7 @@ void zb_bdbInitCb(u8 status, u8 joinedNetwork){
  * @return  None
  */
 void zb_bdbCommissioningCb(u8 status, void *arg){
-    printf("zb_bdbCommissioningCb: sta = %x\r\n", status);
+//    printf("zb_bdbCommissioningCb: sta = %x\r\n", status);
 
 	switch(status){
 		case BDB_COMMISSION_STA_SUCCESS:
@@ -213,7 +213,7 @@ void zb_bdbCommissioningCb(u8 status, void *arg){
             if (g_appCtx.timerAppBindEvt) {
                 TL_ZB_TIMER_CANCEL(&g_appCtx.timerAppBindEvt);
             }
-            g_appCtx.timerAppBindEvt = TL_ZB_TIMER_SCHEDULE(app_bindTimerCb, NULL, TIMEOUT_1SEC);
+            g_appCtx.timerAppBindEvt = TL_ZB_TIMER_SCHEDULE(app_bindTimerCb, NULL, TIMEOUT_5SEC);
 
 			break;
 		case BDB_COMMISSION_STA_IN_PROGRESS:

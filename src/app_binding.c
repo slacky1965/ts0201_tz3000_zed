@@ -59,6 +59,7 @@ void app_update_bind_tbl(void *args) {
     uint16_t summ_addr = 0;
     aps_binding_entry_t *bind_entry = NULL;
     aps_binding_entry_t *bind_tbl = bindTblEntryGet();
+    app_bind_tbl.idle = true;
 
     for (i = 0, app_bind_tbl.idx = 0; i < APS_BINDING_TABLE_NUM; i++) {
         if (bind_tbl->used) {

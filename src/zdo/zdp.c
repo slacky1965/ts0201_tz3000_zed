@@ -23,7 +23,7 @@
  *
  *******************************************************************************************************/
 
-#include "../common/includes/zb_common.h"
+#include "zb_common.h"
 #include "app_binding.h"
 
 
