@@ -39,6 +39,10 @@ static void buttonSinglePressed(u8 btNum) {
             if(zb_isDeviceJoinedNwk()) {
                 app_setPollRate(TIMEOUT_20SEC);
                 TL_ZB_TIMER_SCHEDULE(forcedReportCb, NULL, TIMEOUT_100MS);
+                if (g_appCtx.timerAppBindEvt) {
+                    TL_ZB_TIMER_CANCEL(&g_appCtx.timerAppBindEvt);
+                }
+                g_appCtx.timerAppBindEvt = TL_ZB_TIMER_SCHEDULE(app_bindTimerCb, NULL, TIMEOUT_2SEC);
             } else if (!zb_isDeviceFactoryNew()) {
                 zb_rejoinReq(zb_apsChannelMaskGet(), g_bdbAttrs.scanDuration);
             }
