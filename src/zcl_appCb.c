@@ -244,6 +244,14 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                 }
                 reset_control_temp();
                 proc_temp_hum_onoff();
+            } else if (attr[i].attrID == ZCL_TEMPERATURE_MEASUREMENT_ATTRID_ONOFF_REPEAT_COMMAND) {
+                if (config.repeat_cmd != attr[i].attrData[0]) {
+                    config.repeat_cmd = attr[i].attrData[0];
+//                    printf("Pereat command: %d\r\n", config.repeat_cmd);
+                    save = true;
+                }
+                repeat_timer_stop();
+                proc_temp_hum_onoff();
             }
         }
     }
