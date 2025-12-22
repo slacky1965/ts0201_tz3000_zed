@@ -36,6 +36,7 @@ typedef struct __attribute__((packed)) {
     uint8_t     humidity_onoff;         /* 0 - disabled, 1 - enabled    */
     uint16_t    humidity_onoff_low;     /* 0                            */
     uint16_t    humidity_onoff_high;    /* 10000                        */
+    uint8_t     repeat_cmd;
     uint8_t     crc;
 } config_t;
 
