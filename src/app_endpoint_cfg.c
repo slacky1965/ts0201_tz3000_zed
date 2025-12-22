@@ -241,18 +241,20 @@ zcl_temperatureAttr_t g_zcl_temperatureAttrs = {
         .temperature_onoff = DEFAULT_TEMPERATURE_ONOFF,
         .temperature_onoff_low = DEFAULT_TEMPERATURE_ONOFF_MIN,
         .temperature_onoff_high = DEFAULT_TEMPERATURE_ONOFF_MAX,
+        .repeat_cmd = REPEAT_COMMAND_OFF,
 };
 
 
 const zclAttrInfo_t temperature_attrTbl[] = {
-        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_MEASUREDVALUE,         ZCL_INT16,      RR,  (uint8_t*)&g_zcl_temperatureAttrs.value                },
-        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_MINMEASUREDVALUE,      ZCL_INT16,      R,   (uint8_t*)&g_zcl_temperatureAttrs.minValue             },
-        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_MAXMEASUREDVALUE,      ZCL_INT16,      R,   (uint8_t*)&g_zcl_temperatureAttrs.maxValue             },
-        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_SENSORS_READ_PERIOD,   ZCL_UINT16,     RWR, (uint8_t*)&g_zcl_temperatureAttrs.read_sensors_period  },
-        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_OFFSET,    ZCL_INT16,      RWR, (uint8_t*)&g_zcl_temperatureAttrs.temperature_offset   },
-        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_ONOFF,     ZCL_BOOLEAN,    RWR, (uint8_t*)&g_zcl_temperatureAttrs.temperature_onoff           },
-        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_ONOFF_LOW, ZCL_INT16,      RWR, (uint8_t*)&g_zcl_temperatureAttrs.temperature_onoff_low       },
-        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_ONOFF_HIGH,ZCL_INT16,      RWR, (uint8_t*)&g_zcl_temperatureAttrs.temperature_onoff_high      },
+        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_MEASUREDVALUE,         ZCL_INT16,      RR,  (uint8_t*)&g_zcl_temperatureAttrs.value                    },
+        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_MINMEASUREDVALUE,      ZCL_INT16,      R,   (uint8_t*)&g_zcl_temperatureAttrs.minValue                 },
+        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_MAXMEASUREDVALUE,      ZCL_INT16,      R,   (uint8_t*)&g_zcl_temperatureAttrs.maxValue                 },
+        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_SENSORS_READ_PERIOD,   ZCL_UINT16,     RWR, (uint8_t*)&g_zcl_temperatureAttrs.read_sensors_period      },
+        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_OFFSET,    ZCL_INT16,      RWR, (uint8_t*)&g_zcl_temperatureAttrs.temperature_offset       },
+        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_ONOFF,     ZCL_BOOLEAN,    RWR, (uint8_t*)&g_zcl_temperatureAttrs.temperature_onoff        },
+        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_ONOFF_LOW, ZCL_INT16,      RWR, (uint8_t*)&g_zcl_temperatureAttrs.temperature_onoff_low    },
+        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_ONOFF_HIGH,ZCL_INT16,      RWR, (uint8_t*)&g_zcl_temperatureAttrs.temperature_onoff_high   },
+        { ZCL_TEMPERATURE_MEASUREMENT_ATTRID_ONOFF_REPEAT_COMMAND,  ZCL_BOOLEAN,    RWR, (uint8_t*)&g_zcl_temperatureAttrs.repeat_cmd               },
 
         { ZCL_ATTRID_GLOBAL_CLUSTER_REVISION,           ZCL_UINT16, R,  (uint8_t*)&zcl_attr_global_clusterRevision  },
 };
@@ -289,31 +291,31 @@ const zclAttrInfo_t humidity_attrTbl[] = {
 
 zcl_onOffSwitchCfgAttr_t g_zcl_onOffSwitchCfgAttrs[ONOFFCFG_AMT] = {
     {
-        .switchType       = ZCL_SWITCH_TYPE_TOGGLE,
-        .switchActions    = ZCL_SWITCH_ACTION_ON_OFF,
+        .switchType     = ZCL_SWITCH_TYPE_TOGGLE,
+        .switchActions  = ZCL_SWITCH_ACTION_ON_OFF,
     },
     {
-        .switchType       = ZCL_SWITCH_TYPE_TOGGLE,
-        .switchActions    = ZCL_SWITCH_ACTION_ON_OFF,
+        .switchType     = ZCL_SWITCH_TYPE_TOGGLE,
+        .switchActions  = ZCL_SWITCH_ACTION_ON_OFF,
     }
 };
 
 const zclAttrInfo_t onoff_switch_cfg_attr1Tbl[] =
 {
-    { ZCL_ATTRID_SWITCH_TYPE,               ZCL_ENUM8,  R,  (u8*)&g_zcl_onOffSwitchCfgAttrs[0].switchType    },
-    { ZCL_ATTRID_SWITCH_ACTION,             ZCL_ENUM8,  RWR,(u8*)&g_zcl_onOffSwitchCfgAttrs[0].switchActions },
+    { ZCL_ATTRID_SWITCH_TYPE,               ZCL_ENUM8,  R,   (uint8_t*)&g_zcl_onOffSwitchCfgAttrs[0].switchType     },
+    { ZCL_ATTRID_SWITCH_ACTION,             ZCL_ENUM8,  RWR, (uint8_t*)&g_zcl_onOffSwitchCfgAttrs[0].switchActions  },
 
-    { ZCL_ATTRID_GLOBAL_CLUSTER_REVISION,   ZCL_UINT16, R,  (u8*)&zcl_attr_global_clusterRevision},
+    { ZCL_ATTRID_GLOBAL_CLUSTER_REVISION,   ZCL_UINT16, R,   (uint8_t*)&zcl_attr_global_clusterRevision             },
 };
 
 #define ZCL_ON_OFF_SWITCH_CFG_ATTR1_NUM       sizeof(onoff_switch_cfg_attr1Tbl) / sizeof(zclAttrInfo_t)
 
 const zclAttrInfo_t onoff_switch_cfg_attr2Tbl[] =
 {
-    { ZCL_ATTRID_SWITCH_TYPE,               ZCL_ENUM8,  R,  (u8*)&g_zcl_onOffSwitchCfgAttrs[1].switchType    },
-    { ZCL_ATTRID_SWITCH_ACTION,             ZCL_ENUM8,  RWR,(u8*)&g_zcl_onOffSwitchCfgAttrs[1].switchActions },
+    { ZCL_ATTRID_SWITCH_TYPE,               ZCL_ENUM8,  R,  (uint8_t*)&g_zcl_onOffSwitchCfgAttrs[1].switchType      },
+    { ZCL_ATTRID_SWITCH_ACTION,             ZCL_ENUM8,  RWR,(uint8_t*)&g_zcl_onOffSwitchCfgAttrs[1].switchActions   },
 
-    { ZCL_ATTRID_GLOBAL_CLUSTER_REVISION,   ZCL_UINT16, R,  (u8*)&zcl_attr_global_clusterRevision},
+    { ZCL_ATTRID_GLOBAL_CLUSTER_REVISION,   ZCL_UINT16, R,  (uint8_t*)&zcl_attr_global_clusterRevision              },
 };
 
 #define ZCL_ON_OFF_SWITCH_CFG_ATTR2_NUM       sizeof(onoff_switch_cfg_attr2Tbl) / sizeof(zclAttrInfo_t)
