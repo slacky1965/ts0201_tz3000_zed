@@ -10,6 +10,7 @@ typedef struct {
     bool one_device;
     bool idle;
     uint8_t idx;
+    bool addrCrdnrSet;
     addrExt_t extAddrCoordinator;
     bind_onoff_t bind_onoff[APS_BINDING_TABLE_NUM];
 } app_bind_tbl_t;
