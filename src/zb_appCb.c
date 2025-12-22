@@ -140,7 +140,7 @@ void zb_bdbInitCb(u8 status, u8 joinedNetwork){
             if (g_appCtx.timerAppBindEvt) {
                 TL_ZB_TIMER_CANCEL(&g_appCtx.timerAppBindEvt);
             }
-            g_appCtx.timerAppBindEvt = TL_ZB_TIMER_SCHEDULE(app_bindTimerCb, NULL, TIMEOUT_5SEC);
+            g_appCtx.timerAppBindEvt = TL_ZB_TIMER_SCHEDULE(app_bindTimerCb, NULL, TIMEOUT_2SEC);
 
 		} else  if (g_appCtx.net_steer_start) {
 			u16 jitter = 0;
@@ -213,7 +213,7 @@ void zb_bdbCommissioningCb(u8 status, void *arg){
             if (g_appCtx.timerAppBindEvt) {
                 TL_ZB_TIMER_CANCEL(&g_appCtx.timerAppBindEvt);
             }
-            g_appCtx.timerAppBindEvt = TL_ZB_TIMER_SCHEDULE(app_bindTimerCb, NULL, TIMEOUT_5SEC);
+            g_appCtx.timerAppBindEvt = TL_ZB_TIMER_SCHEDULE(app_bindTimerCb, NULL, TIMEOUT_2SEC);
 
 			break;
 		case BDB_COMMISSION_STA_IN_PROGRESS:
