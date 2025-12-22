@@ -59,6 +59,7 @@ nv_sts_t config_restore() {
         config.temperature_onoff = DEFAULT_TEMPERATURE_ONOFF;
         config.temperature_onoff_high = DEFAULT_TEMPERATURE_ONOFF_MAX;
         config.temperature_onoff_low = DEFAULT_TEMPERATURE_ONOFF_MIN;
+        config.repeat_cmd = REPEAT_COMMAND_OFF;
         config.humidity_offset = DEFAULT_HUMIDITY_OFFSET;
         config.humidity_onoff = DEFAULT_HUMIDITY_ONOFF;
         config.humidity_onoff_high = DEFAULT_HUMIDITY_ONOFF_MAX;
@@ -70,6 +71,7 @@ nv_sts_t config_restore() {
     g_zcl_temperatureAttrs.temperature_onoff = config.temperature_onoff;
     g_zcl_temperatureAttrs.temperature_onoff_high = config.temperature_onoff_high;
     g_zcl_temperatureAttrs.temperature_onoff_low = config.temperature_onoff_low;
+    g_zcl_temperatureAttrs.repeat_cmd = config.repeat_cmd;
     g_zcl_humidityAttrs.humidity_offset = config.humidity_offset;
     g_zcl_humidityAttrs.humidity_onoff = config.humidity_onoff;
     g_zcl_humidityAttrs.humidity_onoff_high = config.humidity_onoff_high;
