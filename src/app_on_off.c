@@ -57,6 +57,11 @@ static int32_t temp_cmd_repeatCb(void *args) {
 
 //    printf("temp_cmd_repeatCb()\r\n");
 
+    if (!config.repeat_cmd) {
+        timerTempEvt = NULL;
+        return -1;
+    }
+
     uint8_t ep = (uint8_t)((uint32_t)args);
     uint8_t idx = ep-1;
     bool one_device = onoff_get_one_device();
@@ -85,6 +90,11 @@ static int32_t temp_cmd_repeatCb(void *args) {
 static int32_t hum_cmd_repeatCb(void *args) {
 
 //    printf("hum_cmd_repeatCb()\r\n");
+
+    if (!config.repeat_cmd) {
+        timerHumEvt = NULL;
+        return -1;
+    }
 
     uint8_t ep = (uint8_t)((uint32_t)args);
     uint8_t idx = ep-1;
@@ -147,11 +157,12 @@ static void proc_temp_onoff(uint8_t ep) {
         } else {
             if (config.read_sensors_period <= seconds) seconds *= 1000;
             else seconds = config.read_sensors_period * 1000;
+            if(!config.repeat_cmd && timerTempEvt) TL_ZB_TIMER_CANCEL(&timerTempEvt);
             if (sw_onoff[idx] == IDLE) {
                 temp_save = tempAttrs->value;
                 if (!one_device) {
                     if(timerTempEvt) TL_ZB_TIMER_CANCEL(&timerTempEvt);
-                    timerTempEvt = TL_ZB_TIMER_SCHEDULE(temp_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
+                    if (config.repeat_cmd) timerTempEvt = TL_ZB_TIMER_SCHEDULE(temp_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
                 }
 //                printf("Temp value: %d, low: %d, high: %d\r\n", tempAttrs->value, tempAttrs->temperature_onoff_low, tempAttrs->temperature_onoff_high);
                 if (onoffCfgAttrs->switchActions == ZCL_SWITCH_ACTION_ON_OFF) {
@@ -180,7 +191,7 @@ static void proc_temp_onoff(uint8_t ep) {
                     temp_save = tempAttrs->value;
                     if (!one_device) {
                         if(timerTempEvt) TL_ZB_TIMER_CANCEL(&timerTempEvt);
-                        timerTempEvt = TL_ZB_TIMER_SCHEDULE(temp_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
+                        if (config.repeat_cmd) timerTempEvt = TL_ZB_TIMER_SCHEDULE(temp_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
                         cmdOnOff(ep, ZCL_CMD_ONOFF_ON);
                     }
                 }
@@ -193,7 +204,7 @@ static void proc_temp_onoff(uint8_t ep) {
                     temp_save = tempAttrs->value;
                     if (!one_device) {
                         if(timerTempEvt) TL_ZB_TIMER_CANCEL(&timerTempEvt);
-                        timerTempEvt = TL_ZB_TIMER_SCHEDULE(temp_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
+                        if (config.repeat_cmd) timerTempEvt = TL_ZB_TIMER_SCHEDULE(temp_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
                         cmdOnOff(ep, ZCL_CMD_ONOFF_OFF);
                     }
                 }
@@ -251,11 +262,12 @@ static void proc_hum_onoff(uint8_t ep) {
         } else {
             if (config.read_sensors_period <= seconds) seconds *= 1000;
             else seconds = config.read_sensors_period * 1000;
+            if(!config.repeat_cmd && timerHumEvt) TL_ZB_TIMER_CANCEL(&timerHumEvt);
             if (sw_onoff[idx] == IDLE) {
                 hum_save = humAttrs->value;
                 if (!one_device) {
                     if(timerHumEvt) TL_ZB_TIMER_CANCEL(&timerHumEvt);
-                    timerHumEvt = TL_ZB_TIMER_SCHEDULE(hum_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
+                    if (config.repeat_cmd) timerHumEvt = TL_ZB_TIMER_SCHEDULE(hum_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
                 }
 //                printf("Hum value: %d, low: %d, high: %d\r\n", humAttrs->value, humAttrs->humidity_onoff_low, humAttrs->humidity_onoff_high);
                 if (onoffCfgAttrs->switchActions == ZCL_SWITCH_ACTION_ON_OFF) {
@@ -284,7 +296,7 @@ static void proc_hum_onoff(uint8_t ep) {
                     hum_save = humAttrs->value;
                     if (!one_device) {
                         if(timerHumEvt) TL_ZB_TIMER_CANCEL(&timerHumEvt);
-                        timerHumEvt = TL_ZB_TIMER_SCHEDULE(hum_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
+                        if (config.repeat_cmd) timerHumEvt = TL_ZB_TIMER_SCHEDULE(hum_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
                         cmdOnOff(ep, ZCL_CMD_ONOFF_ON);
                     }
 #if HUMIDITY_TEST
@@ -300,7 +312,7 @@ static void proc_hum_onoff(uint8_t ep) {
                     hum_save = humAttrs->value;
                     if (!one_device) {
                         if(timerHumEvt) TL_ZB_TIMER_CANCEL(&timerHumEvt);
-                        timerHumEvt = TL_ZB_TIMER_SCHEDULE(hum_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
+                        if (config.repeat_cmd) timerHumEvt = TL_ZB_TIMER_SCHEDULE(hum_cmd_repeatCb, (void *)((uint32_t)ep), seconds);
                         cmdOnOff(ep, ZCL_CMD_ONOFF_OFF);
                     }
 #if HUMIDITY_TEST
@@ -360,7 +372,7 @@ static void procTempHumOnOff(uint8_t t_ep, uint8_t h_ep) {
                 if(timerHumEvt) TL_ZB_TIMER_CANCEL(&timerHumEvt);
             }
 
-            if (!timerHumEvt) timerHumEvt = TL_ZB_TIMER_SCHEDULE(hum_cmd_repeatCb, (void *)((uint32_t)h_ep), seconds);
+            if (!timerHumEvt && config.repeat_cmd) timerHumEvt = TL_ZB_TIMER_SCHEDULE(hum_cmd_repeatCb, (void *)((uint32_t)h_ep), seconds);
 
         }
 
@@ -384,7 +396,7 @@ static void procTempHumOnOff(uint8_t t_ep, uint8_t h_ep) {
                 if(timerTempEvt) TL_ZB_TIMER_CANCEL(&timerTempEvt);
             }
 
-            if (!timerTempEvt) timerTempEvt = TL_ZB_TIMER_SCHEDULE(temp_cmd_repeatCb, (void *)((uint32_t)t_ep), seconds);
+            if (!timerTempEvt && config.repeat_cmd) timerTempEvt = TL_ZB_TIMER_SCHEDULE(temp_cmd_repeatCb, (void *)((uint32_t)t_ep), seconds);
         }
 
         if (config.temperature_onoff && config.humidity_onoff) {
@@ -393,7 +405,7 @@ static void procTempHumOnOff(uint8_t t_ep, uint8_t h_ep) {
                 cmdOnOff(t_ep, ZCL_CMD_ONOFF_ON);
                 if(timerTempEvt) TL_ZB_TIMER_CANCEL(&timerTempEvt);
                 if(timerHumEvt) TL_ZB_TIMER_CANCEL(&timerHumEvt);
-                timerTempEvt = TL_ZB_TIMER_SCHEDULE(temp_cmd_repeatCb, (void *)((uint32_t)t_ep), seconds);
+                if (config.repeat_cmd) timerTempEvt = TL_ZB_TIMER_SCHEDULE(temp_cmd_repeatCb, (void *)((uint32_t)t_ep), seconds);
             }
 
             if (sw_onoff[h_idx] == ON && common_sw_onoff[h_idx] != ON) {
@@ -401,7 +413,7 @@ static void procTempHumOnOff(uint8_t t_ep, uint8_t h_ep) {
                 cmdOnOff(h_ep, ZCL_CMD_ONOFF_ON);
                 if(timerTempEvt) TL_ZB_TIMER_CANCEL(&timerTempEvt);
                 if(timerHumEvt) TL_ZB_TIMER_CANCEL(&timerHumEvt);
-                timerHumEvt = TL_ZB_TIMER_SCHEDULE(hum_cmd_repeatCb, (void *)((uint32_t)h_ep), seconds);
+                if (config.repeat_cmd) timerHumEvt = TL_ZB_TIMER_SCHEDULE(hum_cmd_repeatCb, (void *)((uint32_t)h_ep), seconds);
             }
 
             if (sw_onoff[t_idx] == OFF && common_sw_onoff[t_idx] != OFF) {
@@ -410,7 +422,7 @@ static void procTempHumOnOff(uint8_t t_ep, uint8_t h_ep) {
                     cmdOnOff(t_ep, ZCL_CMD_ONOFF_OFF);
                     if(timerTempEvt) TL_ZB_TIMER_CANCEL(&timerTempEvt);
                     if(timerHumEvt) TL_ZB_TIMER_CANCEL(&timerHumEvt);
-                    timerTempEvt = TL_ZB_TIMER_SCHEDULE(temp_cmd_repeatCb, (void *)((uint32_t)t_ep), seconds);
+                    if (config.repeat_cmd) timerTempEvt = TL_ZB_TIMER_SCHEDULE(temp_cmd_repeatCb, (void *)((uint32_t)t_ep), seconds);
                 }
             }
 
@@ -420,7 +432,7 @@ static void procTempHumOnOff(uint8_t t_ep, uint8_t h_ep) {
                     cmdOnOff(h_ep, ZCL_CMD_ONOFF_OFF);
                     if(timerTempEvt) TL_ZB_TIMER_CANCEL(&timerTempEvt);
                     if(timerHumEvt) TL_ZB_TIMER_CANCEL(&timerHumEvt);
-                    timerHumEvt = TL_ZB_TIMER_SCHEDULE(hum_cmd_repeatCb, (void *)((uint32_t)h_ep), seconds);
+                    if (config.repeat_cmd) timerHumEvt = TL_ZB_TIMER_SCHEDULE(hum_cmd_repeatCb, (void *)((uint32_t)h_ep), seconds);
                 }
             }
         }
@@ -456,4 +468,11 @@ void reset_control_temp() {
 void reset_control_hum() {
     sw_onoff[HUM_IDX] = IDLE;
     common_sw_onoff[HUM_IDX] = IDLE;
+}
+
+void repeat_timer_stop() {
+    if(timerTempEvt) TL_ZB_TIMER_CANCEL(&timerTempEvt);
+    if(timerHumEvt) TL_ZB_TIMER_CANCEL(&timerHumEvt);
+    reset_control_temp();
+    reset_control_hum();
 }
