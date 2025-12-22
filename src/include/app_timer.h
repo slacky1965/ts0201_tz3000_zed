@@ -6,7 +6,6 @@
 typedef struct {
     ev_timer_event_t *timerAPPEvt;
     uint32_t timeout;
-
 } app_timer_t;
 
 extern app_timer_t app_timer;
