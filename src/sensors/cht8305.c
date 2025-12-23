@@ -55,15 +55,22 @@ cht8305_error_t cht8305_init(cht8305_dev_t *pdev) {
 cht8305_error_t cht8305_readSensor() {
 
     uint8_t buff[4];
+    cht8305_error_t ret = CHT8305_OK;
 
     if (!dev) {
         return CHT8305_ERR_DEV_NOT_FOUND;
     }
 
-    if (dev->write(CHT8305_REG_TMP, buff, 0, dev) == CHT8305_OK) {
+    uint8_t i = 3;
+    while(i--) {
+        ret = dev->write(CHT8305_REG_TMP, buff, 0, dev);
+        if (ret == CHT8305_OK) break;
+    }
+
+    if (ret == CHT8305_OK) {
 
         dev->delay(CHT8305_DELAY_MEASURING);
-        uint8_t i = 3;
+        i = 3;
 
         while(i--) {
             if (dev->read(0, 0, buff, 4, dev) == CHT8305_OK) {
