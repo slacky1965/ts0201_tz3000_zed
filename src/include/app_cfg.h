@@ -74,7 +74,7 @@
 #define DEBUG_BATTERY                   OFF
 #define DEBUG_PM                        OFF
 #define DEBUG_OTA                       OFF
-#define DEBUG_SENSOR                    OFF
+#define DEBUG_SENSOR                    ON
 #define DEBUG_STA_STATUS                OFF
 #define DEBUG_SAVE                      ON
 #define DEBUG_ONOFF                     ON
