@@ -1,11 +1,12 @@
 #include "app_main.h"
 
-#define HUMIDITY_TEST   OFF
-
-#define IDLE        0xFF
-#define TEMP_IDX   (APP_ENDPOINT1 - 1)
-#define HUM_IDX    (APP_ENDPOINT2 - 1)
 #define DEFAULT_REPEAT_TIME 60
+
+#define HUMIDITY_TEST       OFF
+
+#define IDLE                0xFF
+#define TEMP_IDX            (APP_ENDPOINT1 - 1)
+#define HUM_IDX             (APP_ENDPOINT2 - 1)
 
 static uint8_t sw_onoff[ONOFFCFG_AMT] = {IDLE, IDLE};
 static uint8_t common_sw_onoff[ONOFFCFG_AMT] = {IDLE, IDLE};
