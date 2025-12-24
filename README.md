@@ -70,11 +70,11 @@
 
 Далее нужно добавить локальное хранилище обновлений. 
 
-Создаем директорию `images` в директории z2m и кладем туда файл [1141-d3a3-1111114b-ts0201_tz3000_0x15_zed.zigbee](bin/1141-d3a3-1111114b-ts0201_tz3000_0x15_zed.zigbee) для - `TS0201 _TZ3000_xr3htd96`, `TS0201 _TZ3000_fllyghyj`, `TS0201 _TZ3000_0s1izerx`. И копируем в директорию z2m файл [local_ota_index.json](zigbee2mqtt/_TZ3000_xr3htd96/local_ota_index.json)
+Создаем директорию `images` в директории z2m и кладем туда файл [1141-d3a3-1111114b-ts0201_tz3000_0x15_zed.zigbee](bin/1141-d3a3-1111114b-ts0201_tz3000_0x15_zed.zigbee) для - `TS0201 _TZ3000_xr3htd96`, `TS0201 _TZ3000_fllyghyj`, `TS0201 _TZ3000_0s1izerx`. И копируем в директорию z2m файл [zigbee2mqtt/_TZ3000_xr3htd96/local_ota_index.json](zigbee2mqtt/_TZ3000_xr3htd96/local_ota_index.json)
 
-Для `TS0201 _TZ3000_dowj6gyi` кладем другой файл [1141-d3a3-1111114b-ts0201_tz3000_0x21_zed.zigbee](bin/1141-d3a3-1111114b-ts0201_tz3000_0x21_zed.zigbee) и копируем в директорию z2m файл [local_ota_index.json](zigbee2mqtt/_TZ3000_dowj6gyi/local_ota_index.json)
+Для `TS0201 _TZ3000_dowj6gyi` кладем другой файл [1141-d3a3-1111114b-ts0201_tz3000_0x21_zed.zigbee](bin/1141-d3a3-1111114b-ts0201_tz3000_0x21_zed.zigbee) и копируем в директорию z2m файл [zigbee2mqtt/_TZ3000_dowj6gyi/local_ota_index.json](zigbee2mqtt/_TZ3000_dowj6gyi/local_ota_index.json)
 
-Для `TS0201 Zbeacon`  кладем другой файл [1286-0202-1111114b-ts0201_tz3000_0x22_zed.zigbee](bin/1286-0202-1111114b-ts0201_tz3000_0x22_zed.zigbee) и копируем в директорию z2m файл [local_ota_index.json](zigbee2mqtt/Zbeacon/local_ota_index.json)
+Для `TS0201 Zbeacon`  кладем другой файл [1286-0202-1111114b-ts0201_tz3000_0x22_zed.zigbee](bin/1286-0202-1111114b-ts0201_tz3000_0x22_zed.zigbee) и копируем в директорию z2m файл [zigbee2mqtt/Zbeacon/local_ota_index.json](zigbee2mqtt/Zbeacon/local_ota_index.json)
 
  Для `ZG-227Z HOBEIAN` ничего никуда класть не нужно. У этого датчика в оригинальной прошивке не реализована OTA. К сожалению его можно прошить только по проводам. Как это сделать читать [тут TODO:]().
 
