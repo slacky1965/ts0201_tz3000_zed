@@ -13,7 +13,7 @@
 #define AHT20_MEASUREMENT_DATA1         0x33
 #define AHT20_MEASUREMENT_DATA2         0x00
 
-#define AHT20_DELAY_POWER               250
+#define AHT20_DELAY_POWER               500
 #define AHT20_DELAY_SOFT_RESET          10
 #define AHT20_DELAY_REG_RESET           5
 #define AHT20_DELAY_DEFAULT             10
