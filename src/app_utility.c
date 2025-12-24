@@ -19,6 +19,31 @@ void start_message() {
 #if UART_PRINTF_MODE
     const uint8_t version[] = ZCL_BASIC_SW_BUILD_ID;
     printf("Firmware version: %s\r\n", version+1);
+#if (BOARD == BOARD_HXDZ_ZBWSD_V02)
+    printf("Device is \"TS0201 _TZ3000_xr3htd96\"\r\n");
+#elif (BOARD == BOARD_IHSENO_IC_V0)
+    printf("Device is \"TS0201 _TZ3000_dowj6gyi\"\r\n");
+#elif (BOARD == BOARD_ZBEACON)
+    printf("Device is \"TS0201 Zbeacon\"\r\n");
+#elif (BOARD == BOARD_ZG_227ZS)
+    printf("Device is \"ZG-227Z HOBEIAN\"\r\n");
+#else
+#error BOARD not defined!
+#endif
+
+#if (SENSOR_USED == SENSOR_CHT8305)
+    printf("The sensor used is CHT8305\r\n");
+#elif (SENSOR_USED == SENSOR_SHT30)
+    printf("The sensor used is SHT30\r\n");
+#elif (SENSOR_USED == SENSOR_SHT40)
+    printf("The sensor used is SHT40\r\n");
+#elif (SENSOR_USED == SENSOR_AHT20)
+    printf("The sensor used is AHT20\r\n");
+#else
+#error SENSOR_USED not defined!
+#endif
+
+
 #endif
 }
 
