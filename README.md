@@ -76,7 +76,7 @@
 
 Для `TS0201 Zbeacon`  кладем другой файл [1286-0202-1111114b-ts0201_tz3000_0x22_zed.zigbee](bin/1286-0202-1111114b-ts0201_tz3000_0x22_zed.zigbee) и копируем в директорию `zigbee2mqtt` файл [Zbeacon/local_ota_index.json](zigbee2mqtt/Zbeacon/local_ota_index.json)
 
- Для `ZG-227Z HOBEIAN` ничего никуда класть не нужно. У этого датчика в оригинальной прошивке не реализована OTA. К сожалению его можно прошить только по проводам. Как это сделать читать [тут TODO:]().
+ Для `ZG-227Z HOBEIAN` ничего никуда класть не нужно. У этого датчика в оригинальной прошивке не реализована OTA. К сожалению его можно прошить только по проводам через `USB-UART` адаптер. Как это сделать читать [тут](https://github.com/pvvx/ATC_MiThermometer?tab=readme-ov-file#the-usb-com-adapter-writes-the-firmware-in-explorer-web-version).
 
 В конфиг `zigbee2mqtt` `configuration.yaml` добавляем локальное хранилище
 
