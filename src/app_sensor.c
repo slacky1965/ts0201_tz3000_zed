@@ -6,6 +6,8 @@ typedef struct {
     void    (*set_temperature)();
     void    (*set_humidity)();
     bool    inited;
+    int16_t temperature;
+    int16_t humidity;
 } sensor_t;
 
 static sensor_t sensor;
@@ -81,6 +83,27 @@ static void cht8305_delay(uint32_t period) {
   sleep_ms(period);
 }
 
+static uint8_t app_cht8305_dev_set(uint8_t slaveID) {
+
+    uint8_t addr = slaveID << 1;
+
+    for (uint8_t i = 0; i < 3; i++) {
+        if (scan_i2c_addr(addr) == addr) {
+            cht8305_dev.addr = slaveID;
+            cht8305_dev.delay = cht8305_delay;
+            cht8305_dev.read = cht8305_i2c_read;
+            cht8305_dev.write = cht8305_i2c_write;
+            return SENSOR_OK;
+        } else {
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+            sensor_error_codes_print_result("app_cht8305_dev_set", SENSOR_ERR_ADDR_NOT_FOUND, slaveID);
+#endif
+        }
+    }
+
+    return SENSOR_ERR_ADDR_NOT_FOUND;
+}
+
 static uint8_t app_cht8305_init() {
 
     cht8305_dev.delay = NULL;
@@ -89,76 +112,22 @@ static uint8_t app_cht8305_init() {
     cht8305_dev.addr = 0;
     cht8305_dev.id = 0;
 
-    uint8_t addr;
     uint8_t ret;
 
-    for (uint8_t i = 0; i < 5; i++) {
-
-        addr = (CHT8305_I2C_ADDRESS << 1);
-        ret = scan_i2c_addr(addr);
-        if (ret == addr) {
-            cht8305_dev.addr = CHT8305_I2C_ADDRESS;
-            cht8305_dev.delay = cht8305_delay;
-            cht8305_dev.read = cht8305_i2c_read;
-            cht8305_dev.write = cht8305_i2c_write;
-            ret = SENSOR_OK;
-            break;
-        } else {
-#if UART_PRINTF_MODE && DEBUG_SENSOR
-            sensor_error_codes_print_result("cht8305_init", SENSOR_ERR_ADDR_NOT_FOUND, CHT8305_I2C_ADDRESS);
-#endif
-            addr = (CHT8305_I2C_ADDRESS2 << 1);
-            ret = scan_i2c_addr(addr);
-            if (ret == addr) {
-                cht8305_dev.addr = CHT8305_I2C_ADDRESS2;
-                cht8305_dev.delay = cht8305_delay;
-                cht8305_dev.read = cht8305_i2c_read;
-                cht8305_dev.write = cht8305_i2c_write;
-                ret = SENSOR_OK;
-                break;
-            } else {
-#if UART_PRINTF_MODE && DEBUG_SENSOR
-                sensor_error_codes_print_result("cht8305_init", SENSOR_ERR_ADDR_NOT_FOUND, CHT8305_I2C_ADDRESS2);
-#endif
-                addr = (CHT8305_I2C_ADDRESS3 << 1);
-                ret = scan_i2c_addr(addr);
-                if (ret == addr) {
-                    cht8305_dev.addr = CHT8305_I2C_ADDRESS3;
-                    cht8305_dev.delay = cht8305_delay;
-                    cht8305_dev.read = cht8305_i2c_read;
-                    cht8305_dev.write = cht8305_i2c_write;
-                    ret = SENSOR_OK;
-                    break;
-                } else {
-#if UART_PRINTF_MODE && DEBUG_SENSOR
-                    sensor_error_codes_print_result("cht8305_init", SENSOR_ERR_ADDR_NOT_FOUND, CHT8305_I2C_ADDRESS3);
-#endif
-                    addr = (CHT8305_I2C_ADDRESS4 << 1);
-                    ret = scan_i2c_addr(addr);
-                    if (ret == addr) {
-                        cht8305_dev.addr = CHT8305_I2C_ADDRESS4;
-                        cht8305_dev.delay = cht8305_delay;
-                        cht8305_dev.read = cht8305_i2c_read;
-                        cht8305_dev.write = cht8305_i2c_write;
-                        ret = SENSOR_OK;
-                        break;
-                    } else {
-#if UART_PRINTF_MODE && DEBUG_SENSOR
-                        sensor_error_codes_print_result("cht8305_init", SENSOR_ERR_ADDR_NOT_FOUND, CHT8305_I2C_ADDRESS4);
-#endif
-                        ret = SENSOR_ERR_ADDR_NOT_FOUND;
-                    }
+    if (app_cht8305_dev_set(CHT8305_I2C_ADDRESS) != SENSOR_OK) {
+        if (app_cht8305_dev_set(CHT8305_I2C_ADDRESS2) != SENSOR_OK) {
+            if (app_cht8305_dev_set(CHT8305_I2C_ADDRESS3) != SENSOR_OK) {
+                if (app_cht8305_dev_set(CHT8305_I2C_ADDRESS4) != SENSOR_OK) {
+                    return SENSOR_ERR_ADDR_NOT_FOUND;
                 }
             }
         }
     }
 
-
-    if (ret) return ret;
-
     ret = cht8305_init(&cht8305_dev);
+
 #if UART_PRINTF_MODE && DEBUG_SENSOR
-    sensor_error_codes_print_result("cht8305_init", ret, CHT8305_I2C_ADDRESS);
+    sensor_error_codes_print_result("cht8305_init", ret, cht8305_dev.addr);
 #endif
 
 //    printf("cht8305 ID: 0x%08x\r\n", cht8305_dev.id);
@@ -199,7 +168,7 @@ static void app_cht8305_measurement() {
     uint8_t ret = cht8305_readSensor();
 
 #if UART_PRINTF_MODE && DEBUG_SENSOR
-    sensor_error_codes_print_result("app_cht8305_measurement", ret, CHT8305_I2C_ADDRESS);
+    sensor_error_codes_print_result("app_cht8305_measurement", ret, cht8305_dev.addr);
 //    printf("temperature_raw: 0x%04x\r\n", cht8305_dev.raw_temp);
 //    printf("humidity_raw:    0x%04x\r\n", cht8305_dev.raw_hum);
 #endif
@@ -228,7 +197,27 @@ static void sht30_delay(uint32_t period) {
   sleep_ms(period);
 }
 
+static uint8_t app_sht30_dev_set(uint8_t slaveID) {
 
+    uint8_t addr = slaveID << 1;
+
+    for (uint8_t i = 0; i < 3; i++) {
+        if (scan_i2c_addr(addr) == addr) {
+            sht30_dev.addr = slaveID;
+            sht30_dev.delay = sht30_delay;
+            sht30_dev.read = sht30_i2c_read;
+            sht30_dev.write = sht30_i2c_write;
+            sht30_dev.repeatability = SHT30_REPEATABILITY_HIGH;
+            return SENSOR_OK;
+        } else {
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+            sensor_error_codes_print_result("app_sht30_dev_set", SENSOR_ERR_ADDR_NOT_FOUND, slaveID);
+#endif
+        }
+    }
+
+    return SENSOR_ERR_ADDR_NOT_FOUND;
+}
 
 static uint8_t app_sht30_init() {
 
@@ -238,48 +227,17 @@ static uint8_t app_sht30_init() {
     sht30_dev.addr = 0;
     sht30_dev.id = 0;
 
-    uint8_t addr;
     uint8_t ret;
 
-    for (uint8_t i = 0; i < 5; i++) {
-        addr = (SHT30_I2C_ADDRESS << 1);
-        ret = scan_i2c_addr(addr);
-        if (ret == addr) {
-            sht30_dev.addr = SHT30_I2C_ADDRESS;
-            sht30_dev.delay = sht30_delay;
-            sht30_dev.read = sht30_i2c_read;
-            sht30_dev.write = sht30_i2c_write;
-            sht30_dev.repeatability = SHT30_REPEATABILITY_HIGH;
-            ret = SENSOR_OK;
-            break;
-        } else {
-#if UART_PRINTF_MODE && DEBUG_SENSOR
-            sensor_error_codes_print_result("sht30_init", SENSOR_ERR_ADDR_NOT_FOUND, SHT30_I2C_ADDRESS);
-#endif
-            addr = (SHT30_I2C_ADDRESS2 << 1);
-            ret = scan_i2c_addr(addr);
-            if (ret == addr) {
-                sht30_dev.addr = SHT30_I2C_ADDRESS2;
-                sht30_dev.delay = sht30_delay;
-                sht30_dev.read = sht30_i2c_read;
-                sht30_dev.write = sht30_i2c_write;
-                sht30_dev.repeatability = SHT30_REPEATABILITY_HIGH;
-                ret = SENSOR_OK;
-                break;
-            } else {
-#if UART_PRINTF_MODE && DEBUG_SENSOR
-                sensor_error_codes_print_result("sht30_init", SENSOR_ERR_ADDR_NOT_FOUND, SHT30_I2C_ADDRESS2);
-#endif
-                ret = SENSOR_ERR_ADDR_NOT_FOUND;
-            }
+    if (app_sht30_dev_set(SHT30_I2C_ADDRESS) != SENSOR_OK) {
+        if (app_sht30_dev_set(SHT30_I2C_ADDRESS2) != SENSOR_OK) {
+            return SENSOR_ERR_ADDR_NOT_FOUND;
         }
     }
 
-    if (ret) return SENSOR_ERR_ADDR_NOT_FOUND;
-
     ret = sht30_init(&sht30_dev);
 #if UART_PRINTF_MODE && DEBUG_SENSOR
-    sensor_error_codes_print_result("sht30_init", ret, SHT30_I2C_ADDRESS);
+    sensor_error_codes_print_result("sht30_init", ret, sht30_dev.addr);
 #endif
 
     if (ret == SENSOR_OK) {
@@ -328,7 +286,7 @@ static void app_sht30_measurement() {
     uint8_t ret = sht30_readSensor();
 
 #if UART_PRINTF_MODE && DEBUG_SENSOR
-    sensor_error_codes_print_result("app_sht30_measurement", ret, SHT30_I2C_ADDRESS);
+    sensor_error_codes_print_result("app_sht30_measurement", ret, sht30_dev.addr);
 //    printf("temperature_raw: 0x%04x\r\n", sht30_dev.raw_temp);
 //    printf("humidity_raw:    0x%04x\r\n", sht30_dev.raw_hum);
 #endif
@@ -367,7 +325,26 @@ static void sht40_delay(uint32_t period) {
   sleep_ms(period);
 }
 
+static uint8_t app_sht40_dev_set(uint8_t slaveID) {
 
+    uint8_t addr = slaveID << 1;
+
+    for (uint8_t i = 0; i < 3; i++) {
+        if (scan_i2c_addr(addr) == addr) {
+            sht40_dev.addr = slaveID;
+            sht40_dev.delay = sht40_delay;
+            sht40_dev.read = sht40_i2c_read;
+            sht40_dev.write = sht40_i2c_write;
+            return SENSOR_OK;
+        } else {
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+            sensor_error_codes_print_result("app_sht40_dev_set", SENSOR_ERR_ADDR_NOT_FOUND, slaveID);
+#endif
+        }
+    }
+
+    return SENSOR_ERR_ADDR_NOT_FOUND;
+}
 
 static uint8_t app_sht40_init() {
 
@@ -377,60 +354,19 @@ static uint8_t app_sht40_init() {
     sht40_dev.addr = 0;
     sht40_dev.id = 0;
 
-    uint8_t addr;
     uint8_t ret;
 
-    for (uint8_t i = 0; i < 5; i++) {
-        addr = (SHT4X_I2C_ADDRESS << 1);
-        ret = scan_i2c_addr(addr);
-        if (ret == addr) {
-            sht40_dev.addr = SHT4X_I2C_ADDRESS;
-            sht40_dev.delay = sht40_delay;
-            sht40_dev.read = sht40_i2c_read;
-            sht40_dev.write = sht40_i2c_write;
-            ret = SENSOR_OK;
-            break;
-        } else {
-#if UART_PRINTF_MODE && DEBUG_SENSOR
-            sensor_error_codes_print_result("sht40_init", SENSOR_ERR_ADDR_NOT_FOUND, SHT4X_I2C_ADDRESS);
-#endif
-            addr = (SHT4X_I2C_ADDRESS2 << 1);
-            ret = scan_i2c_addr(addr);
-            if (ret == addr) {
-                sht40_dev.addr = SHT4X_I2C_ADDRESS2;
-                sht40_dev.delay = sht40_delay;
-                sht40_dev.read = sht40_i2c_read;
-                sht40_dev.write = sht40_i2c_write;
-                ret = SENSOR_OK;
-                break;
-            } else {
-#if UART_PRINTF_MODE && DEBUG_SENSOR
-                sensor_error_codes_print_result("sht40_init", SENSOR_ERR_ADDR_NOT_FOUND, SHT4X_I2C_ADDRESS2);
-#endif
-                addr = (SHT4X_I2C_ADDRESS3 << 1);
-                ret = scan_i2c_addr(addr);
-                if (ret == addr) {
-                    sht40_dev.addr = SHT4X_I2C_ADDRESS3;
-                    sht40_dev.delay = sht40_delay;
-                    sht40_dev.read = sht40_i2c_read;
-                    sht40_dev.write = sht40_i2c_write;
-                    ret = SENSOR_OK;
-                    break;
-                } else {
-#if UART_PRINTF_MODE && DEBUG_SENSOR
-                    sensor_error_codes_print_result("sht40_init", SENSOR_ERR_ADDR_NOT_FOUND, SHT4X_I2C_ADDRESS3);
-#endif
-                    ret = SENSOR_ERR_ADDR_NOT_FOUND;
-                }
+    if (app_sht40_dev_set(SHT4X_I2C_ADDRESS) != SENSOR_OK) {
+        if (app_sht40_dev_set(SHT4X_I2C_ADDRESS2) != SENSOR_OK) {
+            if (app_sht40_dev_set(SHT4X_I2C_ADDRESS3) != SENSOR_OK) {
+                return SENSOR_ERR_ADDR_NOT_FOUND;
             }
         }
     }
 
-    if (ret) return SENSOR_ERR_ADDR_NOT_FOUND;
-
     ret = sht40_init(&sht40_dev);
 #if UART_PRINTF_MODE && DEBUG_SENSOR
-    sensor_error_codes_print_result("sht40_init", ret, SHT4X_I2C_ADDRESS);
+    sensor_error_codes_print_result("sht40_init", ret, sht40_dev.addr);
 #endif
 
     return ret;
@@ -467,7 +403,7 @@ static void app_sht40_measurement() {
     uint8_t ret = sht40_readSensor();
 
 #if UART_PRINTF_MODE && DEBUG_SENSOR
-    sensor_error_codes_print_result("app_sht40_measurement", ret, SHT4X_I2C_ADDRESS);
+    sensor_error_codes_print_result("app_sht40_measurement", ret, sht40_dev.addr);
 //    printf("temperature_raw: 0x%04x\r\n", sht40_dev.raw_temp);
 //    printf("humidity_raw:    0x%04x\r\n", sht40_dev.raw_hum);
 #endif
@@ -514,10 +450,28 @@ static void aht20_delay(uint32_t period) {
   sleep_ms(period);
 }
 
+static uint8_t app_aht20_dev_set(uint8_t slaveID) {
+
+    uint8_t addr = slaveID << 1;
+    for (uint8_t i = 0; i < 3; i++) {
+        if (scan_i2c_addr(addr) == addr) {
+            aht20_dev.addr = slaveID;
+            aht20_dev.delay = aht20_delay;
+            aht20_dev.read = aht20_i2c_read;
+            aht20_dev.write = aht20_i2c_write;
+            return SENSOR_OK;
+        } else {
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+            sensor_error_codes_print_result("app_aht20_dev_set", SENSOR_ERR_ADDR_NOT_FOUND, slaveID);
+#endif
+        }
+    }
+
+    return SENSOR_ERR_ADDR_NOT_FOUND;
+}
+
 static uint8_t app_aht20_init() {
 
-
-    uint8_t addr;
     uint8_t ret;
 
     aht20_dev.delay = NULL;
@@ -526,45 +480,37 @@ static uint8_t app_aht20_init() {
     aht20_dev.addr = 0;
     aht20_dev.id = 0;
 
+#if (MODULE_WATCHDOG_ENABLE)
+        drv_wd_clear();
+#endif
+
     sleep_ms(AHT20_DELAY_POWER);
 
-    for (uint8_t i = 0; i < 5; i++) {
-        addr = (AHT20_I2C_ADDRESS << 1);
-        ret = scan_i2c_addr(addr);
-        if (ret == addr) {
-            aht20_dev.addr = AHT20_I2C_ADDRESS;
-            aht20_dev.delay = aht20_delay;
-            aht20_dev.read = aht20_i2c_read;
-            aht20_dev.write = aht20_i2c_write;
-            ret = SENSOR_OK;
-            break;
-        } else {
-#if UART_PRINTF_MODE && DEBUG_SENSOR
-            sensor_error_codes_print_result("aht20_init", SENSOR_ERR_ADDR_NOT_FOUND, AHT20_I2C_ADDRESS);
-#endif
-            ret = SENSOR_ERR_ADDR_NOT_FOUND;
-        }
-    }
+    if (app_aht20_dev_set(AHT20_I2C_ADDRESS) != SENSOR_OK) return SENSOR_ERR_ADDR_NOT_FOUND;
 
-    if (ret) return SENSOR_ERR_ADDR_NOT_FOUND;
+#if (MODULE_WATCHDOG_ENABLE)
+        drv_wd_clear();
+#endif
 
     ret = aht20_init(&aht20_dev);
 #if UART_PRINTF_MODE && DEBUG_SENSOR
-    sensor_error_codes_print_result("aht20_init", ret, AHT20_I2C_ADDRESS);
+    sensor_error_codes_print_result("aht20_init", ret, aht20_dev.addr);
 #endif
 
     return ret;
 }
 
-static void  app_aht20_set_temperature() {
+static void app_aht20_set_temperature() {
 
     int16_t temperature = ((int32_t)(2000 * aht20_dev.raw_temp) / 1048576 - 500) * 10 + config.temperature_offset;
 
 #if UART_PRINTF_MODE && DEBUG_SENSOR
-        printf("temperature: %d\r\n", temperature);
+    printf("temperature: %d\r\n", temperature);
 #endif
 
-        zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_MS_TEMPERATURE_MEASUREMENT, ZCL_TEMPERATURE_MEASUREMENT_ATTRID_MEASUREDVALUE, (uint8_t*)&temperature);
+    zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_MS_TEMPERATURE_MEASUREMENT, ZCL_TEMPERATURE_MEASUREMENT_ATTRID_MEASUREDVALUE, (uint8_t*)&temperature);
+
+    sensor.temperature = temperature;
 }
 
 static void app_aht20_set_humidity() {
@@ -579,6 +525,8 @@ static void app_aht20_set_humidity() {
     if (humidity > 10000)
         humidity = 10000;
 
+    sensor.humidity = humidity;
+
     zcl_setAttrVal(APP_ENDPOINT1, ZCL_CLUSTER_MS_RELATIVE_HUMIDITY, ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_MEASUREDVALUE, (uint8_t*)&humidity);
 }
 
@@ -587,7 +535,7 @@ static void app_aht20_measurement() {
     uint8_t ret = aht20_readSensor();
 
 #if UART_PRINTF_MODE && DEBUG_SENSOR
-    sensor_error_codes_print_result("app_aht20_measurement", ret, AHT20_I2C_ADDRESS);
+    sensor_error_codes_print_result("app_aht20_measurement", ret, aht20_dev.addr);
 //    printf("temperature_raw: 0x%04x\r\n", aht20_dev.raw_temp);
 //    printf("humidity_raw:    0x%04x\r\n", aht20_dev.raw_hum);
 #endif
@@ -595,6 +543,7 @@ static void app_aht20_measurement() {
     if (ret == SENSOR_OK) {
         app_aht20_set_temperature();
         app_aht20_set_humidity();
+        if (sensor.temperature == -5000 && sensor.humidity == 9990) sensor.inited = false;
     }
 }
 
@@ -633,6 +582,7 @@ sensor_error_t app_sensor_init() {
     ret = sensor.init();
 
     if (ret == SENSOR_OK) sensor.inited = true;
+//    printf("sensor inited: %d\r\n", sensor.inited);
     return ret;
 }
 
