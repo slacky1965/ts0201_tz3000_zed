@@ -4,7 +4,7 @@
 void app_i2c_init();
 
 #if (I2C_DRV_USED == I2C_DRV_HARD)
-int8_t scan_i2c_addr(uint8_t address);
+uint8_t scan_i2c_addr(uint8_t address);
 #elif (I2C_DRV_USED == I2C_DRV_SOFT)
 unsigned char scan_i2c_addr(unsigned char address);
 int8_t read_i2c_bytes(unsigned char i2c_addr, unsigned char * dataBuf, int dataLen);
