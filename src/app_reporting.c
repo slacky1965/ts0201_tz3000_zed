@@ -225,6 +225,9 @@ static void forceReportSwitchAction(void *args) {
 
 int32_t forcedReportCb(void *arg) {
 
+//    uint16_t period = app_sensor_get_period();
+//    printf("period: %d\r\n", period);
+
 //    printf("bind_tbl\r\n");
 //    for (uint8_t i = 0; i < APS_BINDING_TABLE_NUM; i++) {
 //        if (g_apsBindingTbl[i].used) {

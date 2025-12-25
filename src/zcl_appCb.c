@@ -185,7 +185,8 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                         config.read_sensors_period = ms_period;
                         save = true;
                         app_setPollRate(TIMEOUT_20SEC);
-                        app_check_reporting();
+//                        app_check_reporting();
+                        app_sensor_get_period();
                     }
                 }
             } else if (attr[i].attrID == ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_OFFSET) {
@@ -375,6 +376,7 @@ static void app_zclDfltRspCmd(uint16_t clusterId, zclDefaultRspCmd_t *pDftRspCmd
 static void app_zclCfgReportCmd(uint8_t endPoint, uint16_t clusterId, zclCfgReportCmd_t *pCfgReportCmd)
 {
 //    printf("app_zclCfgReportCmd\r\n");
+    app_sensor_get_period();
     reportAttrTimerStop();
 }
 

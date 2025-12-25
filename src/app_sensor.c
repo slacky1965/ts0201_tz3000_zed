@@ -582,7 +582,11 @@ sensor_error_t app_sensor_init() {
     ret = sensor.init();
 
     if (ret == SENSOR_OK) sensor.inited = true;
-//    printf("sensor inited: %d\r\n", sensor.inited);
+
+#if UART_PRINTF_MODE && DEBUG_SENSOR
+    printf("sensor inited: %d\r\n", sensor.inited);
+#endif
+
     return ret;
 }
 
@@ -600,4 +604,52 @@ void  app_sensor_set_temperature() {
 void app_sensor_set_humidity() {
     if (!sensor.inited) return;
     sensor.set_humidity();
+}
+
+uint16_t app_sensor_get_period() {
+    uint16_t period, p_temp = 0, p_hum = 0;
+
+    if(zcl_reportingEntryActiveNumGet()){
+        for (u8 i = 0; i < ZCL_REPORTING_TABLE_NUM; i++){
+            reportCfgInfo_t *pEntry = &reportingTab.reportCfgInfo[i];
+            if(pEntry->used && zb_bindingTblSearched(pEntry->clusterID, pEntry->endPoint)) {
+                if (pEntry->clusterID == ZCL_CLUSTER_MS_TEMPERATURE_MEASUREMENT) {
+                    if (pEntry->maxInterval == 0xFFFF || pEntry->minInterval == 0) {
+                        p_temp = pEntry->maxInterval;
+                    } else if (pEntry->minInterval != 0xFFFF && pEntry->maxInterval == 0) {
+                        p_temp = 0;
+                    } else {
+                        p_temp = pEntry->minInterval;
+                    }
+//                    printf("min: %d, max: %d\r\n", pEntry->minInterval, pEntry->maxInterval);
+                } else if (pEntry->clusterID == ZCL_CLUSTER_MS_RELATIVE_HUMIDITY) {
+                    if (pEntry->maxInterval == 0xFFFF || pEntry->minInterval == 0) {
+                        p_hum = pEntry->maxInterval;
+                    } else if (pEntry->minInterval != 0xFFFF && pEntry->maxInterval == 0) {
+                        p_hum = 0;
+                    } else {
+                        p_hum = pEntry->minInterval;
+                    }
+//                    printf("min: %d, max: %d\r\n", pEntry->minInterval, pEntry->maxInterval);
+                }
+            }
+        }
+    }
+
+    if ((!p_temp && !p_hum) || (p_temp == 0xFFFF && p_hum == 0xFFFF)) period = 0;
+    else if (p_temp == 0xFFFF) period = p_hum;
+    else if (p_hum == 0xFFFF) period = p_temp;
+    else period = (p_temp < p_hum)?p_temp:p_hum;
+
+
+    if (!period || period > config.read_sensors_period) g_appCtx.read_sensor_period = config.read_sensors_period;
+    else g_appCtx.read_sensor_period = period;
+
+    g_appCtx.read_sensor_period95p = (g_appCtx.read_sensor_period * 1000) / 100 * 95;
+
+//    printf("period: %d, period95p: %d\r\n", period, g_appCtx.read_sensor_period95p);
+
+    if (!g_appCtx.timerSetPollRateEvt) app_setPollRate(TIMEOUT_3SEC);
+
+    return g_appCtx.read_sensor_period;
 }
