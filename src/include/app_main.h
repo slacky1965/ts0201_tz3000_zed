@@ -55,6 +55,8 @@ typedef struct {
     uint8_t  times;      //blink times
 
     uint32_t read_sensor_time;
+    uint16_t read_sensor_period;
+    uint32_t read_sensor_period95p;
 
     uint32_t time_without_joined;
 

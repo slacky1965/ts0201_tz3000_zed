@@ -24,5 +24,6 @@ sensor_error_t app_sensor_init();
 void    app_sensor_measurement();
 void    app_sensor_set_temperature();
 void    app_sensor_set_humidity();
+uint16_t app_sensor_get_period();
 
 #endif /* SRC_INCLUDE_APP_SENSOR_H_ */
