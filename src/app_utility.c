@@ -77,7 +77,7 @@ int32_t set_pollRateCb(void *args) {
 
     zb_setPollRate(POLL_RATE * g_appCtx.read_sensor_period);
 
-    printf("set_pollRateCb: %d\r\n", g_appCtx.read_sensor_period);
+//    printf("set_pollRateCb: %d\r\n", g_appCtx.read_sensor_period);
 
     g_appCtx.timerSetPollRateEvt = NULL;
     return -1;
@@ -85,7 +85,7 @@ int32_t set_pollRateCb(void *args) {
 
 void app_setPollRate(uint32_t sec) {
 
-    printf("app_setPollRate. sec: %d\r\n", sec);
+//    printf("app_setPollRate. sec: %d\r\n", sec);
     zb_setPollRate(POLL_RATE * 3);
     if (g_appCtx.timerSetPollRateEvt) {
         TL_ZB_TIMER_CANCEL(&g_appCtx.timerSetPollRateEvt);
