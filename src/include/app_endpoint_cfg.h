@@ -64,6 +64,7 @@ typedef struct {
     uint8_t     temperature_onoff;              /* 0 - disabled, 1 - enabled    */
     int16_t     temperature_onoff_low;          /* -40 (-4000)                  */
     int16_t     temperature_onoff_high;         /* 125 (12500)                  */
+    uint8_t     repeat_cmd;                     /* 0 - off, 1 - on              */
 } zcl_temperatureAttr_t;
 
 /**
@@ -80,8 +81,8 @@ typedef struct {
 } zcl_humidityAttr_t;
 
 typedef struct {
-    u8 switchType;
-    u8 switchActions;
+    uint8_t switchType;
+    uint8_t switchActions;
 } zcl_onOffSwitchCfgAttr_t;
 
 extern const zcl_specClusterInfo_t g_appEp1ClusterList[];

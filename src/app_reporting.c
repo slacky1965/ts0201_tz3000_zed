@@ -225,19 +225,25 @@ static void forceReportSwitchAction(void *args) {
 
 int32_t forcedReportCb(void *arg) {
 
+//    uint16_t period = app_sensor_get_period();
+//    printf("period: %d\r\n", period);
+
+//    printf("bind_tbl\r\n");
 //    for (uint8_t i = 0; i < APS_BINDING_TABLE_NUM; i++) {
 //        if (g_apsBindingTbl[i].used) {
 //            u8 r = irq_disable();
-//            printf("bind_tbl\r\n");
-//            printf("addr_mode: 0x%02x, clId: 0x%04x, ",
-//                    g_apsBindingTbl[i].dstAddrMode,
-//                    g_apsBindingTbl[i].clusterId);
-//
-//            printf("addr: ");
-//            for (uint8_t ii = 0; ii < 8; ii++) {
-//                printf("0x%02x:",
-//                        g_apsBindingTbl[i].dstExtAddrInfo.extAddr[ii]);
+//            printf("addr_mode: 0x%02x ,", g_apsBindingTbl[i].dstAddrMode);
+//            if (g_apsBindingTbl[i].dstAddrMode == 0x01) {
+//                printf("clId: 0x%04x, ep: %d, group: 0x%04x, ", g_apsBindingTbl[i].clusterId, g_apsBindingTbl[i].srcEp, g_apsBindingTbl[i].groupAddr);
+//            } else {
+//                printf("clId: 0x%04x, srcEp: %d, distEp: %d,  ", g_apsBindingTbl[i].clusterId, g_apsBindingTbl[i].srcEp, g_apsBindingTbl[i].dstExtAddrInfo.dstEp);
+//                printf("addr: ");
+//                for (uint8_t ii = 0; ii < 8; ii++) {
+//                    printf("0x%02x:",
+//                            g_apsBindingTbl[i].dstExtAddrInfo.extAddr[ii]);
+//                }
 //            }
+//
 //            printf("\r\n");
 //
 //            irq_restore(r);

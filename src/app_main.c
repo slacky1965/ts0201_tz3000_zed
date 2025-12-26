@@ -9,6 +9,7 @@ app_ctx_t g_appCtx = {
         .timerForcedReportEvt = NULL,
         .timerNoJoinedEvt = NULL,
         .timerSetPollRateEvt = NULL,
+        .timerAppBindEvt = NULL,
         .oriSta = false,
         .time_without_joined = 0,
         .net_steer_start = false,
@@ -167,7 +168,9 @@ void user_app_init(void)
 
     app_timer_init();
 
+#if (I2C_DRV_USED == I2C_DRV_HARD)
     app_i2c_init();
+#endif
 
     app_sensor_init();
 
@@ -178,12 +181,14 @@ void user_app_init(void)
 
 }
 
+uint32_t tt = 0;
+
 void app_task(void) {
 
     button_handler();
 
     if (zb_isDeviceJoinedNwk()) {
-        if (app_timer_exceed(g_appCtx.read_sensor_time, (uint32_t)config.read_sensors_period * 1000)) {
+        if (app_timer_exceed(g_appCtx.read_sensor_time, g_appCtx.read_sensor_period95p)) {
             g_appCtx.read_sensor_time = app_timeout_get();
             app_sensor_measurement();
             light_blink_stop();
@@ -297,6 +302,8 @@ void user_init(bool isRetention)
         /* Initialize BDB */
         uint8_t repower = drv_pm_deepSleep_flag_get() ? 0 : 1;
         bdb_init((af_simple_descriptor_t *)&app_ep1Desc, &g_bdbCommissionSetting, &g_zbBdbCb, repower);
+
+        app_sensor_get_period();
 
     }else{
         /* Re-config phy when system recovery from deep sleep with retention */

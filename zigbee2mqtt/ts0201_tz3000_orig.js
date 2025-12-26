@@ -4,9 +4,10 @@ const definition = {
     fingerprint: [{manufacturerName: '_TZ3000_xr3htd96'},
                   {manufacturerName: '_TZ3000_fllyghyj'},
                   {manufacturerName: '_TZ3000_0s1izerx'},
-                  {manufacturerName: '_TZ3000_dowj6gyi'}
+                  {manufacturerName: '_TZ3000_dowj6gyi'},
+                  {manufacturerName: 'Zbeacon'}
                  ],
-    zigbeeModel: ['TS0201'],
+    zigbeeModel: ['TS0201', 'TH01'],
     model: 'Original Tuya Temperature/Humidity sensor ready for update',
     vendor: 'Slacky-DIY',
     description: 'Original Tuya temperature/humidity sensor ready for custom Firmware update',

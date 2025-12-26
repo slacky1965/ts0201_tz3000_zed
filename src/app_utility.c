@@ -19,6 +19,33 @@ void start_message() {
 #if UART_PRINTF_MODE
     const uint8_t version[] = ZCL_BASIC_SW_BUILD_ID;
     printf("Firmware version: %s\r\n", version+1);
+#if (BOARD == BOARD_HXDZ_ZBWSD_V02)
+    printf("Device is \"TS0201 _TZ3000_xr3htd96\"\r\n");
+#elif (BOARD == BOARD_IHSENO_IC_V0)
+    printf("Device is \"TS0201 _TZ3000_dowj6gyi\"\r\n");
+#elif (BOARD == BOARD_ZBEACON)
+    printf("Device is \"TS0201 Zbeacon\"\r\n");
+#elif (BOARD == BOARD_ZG_227ZS)
+    printf("Device is \"ZG-227Z HOBEIAN\"\r\n");
+#elif (BOARD == BOARD_TH01_ZBEACON)
+    printf("Device is \"TH01 Zbeacon\"\r\n");
+#else
+#error BOARD not defined!
+#endif
+
+#if (SENSOR_USED == SENSOR_CHT8305)
+    printf("The sensor used is CHT8305\r\n");
+#elif (SENSOR_USED == SENSOR_SHT30)
+    printf("The sensor used is SHT30\r\n");
+#elif (SENSOR_USED == SENSOR_SHT40)
+    printf("The sensor used is SHT40\r\n");
+#elif (SENSOR_USED == SENSOR_AHT20)
+    printf("The sensor used is AHT20\r\n");
+#else
+#error SENSOR_USED not defined!
+#endif
+
+
 #endif
 }
 
@@ -50,9 +77,9 @@ int32_t delayedFullResetCb(void *arg) {
 
 int32_t set_pollRateCb(void *args) {
 
-//    printf("set_pollRateCb\r\n");
+    zb_setPollRate(POLL_RATE * g_appCtx.read_sensor_period);
 
-    zb_setPollRate(POLL_RATE * config.read_sensors_period);
+//    printf("set_pollRateCb: %d\r\n", g_appCtx.read_sensor_period);
 
     g_appCtx.timerSetPollRateEvt = NULL;
     return -1;
@@ -60,6 +87,7 @@ int32_t set_pollRateCb(void *args) {
 
 void app_setPollRate(uint32_t sec) {
 
+//    printf("app_setPollRate. sec: %d\r\n", sec);
     zb_setPollRate(POLL_RATE * 3);
     if (g_appCtx.timerSetPollRateEvt) {
         TL_ZB_TIMER_CANCEL(&g_appCtx.timerSetPollRateEvt);

@@ -87,7 +87,7 @@ static ev_timer_event_t *identifyTimerEvt = NULL;
  */
 void app_zclProcessIncomingMsg(zclIncoming_t *pInHdlrMsg)
 {
-	//printf("app_zclProcessIncomingMsg\n");
+//	printf("app_zclProcessIncomingMsg. cmd: 0x%x\n", pInHdlrMsg->hdr.cmd);
 
 	uint16_t cluster = pInHdlrMsg->msg->indInfo.cluster_id;
 	uint8_t endPoint = pInHdlrMsg->msg->indInfo.dst_ep;
@@ -185,7 +185,8 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                         config.read_sensors_period = ms_period;
                         save = true;
                         app_setPollRate(TIMEOUT_20SEC);
-                        app_check_reporting();
+//                        app_check_reporting();
+                        app_sensor_get_period();
                     }
                 }
             } else if (attr[i].attrID == ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_OFFSET) {
@@ -243,6 +244,14 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                     }
                 }
                 reset_control_temp();
+                proc_temp_hum_onoff();
+            } else if (attr[i].attrID == ZCL_TEMPERATURE_MEASUREMENT_ATTRID_ONOFF_REPEAT_COMMAND) {
+                if (config.repeat_cmd != attr[i].attrData[0]) {
+                    config.repeat_cmd = attr[i].attrData[0];
+//                    printf("Pereat command: %d\r\n", config.repeat_cmd);
+                    save = true;
+                }
+                repeat_timer_stop();
                 proc_temp_hum_onoff();
             }
         }
@@ -367,6 +376,7 @@ static void app_zclDfltRspCmd(uint16_t clusterId, zclDefaultRspCmd_t *pDftRspCmd
 static void app_zclCfgReportCmd(uint8_t endPoint, uint16_t clusterId, zclCfgReportCmd_t *pCfgReportCmd)
 {
 //    printf("app_zclCfgReportCmd\r\n");
+    app_sensor_get_period();
     reportAttrTimerStop();
 }
 

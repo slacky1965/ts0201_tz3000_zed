@@ -12,10 +12,11 @@ const attrHumidityOffset = 0xF005;
 const attrHumidityOnOff = 0xF006;
 const attrHumidityLow = 0xF007;
 const attrHumidityHigh = 0xF008;
+const attrRepeatCommand = 0xF009;
 
 
 export default {
-    zigbeeModel: ['TS0201-z21-SlD'],
+    zigbeeModel: ['TS0201-z21-SlD', 'TS0201-z22-SlD', 'TS0201-z23-SlD', 'TS0201-z24-SlD'],
     model: 'TS0201-z-SlD',
     vendor: 'Slacky-DIY',
     description: 'Temperature and humidity sensor',
@@ -59,10 +60,18 @@ export default {
         cluster: "msTemperatureMeasurement",
         attribute: {ID: attrSensorReadPeriod, type: 0x21},
         unit: "Sec",
-        valueMin: 15,
+        valueMin: 5,
         valueMax: 600,
         valueStep: 1,
         description: "Sensors reading period",
+      }),
+      m.binary({
+        name: "enabling_repeat_command",
+        cluster: "msTemperatureMeasurement",
+        attribute: {ID: attrRepeatCommand, type: 0x10},
+        description: "Enables/disables repeat command",
+        valueOn: ["ON", 0x01],
+        valueOff: ["OFF", 0x00],
       }),
       m.binary({
         name: "enabling_temperature_control",

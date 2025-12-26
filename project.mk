@@ -2,8 +2,8 @@
 OUT_DIR += \
 /$(SRC_PATH) \
 /$(SRC_PATH)/zcl \
-/$(SRC_PATH)/cht8305 \
-/$(SRC_PATH)/sht30 \
+/$(SRC_PATH)/zdo \
+/$(SRC_PATH)/sensors \
 /$(SRC_PATH)/common
  
 OBJS += \
@@ -12,14 +12,16 @@ $(OUT_PATH)/$(SRC_PATH)/common/flash.o \
 $(OUT_PATH)/$(SRC_PATH)/zcl/zcl_relative_humidity_measurement.o \
 $(OUT_PATH)/$(SRC_PATH)/zcl/zcl_onoffSwitchCfg.o \
 $(OUT_PATH)/$(SRC_PATH)/zcl/zcl_reporting.o \
-$(OUT_PATH)/$(SRC_PATH)/cht8305/cht8305.o \
-$(OUT_PATH)/$(SRC_PATH)/sht30/sht30.o \
+$(OUT_PATH)/$(SRC_PATH)/zdo/zdp.o \
+$(OUT_PATH)/$(SRC_PATH)/sensors/cht8305.o \
+$(OUT_PATH)/$(SRC_PATH)/sensors/sht30.o \
+$(OUT_PATH)/$(SRC_PATH)/sensors/sht40.o \
+$(OUT_PATH)/$(SRC_PATH)/sensors/aht20.o \
 $(OUT_PATH)/$(SRC_PATH)/app_timer.o \
 $(OUT_PATH)/$(SRC_PATH)/app_config.o \
 $(OUT_PATH)/$(SRC_PATH)/app_i2c.o \
-$(OUT_PATH)/$(SRC_PATH)/app_cht8305.o \
-$(OUT_PATH)/$(SRC_PATH)/app_sht30.o \
 $(OUT_PATH)/$(SRC_PATH)/app_sensor.o \
+$(OUT_PATH)/$(SRC_PATH)/app_binding.o \
 $(OUT_PATH)/$(SRC_PATH)/app_button.o \
 $(OUT_PATH)/$(SRC_PATH)/app_led.o \
 $(OUT_PATH)/$(SRC_PATH)/app_pm.o \

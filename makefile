@@ -2,6 +2,19 @@
 PROJECT_NAME ?= ts0201_tz3000_0x15_zed
 PROJECT_DEF ?= "-DBOARD=BOARD_HXDZ_ZBWSD_V02"
 
+ifeq ($(PROJECT_NAME),ts0201_tz3000_0x22_zed)
+	MANUF_CODE = 4742
+	IMAGE_TYPE = 514
+else
+	ifeq ($(PROJECT_NAME),ts0201_tz3000_0x24_zed)
+		MANUF_CODE = 4742
+		IMAGE_TYPE = 514
+	else
+		MANUF_CODE = 4417
+		IMAGE_TYPE = 54179
+	endif
+endif
+
 # Set the serial port number for downloading the firmware
 DOWNLOAD_PORT := COM3
 
@@ -61,8 +74,7 @@ INCLUDE_PATHS := \
 -I$(SRC_PATH) \
 -I$(SRC_PATH)/include \
 -I$(SRC_PATH)/common \
--I$(SRC_PATH)/cht8305 \
--I$(SRC_PATH)/sht30 \
+-I$(SRC_PATH)/sensors \
 -I$(SRC_PATH)/zcl
  
 
@@ -109,7 +121,7 @@ SIZEDUMMY :=
 RM := rm -rf
 
 # All of the sources participating in the build are defined here
--include $(MAKE_INCLUDES)/zdo.mk
+#-include $(MAKE_INCLUDES)/zdo.mk
 -include $(MAKE_INCLUDES)/zcl.mk
 -include $(MAKE_INCLUDES)/wwah.mk
 -include $(MAKE_INCLUDES)/ss.mk
@@ -160,8 +172,14 @@ reset:
 flash-orig-write:
 	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s -m we 0 $(BIN_PATH)/tuya_original/ts0201_tz3000_orig.bin
 	
+flash-orig-write512:
+	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s -m we 0 $(BIN_PATH)/tuya_original/ts0201_tz3000_orig512.bin
+	
 flash-orig-read:
 	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s -m rf 0 0x100000 ts0201_tz3000_orig.bin
+
+flash-orig-read512:
+	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -a 100 -s -m rf 0 0x80000 ts0201_tz3000_orig512.bin
 	
 test-flash:
 	@python3 $(TOOLS_PATH)/TlsrPgm.py -p$(DOWNLOAD_PORT) -z11 -s i
@@ -193,7 +211,8 @@ $(BIN_FILE): $(ELF_FILE)
 	@echo 'Create zigbee OTA file'
 	@python3 $(MAKE_OTA) -t $(PROJECT_NAME) -s "Slacky-DIY OTA" $(BIN_PATH)/$(PROJECT_NAME)_$(VERSION_RELEASE).$(VERSION_BUILD).bin 
 	@echo 'Create zigbee Tuya OTA file'
-	@python3 $(MAKE_OTA) -t $(PROJECT_NAME) -m 4417 -i 54179 -v0x1111114b -s "Slacky-DIY OTA" $(BIN_PATH)/$(PROJECT_NAME)_$(VERSION_RELEASE).$(VERSION_BUILD).bin   
+	@python3 $(MAKE_OTA) -t $(PROJECT_NAME) -m $(MANUF_CODE) -i $(IMAGE_TYPE) -v0x1111114b -s "Slacky-DIY OTA" $(BIN_PATH)/$(PROJECT_NAME)_$(VERSION_RELEASE).$(VERSION_BUILD).bin
+	-$(RM) $(BIN_PATH)/1141-d3a3-1111114b-ts0201_tz3000_0x23_zed.zigbee   
 	@echo ' '
 	@echo 'Finished building: $@'
 	@echo ' '
@@ -216,8 +235,9 @@ clean-bin:
 clean-project:
 	-$(RM) $(FLASH_IMAGE) $(ELFS) $(SIZEDUMMY) $(LST_FILE) $(ELF_FILE)
 	-$(RM) -R $(OUT_PATH)/$(SRC_PATH)/*.o
-	-$(RM) -R $(OUT_PATH)/$(SRC_PATH)/cht8305/*.o
-	-$(RM) -R $(OUT_PATH)/$(SRC_PATH)/sht30/*.o
+	-$(RM) -R $(OUT_PATH)/$(SRC_PATH)/sensors/*.o
+	-$(RM) -R $(OUT_PATH)/$(SRC_PATH)/zcl/*.o
+	-$(RM) -R $(OUT_PATH)/$(SRC_PATH)/zdo/*.o
 	-@echo ' '
 	
 pre-build:
