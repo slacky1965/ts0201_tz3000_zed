@@ -3,11 +3,16 @@ PROJECT_NAME ?= ts0201_tz3000_0x15_zed
 PROJECT_DEF ?= "-DBOARD=BOARD_HXDZ_ZBWSD_V02"
 
 ifeq ($(PROJECT_NAME),ts0201_tz3000_0x22_zed)
-MANUF_CODE = 4742
-IMAGE_TYPE = 514
+	MANUF_CODE = 4742
+	IMAGE_TYPE = 514
 else
-MANUF_CODE = 4417
-IMAGE_TYPE = 54179
+	ifeq ($(PROJECT_NAME),ts0201_tz3000_0x24_zed)
+		MANUF_CODE = 4742
+		IMAGE_TYPE = 514
+	else
+		MANUF_CODE = 4417
+		IMAGE_TYPE = 54179
+	endif
 endif
 
 # Set the serial port number for downloading the firmware

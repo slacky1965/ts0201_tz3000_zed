@@ -16,7 +16,7 @@ const attrRepeatCommand = 0xF009;
 
 
 export default {
-    zigbeeModel: ['TS0201-z21-SlD', 'TS0201-z22-SlD', 'TS0201-z23-SlD'],
+    zigbeeModel: ['TS0201-z21-SlD', 'TS0201-z22-SlD', 'TS0201-z23-SlD', 'TS0201-z24-SlD'],
     model: 'TS0201-z-SlD',
     vendor: 'Slacky-DIY',
     description: 'Temperature and humidity sensor',

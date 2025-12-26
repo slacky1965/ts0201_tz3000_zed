@@ -642,7 +642,7 @@ uint16_t app_sensor_get_period() {
     else period = (p_temp < p_hum)?p_temp:p_hum;
 
 
-    if (!period || period > config.read_sensors_period) g_appCtx.read_sensor_period = config.read_sensors_period;
+    if (!period || period > READ_SENSORS_PERIOD_MAX) g_appCtx.read_sensor_period = config.read_sensors_period;
     else g_appCtx.read_sensor_period = period;
 
     g_appCtx.read_sensor_period95p = (g_appCtx.read_sensor_period * 1000) / 100 * 95;

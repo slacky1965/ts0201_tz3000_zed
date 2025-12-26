@@ -32,14 +32,14 @@
 #define BOARD_IHSENO_IC_V0                  0x21
 #define BOARD_ZBEACON                       0x22
 #define BOARD_ZG_227ZS                      0x23
-#define BOARD_5                             0x24
+#define BOARD_TH01_ZBEACON                  0x24
 
 #ifndef BOARD
 //#define BOARD                               BOARD_HXDZ_ZBWSD_V02
 //#define BOARD                               BOARD_IHSENO_IC_V0
 //#define BOARD                               BOARD_ZBEACON
-#define BOARD                               BOARD_ZG_227ZS
-//#define BOARD                               BOARD_5
+//#define BOARD                               BOARD_ZG_227ZS
+#define BOARD                               BOARD_TH01_ZBEACON
 #endif
 
 #define APP_RELEASE                         0x10        //app release 1.0

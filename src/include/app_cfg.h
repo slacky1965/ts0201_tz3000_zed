@@ -121,6 +121,7 @@
 #include "board_ihseno_ic_v0.h"
 #include "board_zbeacon.h"
 #include "board_zg_227zs.h"
+#include "board_th01_zbeacon.h"
 #endif
 
 /* Voltage detect module */
