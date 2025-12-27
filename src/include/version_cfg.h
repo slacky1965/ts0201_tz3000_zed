@@ -98,7 +98,7 @@
  * 0x21 - Tuya Temperature and Humidity sensors (board_ihseno_ic_v0.h)
  * 0x22 - Tuya Temperature and Humidity sensors (board_zbeacon.h)
  * 0x23 - Tuya Temperature and Humidity sensors (board_zg_227zs.h)
- * 0x24 - Tuya Temperature and Humidity sensors (board_*.h)
+ * 0x24 - Tuya Temperature and Humidity sensors (board_th01_zbeacon.h)
  *
  */
 
