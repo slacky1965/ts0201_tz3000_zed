@@ -47,7 +47,7 @@ static void forceReportTemperature(void *args) {
 
     struct report_t {
         u8 numAttr;
-        zclReport_t attr[6];
+        zclReport_t attr[7];
     };
 
     struct report_t report;
@@ -108,6 +108,15 @@ static void forceReportTemperature(void *args) {
     }
 
     pAttrEntry = zcl_findAttribute(APP_ENDPOINT1, ZCL_CLUSTER_MS_TEMPERATURE_MEASUREMENT, ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_ONOFF_HIGH);
+
+    if (pAttrEntry) {
+        report.attr[report.numAttr].attrID = pAttrEntry->id;
+        report.attr[report.numAttr].dataType = pAttrEntry->type;
+        report.attr[report.numAttr].attrData = pAttrEntry->data;
+        report.numAttr++;
+    }
+
+    pAttrEntry = zcl_findAttribute(APP_ENDPOINT1, ZCL_CLUSTER_MS_TEMPERATURE_MEASUREMENT, ZCL_TEMPERATURE_MEASUREMENT_ATTRID_ONOFF_REPEAT_COMMAND);
 
     if (pAttrEntry) {
         report.attr[report.numAttr].attrID = pAttrEntry->id;
