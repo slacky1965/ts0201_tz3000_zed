@@ -12,7 +12,7 @@ typedef struct {
 
 static sensor_t sensor;
 
-#if UART_PRINTF_MODE && DEBUG_SENSOR
+#if UART_PRINTF_MODE && DEBUG_SENSOR_EN
 static void sensor_error_codes_print_result(const char api_name[], int8_t rslt, uint8_t addr) {
     if (rslt != SENSOR_OK)
     {
@@ -95,7 +95,7 @@ static uint8_t app_cht8305_dev_set(uint8_t slaveID) {
             cht8305_dev.write = cht8305_i2c_write;
             return SENSOR_OK;
         } else {
-#if UART_PRINTF_MODE && DEBUG_SENSOR
+#if UART_PRINTF_MODE && DEBUG_SENSOR_EN
             sensor_error_codes_print_result("app_cht8305_dev_set", SENSOR_ERR_ADDR_NOT_FOUND, slaveID);
 #endif
         }
@@ -126,7 +126,7 @@ static uint8_t app_cht8305_init() {
 
     ret = cht8305_init(&cht8305_dev);
 
-#if UART_PRINTF_MODE && DEBUG_SENSOR
+#if UART_PRINTF_MODE && DEBUG_SENSOR_EN
     sensor_error_codes_print_result("cht8305_init", ret, cht8305_dev.addr);
 #endif
 
@@ -164,7 +164,7 @@ static void app_cht8305_measurement() {
 
     uint8_t ret = cht8305_readSensor();
 
-#if UART_PRINTF_MODE && DEBUG_SENSOR
+#if UART_PRINTF_MODE && DEBUG_SENSOR_EN
     sensor_error_codes_print_result("app_cht8305_measurement", ret, cht8305_dev.addr);
 //    APP_DEBUG(DEBUG_SENSOR_EN, "temperature_raw: 0x%04x\r\n", cht8305_dev.raw_temp);
 //    APP_DEBUG(DEBUG_SENSOR_EN, "humidity_raw:    0x%04x\r\n", cht8305_dev.raw_hum);
@@ -207,7 +207,7 @@ static uint8_t app_sht30_dev_set(uint8_t slaveID) {
             sht30_dev.repeatability = SHT30_REPEATABILITY_HIGH;
             return SENSOR_OK;
         } else {
-#if UART_PRINTF_MODE && DEBUG_SENSOR
+#if UART_PRINTF_MODE && DEBUG_SENSOR_EN
             sensor_error_codes_print_result("app_sht30_dev_set", SENSOR_ERR_ADDR_NOT_FOUND, slaveID);
 #endif
         }
@@ -233,7 +233,7 @@ static uint8_t app_sht30_init() {
     }
 
     ret = sht30_init(&sht30_dev);
-#if UART_PRINTF_MODE && DEBUG_SENSOR
+#if UART_PRINTF_MODE && DEBUG_SENSOR_EN
     sensor_error_codes_print_result("sht30_init", ret, sht30_dev.addr);
 #endif
 
@@ -278,7 +278,7 @@ static void app_sht30_measurement() {
 
     uint8_t ret = sht30_readSensor();
 
-#if UART_PRINTF_MODE && DEBUG_SENSOR
+#if UART_PRINTF_MODE && DEBUG_SENSOR_EN
     sensor_error_codes_print_result("app_sht30_measurement", ret, sht30_dev.addr);
 //    APP_DEBUG(DEBUG_SENSOR_EN, "temperature_raw: 0x%04x\r\n", sht30_dev.raw_temp);
 //    APP_DEBUG(DEBUG_SENSOR_EN, "humidity_raw:    0x%04x\r\n", sht30_dev.raw_hum);
@@ -330,7 +330,7 @@ static uint8_t app_sht40_dev_set(uint8_t slaveID) {
             sht40_dev.write = sht40_i2c_write;
             return SENSOR_OK;
         } else {
-#if UART_PRINTF_MODE && DEBUG_SENSOR
+#if UART_PRINTF_MODE && DEBUG_SENSOR_EN
             sensor_error_codes_print_result("app_sht40_dev_set", SENSOR_ERR_ADDR_NOT_FOUND, slaveID);
 #endif
         }
@@ -358,7 +358,7 @@ static uint8_t app_sht40_init() {
     }
 
     ret = sht40_init(&sht40_dev);
-#if UART_PRINTF_MODE && DEBUG_SENSOR
+#if UART_PRINTF_MODE && DEBUG_SENSOR_EN
     sensor_error_codes_print_result("sht40_init", ret, sht40_dev.addr);
 #endif
 
@@ -391,7 +391,7 @@ static void app_sht40_measurement() {
 
     uint8_t ret = sht40_readSensor();
 
-#if UART_PRINTF_MODE && DEBUG_SENSOR
+#if UART_PRINTF_MODE && DEBUG_SENSOR_EN
     sensor_error_codes_print_result("app_sht40_measurement", ret, sht40_dev.addr);
 //    APP_DEBUG(DEBUG_SENSOR_EN, "temperature_raw: 0x%04x\r\n", sht40_dev.raw_temp);
 //    APP_DEBUG(DEBUG_SENSOR_EN, "humidity_raw:    0x%04x\r\n", sht40_dev.raw_hum);
@@ -450,7 +450,7 @@ static uint8_t app_aht20_dev_set(uint8_t slaveID) {
             aht20_dev.write = aht20_i2c_write;
             return SENSOR_OK;
         } else {
-#if UART_PRINTF_MODE && DEBUG_SENSOR
+#if UART_PRINTF_MODE && DEBUG_SENSOR_EN
             sensor_error_codes_print_result("app_aht20_dev_set", SENSOR_ERR_ADDR_NOT_FOUND, slaveID);
 #endif
         }
@@ -482,7 +482,7 @@ static uint8_t app_aht20_init() {
 #endif
 
     ret = aht20_init(&aht20_dev);
-#if UART_PRINTF_MODE && DEBUG_SENSOR
+#if UART_PRINTF_MODE && DEBUG_SENSOR_EN
     sensor_error_codes_print_result("aht20_init", ret, aht20_dev.addr);
 #endif
 
@@ -519,7 +519,7 @@ static void app_aht20_measurement() {
 
     uint8_t ret = aht20_readSensor();
 
-#if UART_PRINTF_MODE && DEBUG_SENSOR
+#if UART_PRINTF_MODE && DEBUG_SENSOR_EN
     sensor_error_codes_print_result("app_aht20_measurement", ret, aht20_dev.addr);
 //    APP_DEBUG(DEBUG_SENSOR_EN, "temperature_raw: 0x%04x\r\n", aht20_dev.raw_temp);
 //    APP_DEBUG(DEBUG_SENSOR_EN, "humidity_raw:    0x%04x\r\n", aht20_dev.raw_hum);
