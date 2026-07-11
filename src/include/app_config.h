@@ -30,8 +30,8 @@ typedef struct __attribute__((packed)) {
     uint16_t    read_sensors_period;
     int16_t     temperature_offset;     /* -5 ... +5 step 0.1 * 100     */
     uint8_t     temperature_onoff;      /* 0 - disabled, 1 - enabled    */
-    uint16_t    temperature_onoff_low;  /* -4000                        */
-    uint16_t    temperature_onoff_high; /* 12500                        */
+    int16_t     temperature_onoff_low;  /* -4000                        */
+    int16_t     temperature_onoff_high; /* 12500                        */
     int16_t     humidity_offset;        /* -10 ... +10 % step 1 * 100   */
     uint8_t     humidity_onoff;         /* 0 - disabled, 1 - enabled    */
     uint16_t    humidity_onoff_low;     /* 0                            */

@@ -82,7 +82,7 @@ static void buttonDoublePressed(u8 btNum) {
         g_appCtx.find_bind_src_ep = APP_ENDPOINT1;
         g_appCtx.find_bind_flag = true;
         g_appCtx.bdbFBTimerEvt = TL_ZB_TIMER_SCHEDULE(app_bdbFindAndBindStart, NULL, TIMEOUT_50MS);
-        if (!findbindTimerEvt) {
+        if (findbindTimerEvt) {
             TL_ZB_TIMER_CANCEL(&findbindTimerEvt);
         }
         findbindTimerEvt = TL_ZB_TIMER_SCHEDULE(find_and_bind_clear_flag, NULL, TIMEOUT_3MIN);
@@ -111,7 +111,7 @@ static void buttonTriplePressed(u8 btNum) {
         g_appCtx.find_bind_src_ep = APP_ENDPOINT1;
         g_appCtx.find_bind_flag = true;
         g_appCtx.bdbFBTimerEvt = TL_ZB_TIMER_SCHEDULE(app_bdbFindAndBindStart, NULL, TIMEOUT_50MS);
-        if (!findbindTimerEvt) {
+        if (findbindTimerEvt) {
             TL_ZB_TIMER_CANCEL(&findbindTimerEvt);
         }
         findbindTimerEvt = TL_ZB_TIMER_SCHEDULE(find_and_bind_clear_flag, NULL, TIMEOUT_3MIN);
@@ -140,7 +140,7 @@ static void buttonQuadruplePressed(u8 btNum) {
         g_appCtx.find_bind_src_ep = APP_ENDPOINT2;
         g_appCtx.find_bind_flag = true;
         g_appCtx.bdbFBTimerEvt = TL_ZB_TIMER_SCHEDULE(app_bdbFindAndBindStart, NULL, TIMEOUT_50MS);
-        if (!findbindTimerEvt) {
+        if (findbindTimerEvt) {
             TL_ZB_TIMER_CANCEL(&findbindTimerEvt);
         }
         findbindTimerEvt = TL_ZB_TIMER_SCHEDULE(find_and_bind_clear_flag, NULL, TIMEOUT_3MIN);

@@ -186,7 +186,7 @@ void user_app_init(void)
 
 }
 
-uint32_t tt = 0;
+// uint32_t tt = 0;
 
 void app_task(void) {
 
