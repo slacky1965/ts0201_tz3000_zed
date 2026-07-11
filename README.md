@@ -36,6 +36,8 @@
 
 <img src="doc/images/zg227zs_pcb.jpg"/>
 
+<img src="doc/images/zg227z_V2_pcb.jpg"/>
+
 - TH01 Zbeacon
 
 Прошивка для этих датчиков имеет в имени число 0x24
