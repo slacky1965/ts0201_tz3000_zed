@@ -10,8 +10,8 @@ typedef struct {
 
 extern app_timer_t app_timer;
 
-void app_timer_init();
+void app_timer_init(void);
 bool app_timer_exceed(uint32_t ref, uint32_t ms);
-uint32_t app_timeout_get();
+uint32_t app_timeout_get(void);
 
 #endif /* SRC_INCLUDE_APP_TIMER_H_ */
