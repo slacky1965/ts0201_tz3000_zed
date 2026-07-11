@@ -208,7 +208,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                 }
                 proc_temp_hum_onoff();
             } else if (attr[i].attrID == ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_ONOFF_LOW) {
-                uint16_t temperature_low = attr[i].attrData[0] & 0xff;
+                int16_t temperature_low = attr[i].attrData[0] & 0xff;
                 temperature_low |= (attr[i].attrData[1] << 8) & 0xffff;
                 if (temperature_low >= TEMPERATURE_ONOFF_MIN && temperature_low <= TEMPERATURE_ONOFF_MAX) {
                     if (temperature_low < config.temperature_onoff_high) {
@@ -227,7 +227,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
                 reset_control_temp();
                 proc_temp_hum_onoff();
             } else if (attr[i].attrID == ZCL_TEMPERATURE_MEASUREMENT_ATTRID_TEMPERATURE_ONOFF_HIGH) {
-                uint16_t temperature_high = attr[i].attrData[0] & 0xff;
+                int16_t temperature_high = attr[i].attrData[0] & 0xff;
                 temperature_high |= (attr[i].attrData[1] << 8) & 0xffff;
                 if (temperature_high >= TEMPERATURE_ONOFF_MIN && temperature_high <= TEMPERATURE_ONOFF_MAX) {
                     if (temperature_high > config.temperature_onoff_low) {
@@ -280,7 +280,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
             } else if (attr[i].attrID == ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_HUMIDITY_ONOFF_LOW) {
                 uint16_t humidity_low = attr[i].attrData[0] & 0xff;
                 humidity_low |= (attr[i].attrData[1] << 8) & 0xffff;
-                if (humidity_low >= TEMPERATURE_ONOFF_MIN && humidity_low <= TEMPERATURE_ONOFF_MAX) {
+                if (humidity_low >= HUMIDITY_ONOFF_MIN && humidity_low <= HUMIDITY_ONOFF_MAX) {
                     if (humidity_low < config.humidity_onoff_high) {
                         if (config.humidity_onoff_low != humidity_low) {
                             config.humidity_onoff_low = humidity_low;
@@ -299,7 +299,7 @@ static void app_zclWriteReqCmd(uint8_t endPoint, uint16_t clusterId, zclWriteCmd
             } else if (attr[i].attrID == ZCL_RELATIVE_HUMIDITY_MEASUREMENT_ATTRID_HUMIDITY_ONOFF_HIGH) {
                 uint16_t humidity_high = attr[i].attrData[0] & 0xff;
                 humidity_high |= (attr[i].attrData[1] << 8) & 0xffff;
-                if (humidity_high >= TEMPERATURE_ONOFF_MIN && humidity_high <= TEMPERATURE_ONOFF_MAX) {
+                if (humidity_high >= HUMIDITY_ONOFF_MIN && humidity_high <= HUMIDITY_ONOFF_MAX) {
                     if (humidity_high > config.humidity_onoff_low) {
                         if (config.humidity_onoff_high != humidity_high) {
                             config.humidity_onoff_high = humidity_high;
