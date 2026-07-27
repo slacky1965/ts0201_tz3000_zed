@@ -22,9 +22,9 @@ COMPILE_OS = $(shell uname -o)
 LINUX_OS = GNU/Linux
 
 ifeq ($(COMPILE_OS),$(LINUX_OS))	
-	COMPILE_PREFIX = ../tc32/linux/tc32/bin/tc32
+	COMPILE_PREFIX = /opt/tc32/bin/tc32
 else
-	COMPILE_PREFIX = ../tc32/windows/tc32/bin/tc32
+	COMPILE_PREFIX = C:/TelinkSDK/opt/tc32/bin/tc32
 endif
 
 AS      = $(COMPILE_PREFIX)-elf-as
@@ -51,8 +51,8 @@ MAKE_INCLUDES := ./make
 TOOLS_PATH := ./tools
 VERSION_RELEASE := V$(shell awk -F " " '/APP_RELEASE/ {gsub("0x",""); printf "%.1f", $$3/10.0; exit}' $(SRC_PATH)/include/version_cfg.h)
 VERSION_BUILD := $(shell awk -F " " '/APP_BUILD/ {gsub("0x",""); printf "%02d", $$3; exit}' ./src/include/version_cfg.h)
-#ZCL_VERSION_FILE := $(shell git log -1 --format=%cd --date=format:%Y%m%d -- src |  sed -e "'s/./\'&\',/g'" -e "'s/.$$//'")
-ZCL_VERSION_FILE := $(shell git log -1 --format=%cd --date=format:%Y%m%d -- src | sed -e "s/./\'&\',/g" -e "s/.$$//" )
+ZCL_VERSION_FILE := $(shell git log -1 --format=%cd --date=format:%Y%m%d -- src |  sed -e "'s/./\'&\',/g'" -e "'s/.$$//'")
+
 
 TL_CHECK = $(TOOLS_PATH)/tl_check_fw.py
 MAKE_OTA = $(TOOLS_PATH)/zigbee_ota.py
