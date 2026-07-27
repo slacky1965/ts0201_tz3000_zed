@@ -75,10 +75,10 @@
 #define USB_PRINTF_MODE                 OFF
 
 #define DEBUG_BUTTON_EN                 ON
-#define DEBUG_REPORTING_EN              OFF
+#define DEBUG_REPORTING_EN              ON
 #define DEBUG_BATTERY_EN                OFF
 #define DEBUG_PM_EN                     OFF
-#define DEBUG_OTA                       OFF
+#define DEBUG_OTA                       ON
 #define DEBUG_SENSOR_EN                 ON
 #define DEBUG_STA_STATUS                OFF
 #define DEBUG_SAVE_EN                   ON
@@ -131,6 +131,7 @@
 #include "board_zg_227zs.h"
 #include "board_th01_zbeacon.h"
 #include "board_z_wxd.h"
+#include "board_wsd_a002.h"
 #endif
 
 /* Voltage detect module */

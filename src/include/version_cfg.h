@@ -34,6 +34,7 @@
 #define BOARD_ZG_227ZS                      0x23
 #define BOARD_TH01_ZBEACON                  0x24
 #define BOARD_Z_WXD                         0x28
+#define BOARD_WSD_A002                      0x29
 
 #ifndef BOARD
 //#define BOARD                               BOARD_HXDZ_ZBWSD_V02
@@ -41,6 +42,7 @@
 //#define BOARD                               BOARD_ZBEACON
 //#define BOARD                               BOARD_ZG_227ZS
 //#define BOARD                               BOARD_Z_WXD
+//#define BOARD                               BOARD_WSD_A002
 #define BOARD                               BOARD_TH01_ZBEACON
 #endif
 
