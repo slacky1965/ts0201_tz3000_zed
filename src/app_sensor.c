@@ -181,13 +181,22 @@ static void app_cht8305_measurement() {
 static sht30_dev_t sht30_dev;
 
 static int8_t sht30_i2c_read(uint16_t reg_addr, uint32_t reg_len, uint8_t *reg_data, uint32_t len, sht30_dev_t *dev) {
+#if (I2C_DRV_USED == I2C_DRV_HARD)
     drv_i2c_read_series(dev->addr << 1, reg_addr, reg_len, reg_data, len);
     return (reg_i2c_status & FLD_I2C_NAK);
+#elif (I2C_DRV_USED == I2C_DRV_SOFT)
+    return read_i2c_bytes(dev->addr << 1, reg_data, len);
+#endif
 }
 
 static int8_t sht30_i2c_write(uint16_t reg_addr, const uint8_t *reg_data, uint32_t len, sht30_dev_t *dev) {
+#if (I2C_DRV_USED == I2C_DRV_HARD)
     drv_i2c_write_series(dev->addr << 1, reg_addr, 2, (uint8_t*)reg_data, len);
     return (reg_i2c_status & FLD_I2C_NAK);
+#elif (I2C_DRV_USED == I2C_DRV_SOFT)
+    uint8_t cmd[2] = { (uint8_t)(reg_addr >> 8), (uint8_t)reg_addr };
+    return send_i2c_bytes(dev->addr << 1, cmd, 2);
+#endif
 }
 
 static void sht30_delay(uint32_t period) {
@@ -274,8 +283,10 @@ static void app_sht30_set_humidity() {
 
 static void app_sht30_measurement() {
 
+#if (I2C_DRV_USED == I2C_DRV_HARD)
     app_i2c_init();
 
+#endif
     uint8_t ret = sht30_readSensor();
 
 #if UART_PRINTF_MODE && DEBUG_SENSOR_EN
