@@ -131,6 +131,7 @@
 #include "board_zg_227zs.h"
 #include "board_th01_zbeacon.h"
 #include "board_z_wxd.h"
+#include "board_zth01.h"
 #endif
 
 /* Voltage detect module */
